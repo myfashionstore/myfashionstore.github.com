@@ -172,7 +172,7 @@
   <section id="page-admin" class="page-content hidden max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
     <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-xl border shadow-sm my-12">
       <h3 class="text-xl font-bold mb-4 text-center">Admin Verification</h3>
-      <input type="password" id="admin-pin" placeholder="Enter PIN (Default: 1234)" class="w-full border rounded p-2 text-sm mb-3">
+      <input type="password" id="admin-pin" placeholder="Enter PIN" class="w-full border rounded p-2 text-sm mb-3">
       <button onclick="checkAdminAuth()" class="w-full bg-black text-white py-2 rounded text-sm font-bold">Access Dashboard</button>
     </div>
 
@@ -414,7 +414,7 @@
     // Admin Auth & Functions
     function checkAdminAuth() {
       const pin = document.getElementById('admin-pin').value;
-      if (pin === '1234') {
+      if (pin === 'adeet2009') {
         document.getElementById('admin-login-box').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         renderAdminOrders();
