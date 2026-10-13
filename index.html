@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FASHION STORE - Kyuki Apna Style Bhi Kuchh Hai!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-black text-white text-xs py-2 text-center tracking-wide font-medium">
+    Assam Delivery Exclusive | Cash on Delivery (COD) Available | 100% Quality Assured
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="bg-white border-b sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div class="cursor-pointer" onclick="navigateTo('home')">
+        <h1 class="text-2xl font-extrabold tracking-tight text-gray-900">FASHION STORE</h1>
+        <p class="text-xs text-amber-700 font-semibold tracking-wider">KYUKI APNA STYLE BHI KUCHH HAI!</p>
+      </div>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex space-x-8 text-sm font-semibold">
+        <button onclick="navigateTo('home')" class="hover:text-amber-700">Home</button>
+        <button onclick="navigateTo('shop')" class="hover:text-amber-700">Shop Collection</button>
+        <button onclick="navigateTo('about')" class="hover:text-amber-700">About Us</button>
+        <button onclick="navigateTo('contact')" class="hover:text-amber-700">Contact</button>
+        <button onclick="navigateTo('policies')" class="hover:text-amber-700">Policies & COD</button>
+      </nav>
+
+      <!-- Cart & Admin Buttons -->
+      <div class="flex items-center space-x-4">
+        <button onclick="navigateTo('admin')" class="text-xs border border-gray-400 px-3 py-1.5 rounded-full hover:bg-gray-100 font-medium">
+          <i class="fa-solid fa-lock mr-1"></i> Admin
+        </button>
+        <button onclick="toggleCart(true)" class="relative bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Cart</span>
+          <span id="cart-badge" class="bg-amber-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== PAGE: HOME ==================== -->
+  <section id="page-home" class="page-content">
+    <div class="bg-gradient-to-r from-amber-100 via-amber-50 to-orange-50 border-b py-20 px-6 text-center">
+      <span class="text-xs font-bold uppercase tracking-widest text-amber-800 bg-amber-200 px-3 py-1 rounded-full">New Arrivals</span>
+      <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mt-4 max-w-2xl mx-auto leading-tight">
+        Premium Wholesale Fashion Right at Your Doorstep
+      </h2>
+      <p class="text-gray-600 mt-3 max-w-md mx-auto text-sm sm:text-base">
+        Direct from wholesale suppliers. Assam ke har kone tak trusted Cash on Delivery service.
+      </p>
+      <div class="mt-6 flex justify-center gap-4">
+        <button onclick="navigateTo('shop')" class="bg-black text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-gray-800 transition">
+          Shop Now
+        </button>
+        <button onclick="navigateTo('policies')" class="bg-white border border-gray-300 px-6 py-3 rounded-lg font-bold text-sm hover:bg-gray-50 transition">
+          COD Terms
+        </button>
+      </div>
+    </div>
+
+    <!-- Featured Category Highlights -->
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      <h3 class="text-xl font-bold mb-6">Top Categories</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div onclick="filterCategory('Men')" class="cursor-pointer bg-gray-100 rounded-xl p-6 text-center hover:shadow transition border">
+          <i class="fa-solid fa-shirt text-3xl text-gray-700 mb-2"></i>
+          <h4 class="font-bold text-lg">Men's Collection</h4>
+          <p class="text-xs text-gray-500 mt-1">Shirts, T-Shirts & Formals</p>
+        </div>
+        <div onclick="filterCategory('Women')" class="cursor-pointer bg-gray-100 rounded-xl p-6 text-center hover:shadow transition border">
+          <i class="fa-solid fa-vest-patches text-3xl text-gray-700 mb-2"></i>
+          <h4 class="font-bold text-lg">Women's Ethnic & Western</h4>
+          <p class="text-xs text-gray-500 mt-1">Kurtis, Tops & Dresses</p>
+        </div>
+        <div onclick="filterCategory('Unisex')" class="cursor-pointer bg-gray-100 rounded-xl p-6 text-center hover:shadow transition border">
+          <i class="fa-solid fa-tags text-3xl text-gray-700 mb-2"></i>
+          <h4 class="font-bold text-lg">Unisex Streetwear</h4>
+          <p class="text-xs text-gray-500 mt-1">Oversized Hoodies & Tees</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: SHOP (CATALOG) ==================== -->
+  <section id="page-shop" class="page-content hidden max-w-7xl mx-auto px-4 py-10 w-full flex-1">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 border-b pb-4">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">All Products</h2>
+        <p class="text-xs text-gray-500 mt-0.5">Filter category aur size chun kar order karein.</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="filterCategory('All')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-black text-white" data-cat="All">All</button>
+        <button onclick="filterCategory('Men')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700" data-cat="Men">Men</button>
+        <button onclick="filterCategory('Women')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700" data-cat="Women">Women</button>
+        <button onclick="filterCategory('Unisex')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700" data-cat="Unisex">Unisex</button>
+      </div>
+    </div>
+
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Dynamic Products -->
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: ABOUT US ==================== -->
+  <section id="page-about" class="page-content hidden max-w-4xl mx-auto px-4 py-14 flex-1">
+    <h2 class="text-3xl font-extrabold text-gray-900 mb-6">About FASHION STORE</h2>
+    <div class="space-y-4 text-gray-700 leading-relaxed text-sm sm:text-base">
+      <p>
+        <strong>FASHION STORE</strong> Assam-based reselling venture hai jo premium fashion wholesale rate par customers tak direct pahuchata hai. Humara focus quality fabrics, budget-friendly pricing aur clean customer experience provide karna hai.
+      </p>
+      <p>
+        Humne start low-overhead model ke sath kiya hai taaki extra middleman costs ko cut karke direct benefit customer ko mil sake. Filhaal humari deliveries strictly Assam ke PIN codes par active hain, taaki reliable courier delivery ensure ho sake.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: CONTACT ==================== -->
+  <section id="page-contact" class="page-content hidden max-w-3xl mx-auto px-4 py-14 flex-1">
+    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Customer Support</h2>
+    <p class="text-gray-600 text-sm mb-8">Kisi bhi order query ya size issue ke liye hume contact karein.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-xl border shadow-sm">
+      <div class="space-y-4 text-sm">
+        <div>
+          <h4 class="font-bold text-gray-900">Registered Hub:</h4>
+          <p class="text-gray-600">Guwahati, Assam, India</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-gray-900">Direct Helpline / WhatsApp:</h4>
+          <p class="text-gray-600">+91 9XXXXXXXXX</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-gray-900">Email:</h4>
+          <p class="text-gray-600">support@fashionstoreassam.local</p>
+        </div>
+      </div>
+      <form onsubmit="handleContactSubmit(event)" class="space-y-3">
+        <input type="text" placeholder="Your Name" required class="w-full border rounded p-2 text-sm">
+        <input type="email" placeholder="Your Email or Phone" required class="w-full border rounded p-2 text-sm">
+        <textarea placeholder="Message / Order ID" rows="3" required class="w-full border rounded p-2 text-sm"></textarea>
+        <button type="submit" class="w-full bg-black text-white py-2 rounded text-sm font-bold hover:bg-gray-800">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: POLICIES ==================== -->
+  <section id="page-policies" class="page-content hidden max-w-4xl mx-auto px-4 py-14 flex-1">
+    <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Terms, Shipping & COD Policy</h2>
+    <div class="space-y-6 text-sm text-gray-700">
+      <div class="bg-white p-5 rounded-lg border">
+        <h3 class="font-bold text-base text-gray-900 mb-2">1. Cash on Delivery (COD) Rules</h3>
+        <p>Fake orders prevent karne ke liye har COD order WhatsApp ya Call par verify kiya ja sakta hai dispatch se pehle. Delivery boy ko cash dene se pehle parcel open karne ki permission courier standard policy ke hisaab se nahi hoti.</p>
+      </div>
+      <div class="bg-white p-5 rounded-lg border">
+        <h3 class="font-bold text-base text-gray-900 mb-2">2. Shipping & Delivery</h3>
+        <p>Filhaal orders Assam state ke serviceable PIN codes par hi dispatch honge. Standard delivery time 3 se 6 working days rehta hai third-party logistics ke jariye.</p>
+      </div>
+      <div class="bg-white p-5 rounded-lg border">
+        <h3 class="font-bold text-base text-gray-900 mb-2">3. Returns & Refunds</h3>
+        <p>Product damage ya incorrect size deliver hone par 48 ghante ke andar unboxing video ke sath inform karna compulsory hai.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: ADMIN DASHBOARD ==================== -->
+  <section id="page-admin" class="page-content hidden max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
+    <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-xl border shadow-sm my-12">
+      <h3 class="text-xl font-bold mb-4 text-center">Admin Verification</h3>
+      <input type="password" id="admin-pin" placeholder="Enter PIN (Default: 1234)" class="w-full border rounded p-2 text-sm mb-3">
+      <button onclick="checkAdminAuth()" class="w-full bg-black text-white py-2 rounded text-sm font-bold">Access Dashboard</button>
+    </div>
+
+    <div id="admin-panel" class="hidden space-y-8">
+      <div class="flex justify-between items-center border-b pb-4">
+        <div>
+          <h2 class="text-2xl font-bold">Admin Management Panel</h2>
+          <p class="text-xs text-gray-500">Live Orders, Courier preparation & Stock status</p>
+        </div>
+        <button onclick="logoutAdmin()" class="text-xs bg-red-600 text-white px-3 py-1.5 rounded font-semibold">Logout</button>
+      </div>
+
+      <!-- Add New Product Form -->
+      <div class="bg-white p-6 rounded-xl border">
+        <h3 class="font-bold text-base mb-4">Add New Inventory Item</h3>
+        <form onsubmit="handleAddNewProduct(event)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <input type="text" id="new-prod-name" placeholder="Item Name" required class="border rounded p-2">
+          <input type="number" id="new-prod-price" placeholder="Price (₹)" required class="border rounded p-2">
+          <select id="new-prod-cat" class="border rounded p-2">
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Unisex">Unisex</option>
+          </select>
+          <input type="url" id="new-prod-img" placeholder="Image URL (Unsplash/CDN)" required class="border rounded p-2">
+          <button type="submit" class="sm:col-span-2 md:col-span-4 bg-amber-700 text-white font-bold py-2 rounded">
+            Save Product to Catalog
+          </button>
+        </form>
+      </div>
+
+      <!-- Order Management Table -->
+      <div class="bg-white rounded-xl border overflow-hidden">
+        <div class="p-4 border-b flex justify-between items-center">
+          <h3 class="font-bold text-base">Customer Orders & COD Shipments</h3>
+          <button onclick="exportOrdersToCSV()" class="text-xs bg-gray-200 px-3 py-1.5 rounded font-bold hover:bg-gray-300">
+            Export CSV
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-gray-100 uppercase text-gray-600 font-semibold border-b">
+              <tr>
+                <th class="p-3">Order ID</th>
+                <th class="p-3">Customer</th>
+                <th class="p-3">Address & PIN</th>
+                <th class="p-3">Amount</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-list" class="divide-y">
+              <!-- Orders injected here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CART DRAWER ==================== -->
+  <div id="cart-drawer" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end">
+    <div class="bg-white w-full max-w-md h-full p-6 overflow-y-auto flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-center pb-4 border-b">
+          <h3 class="text-lg font-bold">Shopping Cart</h3>
+          <button onclick="toggleCart(false)" class="text-gray-500 hover:text-black font-bold text-2xl">&times;</button>
+        </div>
+        <div id="cart-items" class="py-4 space-y-4"></div>
+      </div>
+
+      <div class="border-t pt-4">
+        <div class="flex justify-between font-bold text-lg mb-3">
+          <span>Total COD Payable:</span>
+          <span id="cart-total-price">₹0</span>
+        </div>
+        <form onsubmit="handlePlaceOrder(event)" class="space-y-3">
+          <input type="text" id="cust-name" required placeholder="Receiver Full Name" class="w-full p-2 border rounded text-xs sm:text-sm">
+          <input type="tel" id="cust-phone" required pattern="[0-9]{10}" placeholder="10-Digit Mobile Number" class="w-full p-2 border rounded text-xs sm:text-sm">
+          <textarea id="cust-address" required placeholder="Complete Delivery Address" rows="2" class="w-full p-2 border rounded text-xs sm:text-sm"></textarea>
+          <input type="text" id="cust-pin" required pattern="[0-9]{6}" placeholder="PIN Code (Assam only)" class="w-full p-2 border rounded text-xs sm:text-sm">
+          <div class="bg-amber-50 border border-amber-200 p-2 rounded text-xs text-amber-900 font-medium">
+            Cash on Delivery (COD) selected. Pay only upon delivery.
+          </div>
+          <button type="submit" class="w-full bg-black text-white py-3 rounded font-bold text-sm hover:bg-gray-800">
+            Confirm & Place COD Order
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+      <p>© 2026 FASHION STORE. Assam, India. All rights reserved.</p>
+      <div class="flex gap-4">
+        <button onclick="navigateTo('policies')">Privacy & Shipping</button>
+        <button onclick="navigateTo('about')">About</button>
+        <button onclick="navigateTo('contact')">Support</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // Global State
+    let products = JSON.parse(localStorage.getItem('store_products')) || [
+      { id: 'FS-101', name: 'Cotton Regular Shirt', price: 499, category: 'Men', image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500' },
+      { id: 'FS-102', name: 'Traditional Pattern Kurti', price: 599, category: 'Women', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500' },
+      { id: 'FS-103', name: 'Casual Oversized Tee', price: 399, category: 'Unisex', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500' }
+    ];
+    let cart = [];
+    let currentCategory = 'All';
+
+    // Page Router
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+      const active = document.getElementById(`page-${pageId}`);
+      if (active) active.classList.remove('hidden');
+      window.scrollTo(0, 0);
+
+      if (pageId === 'shop') renderProducts();
+      if (pageId === 'admin') renderAdminOrders();
+    }
+
+    // Render Product Catalog
+    function renderProducts() {
+      const container = document.getElementById('product-grid');
+      const filtered = currentCategory === 'All' ? products : products.filter(p => p.category === currentCategory);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">Is category mein filhaal koi product available nahi hai.</p>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => `
+        <div class="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+          <img src="${p.image}" alt="${p.name}" class="h-60 w-full object-cover">
+          <div class="p-4">
+            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">${p.category}</span>
+            <h4 class="font-bold text-base mt-1 text-gray-900">${p.name}</h4>
+            <p class="text-gray-900 font-extrabold mt-1">₹${p.price}</p>
+            <div class="mt-4 flex gap-2">
+              <select id="size-${p.id}" class="border text-xs rounded px-2 py-1 bg-gray-50">
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+              <button onclick="addToCart('${p.id}')" class="flex-1 bg-black text-white text-xs font-bold rounded py-2 hover:bg-gray-800 transition">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-black text-white';
+        } else {
+          btn.className = 'cat-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700';
+        }
+      });
+      navigateTo('shop');
+    }
+
+    // Cart Management
+    function addToCart(id) {
+      const prod = products.find(p => p.id === id);
+      const sizeElem = document.getElementById(`size-${id}`);
+      const size = sizeElem ? sizeElem.value : 'M';
+      cart.push({ ...prod, selectedSize: size });
+      updateCart();
+      toggleCart(true);
+    }
+
+    function toggleCart(open) {
+      const drawer = document.getElementById('cart-drawer');
+      if (open) drawer.classList.remove('hidden');
+      else drawer.classList.add('hidden');
+    }
+
+    function updateCart() {
+      document.getElementById('cart-badge').innerText = cart.length;
+      const list = document.getElementById('cart-items');
+      if (cart.length === 0) {
+        list.innerHTML = '<p class="text-gray-500 text-sm py-4">Cart empty hai.</p>';
+        document.getElementById('cart-total-price').innerText = '₹0';
+        return;
+      }
+
+      let total = 0;
+      list.innerHTML = cart.map((item, index) => {
+        total += item.price;
+        return `
+          <div class="flex justify-between items-center text-sm border-b pb-2">
+            <div>
+              <p class="font-bold">${item.name}</p>
+              <p class="text-xs text-gray-500">Size: ${item.selectedSize} | ₹${item.price}</p>
+            </div>
+            <button onclick="cart.splice(${index}, 1); updateCart();" class="text-red-500 text-xs font-semibold">Remove</button>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('cart-total-price').innerText = `₹${total}`;
+    }
+
+    // Checkout / Order Form
+    function handlePlaceOrder(e) {
+      e.preventDefault();
+      if (cart.length === 0) return alert('Cart khali hai.');
+
+      const order = {
+        orderId: 'ORD-' + Date.now().toString().slice(-6),
+        name: document.getElementById('cust-name').value,
+        phone: document.getElementById('cust-phone').value,
+        address: document.getElementById('cust-address').value,
+        pin: document.getElementById('cust-pin').value,
+        items: [...cart],
+        amount: cart.reduce((s, i) => s + i.price, 0),
+        status: 'New Order',
+        date: new Date().toLocaleDateString()
+      };
+
+      const orders = JSON.parse(localStorage.getItem('fashion_orders') || '[]');
+      orders.unshift(order);
+      localStorage.setItem('fashion_orders', JSON.stringify(orders));
+
+      alert(`Order placed successfully!\nOrder ID: ${order.orderId}\nPayment: Cash on Delivery`);
+      cart = [];
+      updateCart();
+      toggleCart(false);
+      e.target.reset();
+    }
+
+    // Admin Auth & Functions
+    function checkAdminAuth() {
+      const pin = document.getElementById('admin-pin').value;
+      if (pin === '1234') {
+        document.getElementById('admin-login-box').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        renderAdminOrders();
+      } else {
+        alert('Wrong PIN!');
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('admin-login-box').classList.remove('hidden');
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('admin-pin').value = '';
+    }
+
+    function renderAdminOrders() {
+      const list = document.getElementById('admin-orders-list');
+      const orders = JSON.parse(localStorage.getItem('fashion_orders') || '[]');
+      if (orders.length === 0) {
+        list.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">Abhi tak koi orders nahi aaye hain.</td></tr>';
+        return;
+      }
+      list.innerHTML = orders.map((o, idx) => `
+        <tr class="hover:bg-gray-50">
+          <td class="p-3 font-bold">${o.orderId}</td>
+          <td class="p-3">${o.name}<br><span class="text-gray-500">${o.phone}</span></td>
+          <td class="p-3">${o.address}<br><span class="font-semibold text-gray-600">PIN: ${o.pin}</span></td>
+          <td class="p-3 font-bold">₹${o.amount}</td>
+          <td class="p-3">
+            <span class="px-2 py-1 rounded text-xs font-semibold ${o.status === 'Delivered' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+              ${o.status}
+            </span>
+          </td>
+          <td class="p-3">
+            <select onchange="updateOrderStatus(${idx}, this.value)" class="border text-xs rounded p-1">
+              <option value="New Order" ${o.status === 'New Order' ? 'selected' : ''}>New Order</option>
+              <option value="Ready to Ship" ${o.status === 'Ready to Ship' ? 'selected' : ''}>Ready to Ship</option>
+              <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateOrderStatus(index, status) {
+      const orders = JSON.parse(localStorage.getItem('fashion_orders') || '[]');
+      orders[index].status = status;
+      localStorage.setItem('fashion_orders', JSON.stringify(orders));
+      renderAdminOrders();
+    }
+
+    function handleAddNewProduct(e) {
+      e.preventDefault();
+      const newP = {
+        id: 'FS-' + (products.length + 101),
+        name: document.getElementById('new-prod-name').value,
+        price: Number(document.getElementById('new-prod-price').value),
+        category: document.getElementById('new-prod-cat').value,
+        image: document.getElementById('new-prod-img').value
+      };
+      products.push(newP);
+      localStorage.setItem('store_products', JSON.stringify(products));
+      alert('Product catalogue mein save ho gaya!');
+      e.target.reset();
+      renderProducts();
+    }
+
+    function exportOrdersToCSV() {
+      const orders = JSON.parse(localStorage.getItem('fashion_orders') || '[]');
+      if (!orders.length) return alert('Export ke liye koi order data nahi hai.');
+      let csv = 'Order ID,Customer,Phone,PIN,Amount,Status\n';
+      orders.forEach(o => {
+        csv += `"${o.orderId}","${o.name}","${o.phone}","${o.pin}","${o.amount}","${o.status}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'fashion_store_orders.csv');
+      a.click();
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      alert('Aapka sandesh prapt ho gaya hai! Hamari team jald hi sampark karegi.');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
