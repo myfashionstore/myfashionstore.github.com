@@ -27,7 +27,7 @@
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       
-      <!-- Brand Logo SVG & Name -->
+      <!-- Brand Logo SVG & Name (Clickable to Home) -->
       <div class="flex items-center space-x-2 cursor-pointer" onclick="navigate('home')">
         <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
@@ -73,7 +73,7 @@
   <!-- ================= MAIN CONTENT ================= -->
   <main class="flex-grow">
     
-    <!-- ====== VIEW: HOME ====== -->
+    <!-- ====== VIEW 1: HOME ====== -->
     <div id="page-home" class="page-view">
       
       <!-- Compact Hero Slider -->
@@ -118,7 +118,7 @@
         </div>
       </section>
 
-      <!-- Catalog -->
+      <!-- Catalog Section -->
       <section id="catalog-section" class="max-w-7xl mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
           <div class="flex flex-wrap gap-2" id="category-tabs">
@@ -136,11 +136,11 @@
       </section>
     </div>
 
-    <!-- ====== VIEW: DEDICATED PRODUCT DETAILS & REVIEWS PAGE ====== -->
+    <!-- ====== VIEW 2: DEDICATED PRODUCT DETAILS & REVIEWS PAGE ====== -->
     <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6">
       
       <!-- Back Navigation -->
-      <button onclick="navigate('home')" class="text-xs font-bold text-gray-600 hover:text-black mb-4 flex items-center gap-1.5">
+      <button onclick="navigate('home')" class="text-xs font-bold text-gray-600 hover:text-black mb-4 flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-lg border hover:bg-gray-200 transition">
         <i class="fa-solid fa-arrow-left"></i> Back to Collection
       </button>
 
@@ -200,37 +200,25 @@
         </div>
       </div>
 
-      <!-- Reviews Section -->
-      <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm mt-6 space-y-6">
-        <div class="flex justify-between items-center border-b pb-3">
+      <!-- Customer Reviews & Photos Section -->
+      <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm mt-6 space-y-5">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-2">
           <div>
-            <h3 class="text-base font-black text-gray-900">Customer Reviews & Ratings</h3>
-            <p class="text-xs text-gray-500">Verified buyer experiences for this apparel</p>
+            <h3 class="text-base font-black text-gray-900">Customer Reviews & Customer Photos</h3>
+            <p class="text-xs text-gray-500">Real verified photos & ratings from customers</p>
           </div>
-          <span class="text-amber-500 font-bold text-sm"><i class="fa-solid fa-star"></i> 4.8 / 5.0</span>
-        </div>
-
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-          <h4 class="text-xs font-bold text-gray-800">Write a Review:</h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <input type="text" id="rev-name" placeholder="Your Name *" class="border p-2 rounded bg-white">
-            <select id="rev-rating" class="border p-2 rounded bg-white font-semibold">
-              <option value="5">⭐⭐⭐⭐⭐ (5 - Excellent)</option>
-              <option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
-              <option value="3">⭐⭐⭐ (3 - Good)</option>
-            </select>
-          </div>
-          <textarea id="rev-comment" rows="2" placeholder="Write your review about fabric, fit and quality... *" class="w-full border p-2 text-xs rounded bg-white"></textarea>
-          <button onclick="submitProductReview()" class="bg-black text-white px-5 py-2 text-xs font-bold rounded-lg uppercase tracking-wider hover:bg-neutral-800">
-            Submit Review
+          <!-- Alag Submit Review Button -->
+          <button onclick="openReviewModal()" class="bg-black text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 flex items-center gap-1.5 shadow">
+            <i class="fa-solid fa-camera"></i> + Write Review & Add Photo
           </button>
         </div>
 
+        <!-- Customer Submitted Reviews & Photos List -->
         <div id="product-reviews-list" class="space-y-3"></div>
       </div>
     </div>
 
-    <!-- ====== VIEW: MY ORDERS ====== -->
+    <!-- ====== VIEW 3: MY ORDERS ====== -->
     <div id="page-myorders" class="page-view hidden max-w-3xl mx-auto px-4 py-6">
       <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
         <div class="flex justify-between items-center border-b pb-2">
@@ -253,7 +241,7 @@
       </div>
     </div>
 
-    <!-- ====== VIEW: POLICIES ====== -->
+    <!-- ====== VIEW 4: POLICIES ====== -->
     <div id="page-policies" class="page-view hidden max-w-4xl mx-auto px-4 py-8 space-y-4">
       <div class="border-b pb-2">
         <h1 class="text-xl font-extrabold">Store Policies</h1>
@@ -268,7 +256,7 @@
       </div>
     </div>
 
-    <!-- ====== VIEW: ADMIN DASHBOARD ====== -->
+    <!-- ====== VIEW 5: ADMIN DASHBOARD ====== -->
     <div id="page-admin" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-md my-8 text-center space-y-3">
         <i class="fa-solid fa-shield-cat text-2xl text-black"></i>
@@ -357,7 +345,7 @@
           </form>
         </div>
 
-        <!-- TAB 3: ADMIN COUPON MANAGER -->
+        <!-- TAB 3: ADMIN COUPONS -->
         <div id="admin-section-coupons" class="admin-content-section hidden bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
           <div class="border-b pb-2">
             <h3 class="text-sm font-bold text-gray-900">Create & Release Official Coupons</h3>
@@ -431,6 +419,49 @@
       </div>
     </div>
   </main>
+
+  <!-- ================= WRITE REVIEW MODAL (PHOTO UPLOAD / LINK) ================= -->
+  <div id="review-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-200">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <div>
+          <h3 class="text-sm font-black text-gray-900">Add Customer Review & Photo</h3>
+          <p class="text-[11px] text-gray-500">Share your genuine fitting experience</p>
+        </div>
+        <button onclick="closeReviewModal()" class="text-gray-400 hover:text-black text-xl font-bold">&times;</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Your Name *</label>
+          <input type="text" id="modal-rev-name" placeholder="Rahul Singh" class="w-full border p-2 rounded">
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Star Rating *</label>
+          <select id="modal-rev-rating" class="w-full border p-2 rounded bg-white font-semibold">
+            <option value="5">⭐⭐⭐⭐⭐ (5 - Perfect Fit & Quality)</option>
+            <option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
+            <option value="3">⭐⭐⭐ (3 - Average)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Product Photo URL (Optional)</label>
+          <input type="url" id="modal-rev-photo" placeholder="https://images.unsplash.com/... or PostImage link" class="w-full border p-2 rounded">
+          <p class="text-[10px] text-gray-400 mt-0.5">Paste photo web link to display with review</p>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Your Review *</label>
+          <textarea id="modal-rev-comment" rows="3" placeholder="Write about fabric feel, sizing and delivery..." class="w-full border p-2 rounded"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="submitProductReviewModal()" class="w-full bg-black text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-neutral-800">
+          Submit Review
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= LIVE TRACKING STATUS MODAL ================= -->
   <div id="tracking-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
@@ -562,6 +593,7 @@
   <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-1">
     <p class="text-xs font-extrabold uppercase brand-name-display">MY FASHION STORE</p>
     <div class="flex justify-center space-x-4 text-[11px] text-gray-500">
+      <button onclick="navigate('home')">Home</button>
       <button onclick="navigate('myorders')">My Orders</button>
       <button onclick="navigate('policies')">Policies</button>
     </div>
@@ -589,19 +621,25 @@
       { id: 104, title: "Junior Washed Denim Overalls", price: 899, category: "Kids", sizes: ["4-5Y", "6-7Y"], description: "Soft stretch washed denim designed for high comfort and active kids. Adjustable metallic buckle straps and durable double-stitch seams.", image: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=600", altImage: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=600" }
     ];
 
-    // Default Starter Coupons
     const initialCoupons = [
       { code: "FIRST100", type: "FLAT", value: 100, minOrder: 500 },
       { code: "FASHION10", type: "PERCENT", value: 10, minOrder: 999 }
     ];
 
-    let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v13')) || defaultSettings;
-    let products = JSON.parse(localStorage.getItem('mfs_products_v13')) || initialProducts;
-    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v13')) || initialCoupons;
-    let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v13')) || {
-      101: [{ name: "Aman Sharma", rating: 5, comment: "Quality is insane! Pure heavyweight cotton." }],
-      102: [{ name: "Pooja Verma", rating: 5, comment: "Looks exactly like the picture, fitting is perfect." }]
+    // Default reviews with customer pictures
+    const initialReviews = {
+      101: [
+        { name: "Aman Sharma", rating: 5, comment: "Quality is insane! Pure heavyweight cotton. Color is deep black.", photo: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300" }
+      ],
+      102: [
+        { name: "Pooja Verma", rating: 5, comment: "Looks exactly like the picture, fitting is very flowy and comfortable.", photo: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300" }
+      ]
     };
+
+    let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v14')) || defaultSettings;
+    let products = JSON.parse(localStorage.getItem('mfs_products_v14')) || initialProducts;
+    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v14')) || initialCoupons;
+    let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v14')) || initialReviews;
 
     let cart = [];
     let currentCategory = 'All';
@@ -623,6 +661,7 @@
       renderCustomerOrdersDirect();
       autoFillSavedAddress();
       renderAdminCoupons();
+      navigate('home');
     }
 
     function applySettings() {
@@ -650,7 +689,7 @@
       const newPin = document.getElementById('setting-new-pin').value.trim();
       if(newPin) storeSettings.pin = newPin;
 
-      localStorage.setItem('mfs_settings_v13', JSON.stringify(storeSettings));
+      localStorage.setItem('mfs_settings_v14', JSON.stringify(storeSettings));
       applySettings();
       alert('Settings Saved Successfully!');
     }
@@ -668,9 +707,10 @@
       }
     }
 
-    // Catalog Rendering
+    // Catalog Rendering (100% Clickable to Dedicated Product Page)
     function renderProducts(items) {
       const grid = document.getElementById('product-grid');
+      if(!grid) return;
       grid.innerHTML = '';
       if(!items || items.length === 0) {
         grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-xs">No apparel found in this category.</p>';
@@ -775,52 +815,70 @@
       toggleCart(true);
     }
 
-    // Reviews Functionality
+    // ================= CUSTOMER REVIEWS & PHOTO GALLERY =================
     function renderProductReviews(prodId) {
       const list = document.getElementById('product-reviews-list');
       list.innerHTML = '';
       const reviews = productReviews[prodId] || [];
 
       if(reviews.length === 0) {
-        list.innerHTML = '<p class="text-xs text-gray-400 py-2">No reviews yet. Be the first one to review this apparel!</p>';
+        list.innerHTML = '<p class="text-xs text-gray-400 py-3">No reviews with photos yet. Click "+ Write Review" to share your look!</p>';
         return;
       }
 
       reviews.forEach(r => {
         let stars = "⭐".repeat(r.rating || 5);
         list.innerHTML += `
-          <div class="border border-gray-100 p-3 rounded-xl bg-gray-50/60 text-xs space-y-1">
+          <div class="border border-gray-100 p-3.5 rounded-xl bg-gray-50/70 text-xs space-y-2">
             <div class="flex justify-between items-center">
               <span class="font-bold text-gray-900">${r.name}</span>
               <span class="text-[11px]">${stars}</span>
             </div>
             <p class="text-gray-600 text-[11px]">${r.comment}</p>
+            ${r.photo ? `
+              <div class="pt-1">
+                <a href="${r.photo}" target="_blank">
+                  <img src="${r.photo}" alt="Customer Look" class="w-20 h-20 object-cover rounded-lg border border-gray-300 hover:scale-105 transition cursor-pointer">
+                </a>
+              </div>
+            ` : ''}
           </div>
         `;
       });
     }
 
-    function submitProductReview() {
+    function openReviewModal() {
+      document.getElementById('modal-rev-name').value = '';
+      document.getElementById('modal-rev-photo').value = '';
+      document.getElementById('modal-rev-comment').value = '';
+      document.getElementById('review-modal').classList.remove('hidden');
+    }
+
+    function closeReviewModal() {
+      document.getElementById('review-modal').classList.add('hidden');
+    }
+
+    function submitProductReviewModal() {
       if(!currentSelectedProduct) return;
-      const name = document.getElementById('rev-name').value.trim();
-      const rating = parseInt(document.getElementById('rev-rating').value);
-      const comment = document.getElementById('rev-comment').value.trim();
+      const name = document.getElementById('modal-rev-name').value.trim();
+      const rating = parseInt(document.getElementById('modal-rev-rating').value);
+      const photo = document.getElementById('modal-rev-photo').value.trim();
+      const comment = document.getElementById('modal-rev-comment').value.trim();
 
       if(!name || !comment) {
-        return alert('Please enter your name and comment to post review.');
+        return alert('Please enter your name and review comment.');
       }
 
       if(!productReviews[currentSelectedProduct.id]) {
         productReviews[currentSelectedProduct.id] = [];
       }
 
-      productReviews[currentSelectedProduct.id].unshift({ name, rating, comment });
-      localStorage.setItem('mfs_reviews_v13', JSON.stringify(productReviews));
+      productReviews[currentSelectedProduct.id].unshift({ name, rating, comment, photo });
+      localStorage.setItem('mfs_reviews_v14', JSON.stringify(productReviews));
 
-      document.getElementById('rev-name').value = '';
-      document.getElementById('rev-comment').value = '';
+      closeReviewModal();
       renderProductReviews(currentSelectedProduct.id);
-      alert('Thank you! Your review has been published.');
+      alert('🎉 Thank you! Your review and photo have been published successfully.');
     }
 
     // ================= ADMIN COUPON MANAGEMENT =================
@@ -863,7 +921,7 @@
       }
 
       coupons.unshift({ code, type, value: val, minOrder: min });
-      localStorage.setItem('mfs_coupons_v13', JSON.stringify(coupons));
+      localStorage.setItem('mfs_coupons_v14', JSON.stringify(coupons));
       renderAdminCoupons();
       e.target.reset();
       alert(`🎉 Coupon Code [${code}] is now LIVE and active!`);
@@ -872,7 +930,7 @@
     function deleteCoupon(idx) {
       if(confirm(`Are you sure you want to remove this coupon code?`)) {
         coupons.splice(idx, 1);
-        localStorage.setItem('mfs_coupons_v13', JSON.stringify(coupons));
+        localStorage.setItem('mfs_coupons_v14', JSON.stringify(coupons));
         renderAdminCoupons();
       }
     }
@@ -899,7 +957,6 @@
         return;
       }
 
-      // Check if code matches an active admin coupon
       const validCoupon = coupons.find(c => c.code === codeInput);
 
       if(!validCoupon) {
@@ -911,7 +968,6 @@
         return;
       }
 
-      // Check minimum order requirement
       if(subtotal < validCoupon.minOrder) {
         appliedCoupon = null;
         msgBox.className = 'text-[11px] font-semibold text-amber-700';
@@ -921,7 +977,6 @@
         return;
       }
 
-      // Calculate discount
       let discountAmount = 0;
       if(validCoupon.type === 'FLAT') {
         discountAmount = validCoupon.value;
@@ -939,6 +994,22 @@
       msgBox.classList.remove('hidden');
 
       updateCartDisplay();
+    }
+
+    // ================= GLOBAL NAVIGATION (HOME FIX) =================
+    function navigate(view) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+      const target = document.getElementById('page-' + view);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      if (view === 'home') {
+        renderProducts(currentCategory === 'All' ? products : products.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase()));
+      } else if (view === 'myorders') {
+        renderCustomerOrdersDirect();
+      }
+      window.scrollTo(0, 0);
     }
 
     // Filter
@@ -1095,9 +1166,9 @@
         date: new Date().toLocaleDateString('en-GB')
       };
 
-      let customerOrders = JSON.parse(localStorage.getItem('mfs_orders_v13')) || [];
+      let customerOrders = JSON.parse(localStorage.getItem('mfs_orders_v14')) || [];
       customerOrders.unshift(orderData);
-      localStorage.setItem('mfs_orders_v13', JSON.stringify(customerOrders));
+      localStorage.setItem('mfs_orders_v14', JSON.stringify(customerOrders));
       localStorage.setItem('last_customer_phone', phone);
 
       try {
@@ -1138,7 +1209,7 @@
       const container = document.getElementById('customer-orders-container');
       if (!container) return;
 
-      const customerOrders = ordersToRender || JSON.parse(localStorage.getItem('mfs_orders_v13')) || [];
+      const customerOrders = ordersToRender || JSON.parse(localStorage.getItem('mfs_orders_v14')) || [];
       container.innerHTML = '';
 
       if (customerOrders.length === 0) {
@@ -1321,7 +1392,7 @@
       }
     }
 
-    // Admin Auth & Tabs
+    // Admin Auth
     function checkAdminAuth() {
       const pin = document.getElementById('admin-pin-input').value;
       if(pin === storeSettings.pin) {
@@ -1364,19 +1435,11 @@
         altImage: document.getElementById('prod-image-alt').value.trim()
       };
       products.unshift(newProd);
-      localStorage.setItem('mfs_products_v13', JSON.stringify(products));
+      localStorage.setItem('mfs_products_v14', JSON.stringify(products));
       renderProducts(products);
       e.target.reset();
       alert('Product Published Successfully!');
       switchAdminTab('orders');
-    }
-
-    function navigate(view) {
-      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
-      const target = document.getElementById('page-' + view);
-      if (target) target.classList.remove('hidden');
-      if (view === 'myorders') renderCustomerOrdersDirect();
-      window.scrollTo(0, 0);
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
