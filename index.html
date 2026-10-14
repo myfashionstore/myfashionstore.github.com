@@ -11,16 +11,25 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.95); }
-    .slide-item { display: none; transition: opacity 0.4s ease-in-out; }
-    .slide-item.active { display: block; }
+    .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.96); }
+    
+    /* Smooth horizontal carousel slider */
+    #slider-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 300%;
+    }
+    .slide-box {
+      width: 100%;
+      flex-shrink: 0;
+    }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen antialiased">
+<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen antialiased select-none">
 
   <!-- ================= TOP ANNOUNCEMENT ================= -->
-  <div id="announcement-bar" class="bg-black text-white text-[11px] py-1.5 px-4 text-center font-medium tracking-wide">
-    Free Express Delivery on Orders Above ₹999 | 100% Genuine Apparel
+  <div id="announcement-bar" class="bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white text-[11px] py-1.5 px-4 text-center font-bold tracking-wide shadow-sm">
+    🪔 Diwali & Festive Mega Sale Live! Free Express Delivery + Extra Festive Discounts
   </div>
 
   <!-- ================= NAVBAR ================= -->
@@ -41,20 +50,20 @@
       
       <!-- Navigation Menu -->
       <nav class="hidden md:flex items-center space-x-5 text-xs font-bold tracking-wide text-gray-700">
-        <button type="button" onclick="navigate('home')" class="hover:text-black focus:outline-none">Home</button>
-        <button type="button" onclick="filterCategory('All')" class="hover:text-black focus:outline-none">All</button>
-        <button type="button" onclick="filterCategory('Men')" class="hover:text-black focus:outline-none">Men</button>
-        <button type="button" onclick="filterCategory('Women')" class="hover:text-black focus:outline-none">Women</button>
-        <button type="button" onclick="filterCategory('Kids')" class="hover:text-black focus:outline-none">Kids</button>
-        <button type="button" onclick="navigate('myorders')" class="hover:text-blue-600 flex items-center font-bold text-blue-600 focus:outline-none">
+        <button type="button" onclick="navigate('home')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Home</button>
+        <button type="button" onclick="filterCategory('All')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">All</button>
+        <button type="button" onclick="filterCategory('Men')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Men</button>
+        <button type="button" onclick="filterCategory('Women')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Women</button>
+        <button type="button" onclick="filterCategory('Kids')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Kids</button>
+        <button type="button" onclick="navigate('myorders')" class="hover:text-blue-600 flex items-center font-bold text-blue-600 py-1 px-2 rounded hover:bg-blue-50">
           <i class="fa-solid fa-bag-shopping mr-1"></i> My Orders
         </button>
-        <button type="button" onclick="navigate('policies')" class="hover:text-black focus:outline-none">Policies</button>
+        <button type="button" onclick="navigate('policies')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Policies</button>
       </nav>
 
       <!-- Action Buttons -->
       <div class="flex items-center space-x-2">
-        <button type="button" onclick="navigate('myorders')" class="md:hidden text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-1 rounded font-bold">
+        <button type="button" onclick="navigate('myorders')" class="md:hidden text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-lg font-bold">
           My Orders
         </button>
 
@@ -76,26 +85,85 @@
     <!-- ====== VIEW 1: HOME ====== -->
     <div id="page-home" class="page-view">
       
-      <!-- Compact Hero Slider -->
-      <section class="relative bg-neutral-900 text-white overflow-hidden text-center py-6 md:py-8">
-        <div id="slider-container" class="max-w-4xl mx-auto px-4">
-          <div class="slide-item active space-y-2">
-            <span class="inline-block bg-white/20 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Summer Drops 2026</span>
-            <h1 class="text-2xl md:text-4xl font-black uppercase">Urban Streetwear Collection</h1>
-            <p class="text-gray-300 text-xs max-w-md mx-auto">Heavyweight cotton tees, relaxed utility cargos, and curated drops.</p>
-            <div class="pt-1">
-              <button type="button" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="bg-white text-black font-bold px-5 py-1.5 rounded-full text-xs uppercase tracking-wider hover:bg-gray-200">Shop Catalog</button>
+      <!-- SIDE-BY-SIDE INTERACTIVE CAROUSEL SLIDER -->
+      <section class="relative bg-neutral-900 text-white overflow-hidden py-4 md:py-6 shadow-md">
+        
+        <!-- Slider Container with Overflow Hidden -->
+        <div class="max-w-5xl mx-auto overflow-hidden relative rounded-2xl">
+          <div id="slider-track">
+            
+            <!-- SLIDE 1: DIWALI & FESTIVE SEASON SALE -->
+            <div class="slide-box text-center px-6 py-6 md:py-10 bg-gradient-to-r from-red-950 via-neutral-900 to-amber-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-gradient-to-r from-amber-400 to-yellow-300 text-neutral-950 text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest shadow">
+                ✨ Festive Dhamaka Offer 2026 ✨
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-amber-300 mt-2 tracking-tight">
+                Diwali Special Edition Drops
+              </h1>
+              <p class="text-gray-200 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                Handcrafted Ethnic Kurtas, Premium Outfits & Celebratory Streetwear with Flat ₹100 Off using coupon <strong class="text-amber-300 bg-black/40 px-1.5 py-0.5 rounded">FESTIVE100</strong>.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="bg-amber-400 text-neutral-950 font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-amber-300 shadow-lg">
+                  Shop Festive Collection
+                </button>
+              </div>
             </div>
+
+            <!-- SLIDE 2: URBAN STREETWEAR -->
+            <div class="slide-box text-center px-6 py-6 md:py-10 bg-gradient-to-r from-neutral-950 via-zinc-900 to-neutral-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-white/20 text-white text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                Summer & Casual Drops
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-white mt-2">
+                Heavyweight Streetwear
+              </h1>
+              <p class="text-gray-300 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                240 GSM Bio-washed oversized tees, relaxed fit utility cargos, and daily street essentials.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-gray-200 shadow-lg">
+                  Explore Drops
+                </button>
+              </div>
+            </div>
+
+            <!-- SLIDE 3: INSTANT UPI & TRACKING -->
+            <div class="slide-box text-center px-6 py-6 md:py-10 bg-gradient-to-r from-blue-950 via-neutral-900 to-slate-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-blue-500 text-white text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                Seamless Checkout
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-blue-300 mt-2">
+                Instant UPI & Doorstep COD
+              </h1>
+              <p class="text-gray-300 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                Book instantly without redirection. Real-time live status updates right on your screen.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="bg-blue-500 text-white font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-blue-400 shadow-lg">
+                  Order Now
+                </button>
+              </div>
+            </div>
+
           </div>
-          <div class="slide-item space-y-2">
-            <span class="inline-block bg-amber-400 text-black text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Special Discount</span>
-            <h1 class="text-2xl md:text-4xl font-black uppercase">Instant Coupons & Online UPI</h1>
-            <p class="text-gray-300 text-xs max-w-md mx-auto">Use promo coupon codes during checkout for special instant discounts.</p>
-            <div class="pt-1">
-              <button type="button" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="bg-amber-400 text-black font-bold px-5 py-1.5 rounded-full text-xs uppercase tracking-wider">Explore Now</button>
-            </div>
+
+          <!-- Manual Left & Right Clickable Buttons -->
+          <button type="button" onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xs backdrop-blur shadow-md z-10">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button type="button" onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xs backdrop-blur shadow-md z-10">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+          <!-- Dot Indicators -->
+          <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10">
+            <button type="button" onclick="goToSlide(0)" class="slider-dot w-2 h-2 rounded-full bg-white transition"></button>
+            <button type="button" onclick="goToSlide(1)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
+            <button type="button" onclick="goToSlide(2)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
           </div>
         </div>
+
       </section>
 
       <!-- Trust Badges -->
@@ -122,7 +190,7 @@
       <section id="catalog-section" class="max-w-7xl mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
           <div class="flex flex-wrap gap-2" id="category-tabs">
-            <button type="button" onclick="filterCategory('All')" id="btn-cat-all" class="cat-btn px-4 py-1 text-xs font-bold rounded-full bg-black text-white">All Items</button>
+            <button type="button" onclick="filterCategory('All')" id="btn-cat-all" class="cat-btn px-4 py-1 text-xs font-bold rounded-full bg-black text-white shadow-sm">All Items</button>
             <button type="button" onclick="filterCategory('Men')" id="btn-cat-men" class="cat-btn px-4 py-1 text-xs font-bold rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Men</button>
             <button type="button" onclick="filterCategory('Women')" id="btn-cat-women" class="cat-btn px-4 py-1 text-xs font-bold rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Women</button>
             <button type="button" onclick="filterCategory('Kids')" id="btn-cat-kids" class="cat-btn px-4 py-1 text-xs font-bold rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Kids</button>
@@ -140,7 +208,7 @@
     <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6">
       
       <!-- Back Navigation -->
-      <button type="button" onclick="navigate('home')" class="text-xs font-bold text-gray-600 hover:text-black mb-4 flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-lg border hover:bg-gray-200 transition">
+      <button type="button" onclick="navigate('home')" class="text-xs font-bold text-gray-700 hover:text-black mb-4 flex items-center gap-1.5 bg-gray-100 px-3.5 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-200 transition">
         <i class="fa-solid fa-arrow-left"></i> Back to Collection
       </button>
 
@@ -606,37 +674,38 @@
       name: "My Fashion Store",
       phone: "919876543210",
       upiId: "myfashionstore@upi",
-      announcement: "Free Express Delivery on Orders Above ₹999 | 100% Genuine Apparel",
+      announcement: "🪔 Diwali & Festive Mega Sale Live! Free Express Delivery + Extra Festive Discounts",
       returnPolicy: "• 7-Day Doorstep Returns & Exchanges.\n• Product must be unused with tags attached.\n• Refund processed after quick inspection.",
       shippingPolicy: "• Dispatched within 24-48 hours.\n• Delivery timeline: 3-5 business days across India.\n• Real-time updates available under My Orders.",
       pin: "1234"
     };
 
     const initialProducts = [
-      { id: 101, title: "Oversized Heavyweight Cotton Tee", price: 699, category: "Men", sizes: ["M", "L", "XL"], description: "Premium 240 GSM 100% combed cotton. Bio-washed for ultra-soft hand feel. Drop-shoulder relaxed streetwear fit. Pre-shrunk fabric.", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600", altImage: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600" },
-      { id: 102, title: "Summer Floral Maxi Silhouette Dress", price: 1299, category: "Women", sizes: ["S", "M", "L"], description: "Lightweight breathable georgette fabric with lining. Elegant square neckline and flowy tiered bottom hem. Ideal for summer outings.", image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600", altImage: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600" },
-      { id: 103, title: "Tailored Relaxed Fit Utility Cargos", price: 1499, category: "Men", sizes: ["30", "32", "34"], description: "Durable cotton twill weave with 6 deep functional tactical pockets. Relaxed straight leg silhouette with drawstring hems.", image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600", altImage: "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=600" },
-      { id: 104, title: "Junior Washed Denim Overalls", price: 899, category: "Kids", sizes: ["4-5Y", "6-7Y"], description: "Soft stretch washed denim designed for high comfort and active kids. Adjustable metallic buckle straps and durable double-stitch seams.", image: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=600", altImage: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=600" }
+      { id: 101, title: "Royal Embroidered Silk Festive Kurta", price: 1299, category: "Men", sizes: ["M", "L", "XL"], description: "Premium blended art-silk with golden zari embroidery collar. Breathable lining and royal ethnic finish for Diwali and celebrations.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", altImage: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600" },
+      { id: 102, title: "Anarkali Festive Flared Kurti Set", price: 1699, category: "Women", sizes: ["S", "M", "L", "XL"], description: "Chanderi cotton silk festive dress with matching dupatta. Intricate gota patti work on yoke and graceful flared hem.", image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600", altImage: "https://images.unsplash.com/photo-1583391733975-4d7a8d9bfd4a?w=600" },
+      { id: 103, title: "Oversized Heavyweight Cotton Tee", price: 699, category: "Men", sizes: ["M", "L", "XL"], description: "Premium 240 GSM 100% combed cotton. Bio-washed for ultra-soft hand feel. Drop-shoulder relaxed streetwear fit. Pre-shrunk fabric.", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600", altImage: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600" },
+      { id: 104, title: "Tailored Relaxed Fit Utility Cargos", price: 1499, category: "Men", sizes: ["30", "32", "34"], description: "Durable cotton twill weave with 6 deep functional tactical pockets. Relaxed straight leg silhouette with drawstring hems.", image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600", altImage: "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=600" },
+      { id: 105, title: "Junior Traditional Kurta Pyjama Set", price: 799, category: "Kids", sizes: ["4-5Y", "6-7Y"], description: "Soft breathable festive wear for kids with elegant buttons. Lightweight pure cotton blend that doesn't itch.", image: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=600", altImage: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=600" }
     ];
 
     const initialCoupons = [
-      { code: "FIRST100", type: "FLAT", value: 100, minOrder: 500 },
-      { code: "FASHION10", type: "PERCENT", value: 10, minOrder: 999 }
+      { code: "FESTIVE100", type: "FLAT", value: 100, minOrder: 500 },
+      { code: "DIWALI20", type: "PERCENT", value: 20, minOrder: 999 }
     ];
 
     const initialReviews = {
       101: [
-        { name: "Aman Sharma", rating: 5, comment: "Quality is insane! Pure heavyweight cotton. Color is deep black.", photo: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300" }
+        { name: "Aman Sharma", rating: 5, comment: "Diwali kurta is absolutely royal! Embroidery work is clean and sharp.", photo: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=300" }
       ],
       102: [
-        { name: "Pooja Verma", rating: 5, comment: "Looks exactly like the picture, fitting is very flowy and comfortable.", photo: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300" }
+        { name: "Pooja Verma", rating: 5, comment: "Beautiful festival color and fabric. Looks very rich in real.", photo: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=300" }
       ]
     };
 
-    let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v15')) || defaultSettings;
-    let products = JSON.parse(localStorage.getItem('mfs_products_v15')) || initialProducts;
-    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v15')) || initialCoupons;
-    let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v15')) || initialReviews;
+    let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v16')) || defaultSettings;
+    let products = JSON.parse(localStorage.getItem('mfs_products_v16')) || initialProducts;
+    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v16')) || initialCoupons;
+    let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v16')) || initialReviews;
 
     let cart = [];
     let currentCategory = 'All';
@@ -644,20 +713,58 @@
     let currentSelectedSize = null;
     let appliedCoupon = null;
 
-    // Auto Slider
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide-item');
-    setInterval(() => {
-      slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-      currentSlide = (currentSlide + 1) % slides.length;
-    }, 4000);
+    // ================= INTERACTIVE CAROUSEL CONTROLS =================
+    let currentSlideIndex = 0;
+    const totalSlides = 3;
+    let autoSlideTimer = null;
 
+    function updateCarouselPosition() {
+      const track = document.getElementById('slider-track');
+      if (track) {
+        track.style.transform = `translateX(-${currentSlideIndex * (100 / totalSlides)}%)`;
+      }
+      const dots = document.querySelectorAll('.slider-dot');
+      dots.forEach((dot, idx) => {
+        dot.className = idx === currentSlideIndex 
+          ? 'slider-dot w-3 h-2 rounded-full bg-amber-400 transition' 
+          : 'slider-dot w-2 h-2 rounded-full bg-white/40 transition';
+      });
+    }
+
+    function nextSlide() {
+      currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+      updateCarouselPosition();
+      resetAutoSlide();
+    }
+
+    function prevSlide() {
+      currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+      updateCarouselPosition();
+      resetAutoSlide();
+    }
+
+    function goToSlide(index) {
+      currentSlideIndex = index;
+      updateCarouselPosition();
+      resetAutoSlide();
+    }
+
+    function resetAutoSlide() {
+      if(autoSlideTimer) clearInterval(autoSlideTimer);
+      autoSlideTimer = setInterval(() => {
+        currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+        updateCarouselPosition();
+      }, 5000);
+    }
+
+    // ================= INITIALIZATION =================
     function initApp() {
       applySettings();
       renderProducts(products);
       renderCustomerOrdersDirect();
       autoFillSavedAddress();
       renderAdminCoupons();
+      resetAutoSlide();
       navigate('home');
     }
 
@@ -686,7 +793,7 @@
       const newPin = document.getElementById('setting-new-pin').value.trim();
       if(newPin) storeSettings.pin = newPin;
 
-      localStorage.setItem('mfs_settings_v15', JSON.stringify(storeSettings));
+      localStorage.setItem('mfs_settings_v16', JSON.stringify(storeSettings));
       applySettings();
       alert('Settings Saved Successfully!');
     }
@@ -704,7 +811,7 @@
       }
     }
 
-    // Catalog Rendering
+    // ================= CATALOG RENDERING =================
     function renderProducts(items) {
       const grid = document.getElementById('product-grid');
       if(!grid) return;
@@ -738,7 +845,7 @@
       });
     }
 
-    // Dedicated Product Detail Page
+    // ================= DEDICATED PRODUCT DETAILS PAGE =================
     function openProductDetailPage(id) {
       const prod = products.find(p => p.id === id);
       if(!prod) return;
@@ -813,7 +920,7 @@
       toggleCart(true);
     }
 
-    // Customer Reviews
+    // ================= CUSTOMER REVIEWS =================
     function renderProductReviews(prodId) {
       const list = document.getElementById('product-reviews-list');
       list.innerHTML = '';
@@ -872,14 +979,14 @@
       }
 
       productReviews[currentSelectedProduct.id].unshift({ name, rating, comment, photo });
-      localStorage.setItem('mfs_reviews_v15', JSON.stringify(productReviews));
+      localStorage.setItem('mfs_reviews_v16', JSON.stringify(productReviews));
 
       closeReviewModal();
       renderProductReviews(currentSelectedProduct.id);
       alert('🎉 Thank you! Your review and photo have been published successfully.');
     }
 
-    // Admin Coupons
+    // ================= ADMIN COUPONS =================
     function renderAdminCoupons() {
       const container = document.getElementById('admin-coupons-table');
       if(!container) return;
@@ -919,7 +1026,7 @@
       }
 
       coupons.unshift({ code, type, value: val, minOrder: min });
-      localStorage.setItem('mfs_coupons_v15', JSON.stringify(coupons));
+      localStorage.setItem('mfs_coupons_v16', JSON.stringify(coupons));
       renderAdminCoupons();
       e.target.reset();
       alert(`🎉 Coupon Code [${code}] is now LIVE and active!`);
@@ -928,12 +1035,12 @@
     function deleteCoupon(idx) {
       if(confirm(`Are you sure you want to remove this coupon code?`)) {
         coupons.splice(idx, 1);
-        localStorage.setItem('mfs_coupons_v15', JSON.stringify(coupons));
+        localStorage.setItem('mfs_coupons_v16', JSON.stringify(coupons));
         renderAdminCoupons();
       }
     }
 
-    // Apply Coupon
+    // ================= APPLY COUPON =================
     function applyCouponCode() {
       const codeInput = document.getElementById('coupon-input').value.trim().toUpperCase();
       const msgBox = document.getElementById('coupon-message');
@@ -994,8 +1101,8 @@
       updateCartDisplay();
     }
 
-    // NAVIGATION SYSTEM (HOME FIX)
-    function navigate(view) {
+    // ================= GLOBAL NAVIGATION (ABSOLUTE CLICK FIX) =================
+    window.navigate = function(view) {
       document.querySelectorAll('.page-view').forEach(p => {
         p.classList.add('hidden');
       });
@@ -1013,18 +1120,18 @@
         });
         const activeBtn = document.getElementById('btn-cat-all');
         if(activeBtn) {
-          activeBtn.className = 'cat-btn px-4 py-1 text-xs font-bold rounded-full bg-black text-white';
+          activeBtn.className = 'cat-btn px-4 py-1 text-xs font-bold rounded-full bg-black text-white shadow-sm';
         }
         renderProducts(products);
       } else if (view === 'myorders') {
         renderCustomerOrdersDirect();
       }
       window.scrollTo(0, 0);
-    }
+    };
 
     // Category Filter
-    function filterCategory(cat) {
-      navigate('home');
+    window.filterCategory = function(cat) {
+      window.navigate('home');
       currentCategory = cat;
 
       const allBtns = document.querySelectorAll('.cat-btn');
@@ -1035,12 +1142,12 @@
       const activeBtnId = 'btn-cat-' + cat.toLowerCase();
       const activeBtn = document.getElementById(activeBtnId);
       if(activeBtn) {
-        activeBtn.className = 'cat-btn px-4 py-1 text-xs font-bold rounded-full bg-black text-white';
+        activeBtn.className = 'cat-btn px-4 py-1 text-xs font-bold rounded-full bg-black text-white shadow-sm';
       }
 
       if (cat === 'All') renderProducts(products);
       else renderProducts(products.filter(p => p.category.toLowerCase() === cat.toLowerCase()));
-    }
+    };
 
     function searchProducts() {
       const q = document.getElementById('search-input').value.toLowerCase();
@@ -1177,9 +1284,9 @@
         date: new Date().toLocaleDateString('en-GB')
       };
 
-      let customerOrders = JSON.parse(localStorage.getItem('mfs_orders_v15')) || [];
+      let customerOrders = JSON.parse(localStorage.getItem('mfs_orders_v16')) || [];
       customerOrders.unshift(orderData);
-      localStorage.setItem('mfs_orders_v15', JSON.stringify(customerOrders));
+      localStorage.setItem('mfs_orders_v16', JSON.stringify(customerOrders));
       localStorage.setItem('last_customer_phone', phone);
 
       try {
@@ -1220,7 +1327,7 @@
       const container = document.getElementById('customer-orders-container');
       if (!container) return;
 
-      const customerOrders = ordersToRender || JSON.parse(localStorage.getItem('mfs_orders_v15')) || [];
+      const customerOrders = ordersToRender || JSON.parse(localStorage.getItem('mfs_orders_v16')) || [];
       container.innerHTML = '';
 
       if (customerOrders.length === 0) {
@@ -1446,7 +1553,7 @@
         altImage: document.getElementById('prod-image-alt').value.trim()
       };
       products.unshift(newProd);
-      localStorage.setItem('mfs_products_v15', JSON.stringify(products));
+      localStorage.setItem('mfs_products_v16', JSON.stringify(products));
       renderProducts(products);
       e.target.reset();
       alert('Product Published Successfully!');
