@@ -308,7 +308,7 @@
 
       <!-- Customer Reviews Section -->
       <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm mt-6 space-y-5">
-        <div class="flex flex-col sm:row justify-between items-start sm:items-center border-b pb-4 gap-2">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-2">
           <div>
             <h3 class="text-base font-black text-gray-900">Customer Reviews & Photos</h3>
             <p class="text-xs text-gray-500">Real verified photos & ratings from buyers</p>
@@ -340,7 +340,7 @@
         <div class="flex justify-between items-center border-b pb-2">
           <div>
             <h2 class="text-lg font-black">My Orders & Live Timeline</h2>
-            <p class="text-[11px] text-gray-500">Click any order to track live delivery status, cancel, or return/exchange</p>
+            <p class="text-[11px] text-gray-500">Click any order to track live delivery status</p>
           </div>
           <button type="button" onclick="navigate('home')" class="text-xs bg-black text-white px-3 py-1 rounded-lg font-bold">Shop More</button>
         </div>
@@ -386,14 +386,14 @@
         <div class="flex justify-between items-center border-b pb-3">
           <div>
             <h2 class="text-xl font-black">Management Dashboard</h2>
-            <p class="text-[11px] text-gray-500">Live Orders, Returns, Catalog & Coupon Manager</p>
+            <p class="text-[11px] text-gray-500">Live Orders, Catalog & Coupon Manager</p>
           </div>
           <button type="button" onclick="adminLogout()" class="text-xs bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded font-bold">Logout</button>
         </div>
 
         <div class="flex border-b border-gray-200 space-x-6 overflow-x-auto">
           <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 text-xs font-bold border-b-2 border-black text-black whitespace-nowrap">
-            <i class="fa-solid fa-receipt mr-1"></i> 1. Live Orders & Returns
+            <i class="fa-solid fa-receipt mr-1"></i> 1. Live Orders
           </button>
           <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-black whitespace-nowrap">
             <i class="fa-solid fa-plus mr-1"></i> 2. Add / Delete Apparel
@@ -406,12 +406,12 @@
           </button>
         </div>
 
-        <!-- TAB 1: ORDERS & RETURNS -->
+        <!-- TAB 1: ORDERS -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
           <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
             <div>
               <h3 class="font-bold text-xs">Real-time Cloud Orders (Firebase)</h3>
-              <p class="text-[10px] text-gray-500">Manage Status, Returns, Exchanges & Decisions</p>
+              <p class="text-[10px] text-gray-500">Shipping Details, Coupon Used & Payment Mode</p>
             </div>
             <button type="button" onclick="fetchCloudOrders()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1 rounded border font-semibold">
               <i class="fa-solid fa-rotate mr-1"></i> Refresh
@@ -593,7 +593,7 @@
     </div>
   </div>
 
-  <!-- ================= LIVE TRACKING STATUS MODAL (WITH CANCEL & RETURN/EXCHANGE) ================= -->
+  <!-- ================= LIVE TRACKING STATUS MODAL ================= -->
   <div id="tracking-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl space-y-4 border border-gray-200">
       <div class="flex justify-between items-center border-b pb-2.5">
@@ -610,58 +610,6 @@
         <p><strong>Items:</strong> <span id="track-items"></span></p>
         <p><strong>Shipping Address:</strong> <span id="track-address"></span></p>
       </div>
-
-      <!-- Action Buttons Container (Cancel or Return/Exchange) -->
-      <div id="order-actions-container" class="space-y-2 pt-1 border-t">
-        <button type="button" id="cust-cancel-btn" onclick="handleCustomerCancelOrder()" class="w-full bg-red-50 text-red-700 border border-red-200 py-2.5 rounded-xl text-xs font-bold uppercase hover:bg-red-100 transition hidden">
-          <i class="fa-solid fa-ban mr-1"></i> Cancel This Order
-        </button>
-
-        <button type="button" id="cust-return-btn" onclick="openReturnModal()" class="w-full bg-amber-50 text-amber-800 border border-amber-200 py-2.5 rounded-xl text-xs font-bold uppercase hover:bg-amber-100 transition hidden">
-          <i class="fa-solid fa-rotate-left mr-1"></i> Request Return / Exchange
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= RETURN / EXCHANGE REQUEST MODAL ================= -->
-  <div id="return-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-gray-200">
-      <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="text-sm font-black text-gray-900">Return / Exchange Request</h3>
-        <button type="button" onclick="closeReturnModal()" class="text-gray-400 hover:text-black text-xl font-bold">&times;</button>
-      </div>
-
-      <p class="text-[11px] text-gray-500">Order ID: <span id="return-modal-order-id" class="font-bold text-black font-mono"></span></p>
-
-      <form onsubmit="submitReturnRequest(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-gray-700 mb-1">Request Type *</label>
-          <select id="return-type" class="w-full border p-2 rounded-lg bg-white font-semibold" required>
-            <option value="Exchange">Exchange (Size / Color)</option>
-            <option value="Return">Return & Refund</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block font-bold text-gray-700 mb-1">Reason for Request *</label>
-          <select id="return-reason" class="w-full border p-2 rounded-lg bg-white font-semibold" required>
-            <option value="Size issue (Too small/large)">Size issue (Too small/large)</option>
-            <option value="Defective or Damaged">Defective or Damaged</option>
-            <option value="Quality not as expected">Quality not as expected</option>
-            <option value="Wrong product delivered">Wrong product delivered</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block font-bold text-gray-700 mb-1">Additional Note / Required Size</label>
-          <textarea id="return-notes" rows="2" placeholder="e.g. Please exchange with size L..." class="w-full border p-2 rounded-lg"></textarea>
-        </div>
-
-        <button type="submit" id="submit-return-btn" class="w-full bg-black text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition">
-          Submit Request
-        </button>
-      </form>
     </div>
   </div>
 
@@ -836,7 +784,6 @@
     let currentSelectedProduct = null;
     let currentSelectedSize = null;
     let appliedCoupon = null;
-    let currentActiveTrackingOrder = null;
 
     // ================= SECRET TRIPLE CLICK TO OPEN ADMIN =================
     let brandClickCount = 0;
@@ -1534,20 +1481,11 @@
       customerOrders.forEach(o => {
         const fullAddr = typeof o.address === 'object' ? o.address.full : o.address;
         const serializedOrder = encodeURIComponent(JSON.stringify(o));
-        const statusLabel = o.status || 'Order Confirmed';
-        const badgeColor = statusLabel.includes('Cancelled') 
-          ? 'bg-red-100 text-red-800' 
-          : statusLabel.includes('Requested')
-          ? 'bg-amber-100 text-amber-800'
-          : statusLabel === 'Delivered'
-          ? 'bg-green-100 text-green-800'
-          : 'bg-blue-100 text-blue-800';
-
         container.innerHTML += `
           <div onclick="openTrackingModal('${serializedOrder}')" class="border border-gray-200 p-3 rounded-xl text-xs space-y-1.5 bg-gray-50/80 hover:bg-gray-100 hover:border-black cursor-pointer transition shadow-sm">
             <div class="flex justify-between items-center font-bold">
               <span class="text-blue-700 font-mono">${o.orderId}</span>
-              <span class="${badgeColor} px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase">${statusLabel}</span>
+              <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase">${o.status}</span>
             </div>
             <p class="text-gray-800"><strong>Items:</strong> ${o.items}</p>
             <p class="text-gray-600 text-[11px]"><strong>Delivery Address:</strong> ${fullAddr}</p>
@@ -1562,171 +1500,48 @@
 
     function openTrackingModal(encodedOrder) {
       const order = JSON.parse(decodeURIComponent(encodedOrder));
-      currentActiveTrackingOrder = order;
-
       document.getElementById('track-order-id').innerText = order.orderId;
       document.getElementById('track-items').innerText = order.items;
       document.getElementById('track-address').innerText = typeof order.address === 'object' ? order.address.full : order.address;
 
-      const currentStatus = order.status || 'Order Confirmed';
-      const statusLower = currentStatus.toLowerCase();
+      const stages = [
+        { label: 'Order Confirmed', desc: 'Recorded in database' },
+        { label: 'Packed & Ready', desc: 'Handed over to courier partner' },
+        { label: 'Out for Delivery', desc: 'Courier agent out for doorstep delivery' },
+        { label: 'Delivered', desc: 'Handed over successfully' }
+      ];
 
-      // Show/Hide Action Buttons dynamically
-      const cancelBtn = document.getElementById('cust-cancel-btn');
-      const returnBtn = document.getElementById('cust-return-btn');
-      if (cancelBtn) cancelBtn.classList.toggle('hidden', statusLower !== 'order confirmed');
-      if (returnBtn) returnBtn.classList.toggle('hidden', statusLower !== 'delivered');
+      const currentStatus = order.status || 'Order Confirmed';
+      let activeIndex = stages.findIndex(s => s.label.toLowerCase() === currentStatus.toLowerCase());
+      if(activeIndex === -1) activeIndex = 0;
 
       const timelineContainer = document.getElementById('tracking-timeline');
-
-      if (statusLower.includes('cancelled')) {
-        timelineContainer.innerHTML = `
-          <div class="p-3 bg-red-50 border border-red-200 rounded-xl text-center text-red-700 text-xs font-bold">
-            ❌ This order was cancelled (${currentStatus}).
-          </div>
-        `;
-      } else if (statusLower.includes('requested') || statusLower.includes('approved') || statusLower.includes('rejected')) {
-        timelineContainer.innerHTML = `
-          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-amber-800 text-xs font-bold">
-            ⚠️ Status: ${currentStatus}
-          </div>
-        `;
-      } else {
-        const stages = [
-          { label: 'Order Confirmed', desc: 'Recorded in database' },
-          { label: 'Packed & Ready', desc: 'Handed over to courier partner' },
-          { label: 'Out for Delivery', desc: 'Courier agent out for doorstep delivery' },
-          { label: 'Delivered', desc: 'Handed over successfully' }
-        ];
-
-        let activeIndex = stages.findIndex(s => s.label.toLowerCase() === statusLower);
-        if(activeIndex === -1) activeIndex = 0;
-
-        timelineContainer.innerHTML = stages.map((stage, idx) => {
-          const isDone = idx <= activeIndex;
-          const isCurrent = idx === activeIndex;
-          return `
-            <div class="flex items-start space-x-3">
-              <div class="flex flex-col items-center">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${isDone ? 'bg-black text-white' : 'bg-gray-200 text-gray-500'}">
-                  ${isDone ? '<i class="fa-solid fa-check"></i>' : idx + 1}
-                </div>
-                ${idx < stages.length - 1 ? `<div class="w-0.5 h-6 ${idx < activeIndex ? 'bg-black' : 'bg-gray-200'}"></div>` : ''}
+      timelineContainer.innerHTML = stages.map((stage, idx) => {
+        const isDone = idx <= activeIndex;
+        const isCurrent = idx === activeIndex;
+        return `
+          <div class="flex items-start space-x-3">
+            <div class="flex flex-col items-center">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${isDone ? 'bg-black text-white' : 'bg-gray-200 text-gray-500'}">
+                ${isDone ? '<i class="fa-solid fa-check"></i>' : idx + 1}
               </div>
-              <div>
-                <p class="text-xs font-bold ${isCurrent ? 'text-black' : (isDone ? 'text-gray-800' : 'text-gray-400')}">
-                  ${stage.label} ${isCurrent ? '<span class="text-[9px] bg-green-100 text-green-800 font-extrabold px-1.5 py-0.2 rounded-full uppercase ml-1">Current</span>' : ''}
-                </p>
-                <p class="text-[10px] text-gray-500">${stage.desc}</p>
-              </div>
+              ${idx < stages.length - 1 ? `<div class="w-0.5 h-6 ${idx < activeIndex ? 'bg-black' : 'bg-gray-200'}"></div>` : ''}
             </div>
-          `;
-        }).join('');
-      }
+            <div>
+              <p class="text-xs font-bold ${isCurrent ? 'text-black' : (isDone ? 'text-gray-800' : 'text-gray-400')}">
+                ${stage.label} ${isCurrent ? '<span class="text-[9px] bg-green-100 text-green-800 font-extrabold px-1.5 py-0.2 rounded-full uppercase ml-1">Current</span>' : ''}
+              </p>
+              <p class="text-[10px] text-gray-500">${stage.desc}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
 
       document.getElementById('tracking-modal').classList.remove('hidden');
     }
 
     function closeTrackingModal() {
       document.getElementById('tracking-modal').classList.add('hidden');
-    }
-
-    // Customer Order Cancellation
-    async function handleCustomerCancelOrder() {
-      if (!currentActiveTrackingOrder) return;
-      if (!confirm(`Are you sure you want to cancel order ${currentActiveTrackingOrder.orderId}?`)) return;
-
-      let localOrders = JSON.parse(localStorage.getItem('mfs_orders_v21')) || [];
-      localOrders = localOrders.map(o => {
-        if (o.orderId === currentActiveTrackingOrder.orderId) o.status = "Cancelled by Customer";
-        return o;
-      });
-      localStorage.setItem('mfs_orders_v21', JSON.stringify(localOrders));
-
-      try {
-        const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
-        const data = await res.json();
-        if (data) {
-          for (let key in data) {
-            if (data[key].orderId === currentActiveTrackingOrder.orderId) {
-              await fetch(`${FIREBASE_DB_URL}/orders/${key}.json`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: "Cancelled by Customer" })
-              });
-              break;
-            }
-          }
-        }
-      } catch (err) {
-        console.error("Firebase cancel error:", err);
-      }
-
-      alert("Order cancelled successfully!");
-      closeTrackingModal();
-      renderCustomerOrdersDirect();
-    }
-
-    // Return & Exchange Functions
-    function openReturnModal() {
-      if (!currentActiveTrackingOrder) return;
-      document.getElementById('return-modal-order-id').innerText = currentActiveTrackingOrder.orderId;
-      document.getElementById('return-modal').classList.remove('hidden');
-    }
-
-    function closeReturnModal() {
-      document.getElementById('return-modal').classList.add('hidden');
-    }
-
-    async function submitReturnRequest(e) {
-      e.preventDefault();
-      if (!currentActiveTrackingOrder) return;
-
-      const reqType = document.getElementById('return-type').value;
-      const reason = document.getElementById('return-reason').value;
-      const notes = document.getElementById('return-notes').value.trim();
-      const newStatus = `${reqType} Requested`;
-
-      const returnData = {
-        type: reqType,
-        reason: reason,
-        notes: notes || 'None',
-        requestDate: new Date().toLocaleDateString('en-GB')
-      };
-
-      let localOrders = JSON.parse(localStorage.getItem('mfs_orders_v21')) || [];
-      localOrders = localOrders.map(o => {
-        if (o.orderId === currentActiveTrackingOrder.orderId) {
-          o.status = newStatus;
-          o.returnDetails = returnData;
-        }
-        return o;
-      });
-      localStorage.setItem('mfs_orders_v21', JSON.stringify(localOrders));
-
-      try {
-        const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
-        const data = await res.json();
-        if (data) {
-          for (let key in data) {
-            if (data[key].orderId === currentActiveTrackingOrder.orderId) {
-              await fetch(`${FIREBASE_DB_URL}/orders/${key}.json`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: newStatus, returnDetails: returnData })
-              });
-              break;
-            }
-          }
-        }
-      } catch (err) {
-        console.error("Firebase return error:", err);
-      }
-
-      alert(`Your ${reqType} request has been submitted to Admin!`);
-      closeReturnModal();
-      closeTrackingModal();
-      renderCustomerOrdersDirect();
     }
 
     async function fetchCustomerCloudOrders() {
@@ -1782,9 +1597,6 @@
 
         ordersList.forEach(o => {
           const addr = typeof o.address === 'object' ? o.address : { full: o.address, city: 'N/A', pincode: 'N/A', state: 'N/A' };
-          const statusText = o.status || 'Order Confirmed';
-          const isReturnReq = statusText.includes('Requested');
-
           container.innerHTML += `
             <div class="border border-gray-200 p-3 rounded-xl text-xs space-y-1.5 bg-white shadow-sm">
               <div class="flex justify-between font-bold">
@@ -1803,30 +1615,14 @@
                 </div>
               </div>
 
-              ${isReturnReq ? `
-                <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 mt-2">
-                  <p class="font-bold">⚠️ Customer Action: ${statusText}</p>
-                  <p class="text-[11px]"><strong>Reason:</strong> ${o.returnDetails?.reason || 'Not specified'}</p>
-                  <p class="text-[11px] text-gray-600 italic">"${o.returnDetails?.notes || 'No extra notes'}"</p>
-                  <div class="flex gap-2 mt-2">
-                    <button type="button" onclick="handleAdminReturnDecision('${o.firebaseId}', '${o.orderId}', 'Approved')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-[10px] font-bold">✓ Approve</button>
-                    <button type="button" onclick="handleAdminReturnDecision('${o.firebaseId}', '${o.orderId}', 'Rejected')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-[10px] font-bold">✕ Reject</button>
-                  </div>
-                </div>
-              ` : ''}
-
               <div class="flex flex-wrap items-center justify-between pt-1.5 border-t text-[11px] gap-2">
                 <div class="flex items-center">
                   <span class="font-bold mr-1">Status:</span>
-                  <select onchange="updateLiveStatus('${o.firebaseId}', '${o.orderId}', this.value)" class="border p-0.5 rounded bg-gray-50 font-semibold text-xs">
-                    <option value="Order Confirmed" ${statusText === 'Order Confirmed' ? 'selected' : ''}>Order Confirmed</option>
-                    <option value="Packed & Ready" ${statusText === 'Packed & Ready' ? 'selected' : ''}>Packed & Ready</option>
-                    <option value="Out for Delivery" ${statusText === 'Out for Delivery' ? 'selected' : ''}>Out for Delivery</option>
-                    <option value="Delivered" ${statusText === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                    <option value="Cancelled by Customer" ${statusText === 'Cancelled by Customer' ? 'selected' : ''}>Cancelled by Customer</option>
-                    <option value="Cancelled by Admin" ${statusText === 'Cancelled by Admin' ? 'selected' : ''}>Cancelled by Admin</option>
-                    <option value="Return/Exchange Approved" ${statusText === 'Return/Exchange Approved' ? 'selected' : ''}>Return/Exchange Approved</option>
-                    <option value="Return/Exchange Rejected" ${statusText === 'Return/Exchange Rejected' ? 'selected' : ''}>Return/Exchange Rejected</option>
+                  <select onchange="updateLiveStatus('${o.firebaseId}', this.value)" class="border p-0.5 rounded bg-gray-50 font-semibold text-xs">
+                    <option value="Order Confirmed" ${o.status === 'Order Confirmed' ? 'selected' : ''}>Order Confirmed</option>
+                    <option value="Packed & Ready" ${o.status === 'Packed & Ready' ? 'selected' : ''}>Packed & Ready</option>
+                    <option value="Out for Delivery" ${o.status === 'Out for Delivery' ? 'selected' : ''}>Out for Delivery</option>
+                    <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                   </select>
                 </div>
                 <span class="text-gray-400 text-[10px]">${o.date}</span>
@@ -1839,50 +1635,16 @@
       }
     }
 
-    async function updateLiveStatus(firebaseId, orderId, newStatus) {
+    async function updateLiveStatus(firebaseId, newStatus) {
       try {
         await fetch(`${FIREBASE_DB_URL}/orders/${firebaseId}.json`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: newStatus })
         });
-        
-        let localOrders = JSON.parse(localStorage.getItem('mfs_orders_v21')) || [];
-        localOrders = localOrders.map(o => {
-          if (o.orderId === orderId) o.status = newStatus;
-          return o;
-        });
-        localStorage.setItem('mfs_orders_v21', JSON.stringify(localOrders));
-        
-        alert('Status Updated!');
-        fetchCloudOrders();
+        alert('Status Updated on Cloud!');
       } catch(err) {
         alert('Status update failed.');
-      }
-    }
-
-    async function handleAdminReturnDecision(firebaseId, orderId, decision) {
-      const finalStatus = decision === 'Approved' ? 'Return/Exchange Approved' : 'Return/Exchange Rejected';
-      if (!confirm(`Mark Order #${orderId} as ${finalStatus}?`)) return;
-
-      try {
-        await fetch(`${FIREBASE_DB_URL}/orders/${firebaseId}.json`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: finalStatus })
-        });
-
-        let localOrders = JSON.parse(localStorage.getItem('mfs_orders_v21')) || [];
-        localOrders = localOrders.map(o => {
-          if (o.orderId === orderId) o.status = finalStatus;
-          return o;
-        });
-        localStorage.setItem('mfs_orders_v21', JSON.stringify(localOrders));
-
-        alert(`Order updated to: ${finalStatus}`);
-        fetchCloudOrders();
-      } catch(err) {
-        alert('Failed to update decision.');
       }
     }
 
@@ -1917,3 +1679,72 @@
       });
       document.getElementById('admin-section-' + tab).classList.remove('hidden');
       document.getElementById('tab-btn-' + tab).classList.add('border-black', 'text-black');
+    }
+
+    function handleProductAdd(e) {
+      e.preventDefault();
+      const newProd = {
+        id: Date.now(),
+        title: document.getElementById('prod-title').value.trim(),
+        category: document.getElementById('prod-category').value,
+        price: Number(document.getElementById('prod-price').value),
+        sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()),
+        description: document.getElementById('prod-desc').value.trim(),
+        image: document.getElementById('prod-image').value.trim(),
+        altImage: document.getElementById('prod-image-alt').value.trim()
+      };
+      products.unshift(newProd);
+      localStorage.setItem('mfs_products_v21', JSON.stringify(products));
+      renderHomeProducts(products);
+      renderAdminProductManagement();
+      e.target.reset();
+      alert('Product Published Successfully!');
+      switchAdminTab('products');
+    }
+
+    // ================= ADMIN PRODUCT MANAGEMENT & DELETION =================
+    function renderAdminProductManagement() {
+      const container = document.getElementById('admin-product-management-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!products || products.length === 0) {
+        container.innerHTML = '<p class="text-xs text-gray-400 py-2">No products in inventory.</p>';
+        return;
+      }
+
+      products.forEach(p => {
+        container.innerHTML += `
+          <div class="flex items-center justify-between border border-gray-200 p-2.5 rounded-xl bg-gray-50 text-xs">
+            <div class="flex items-center space-x-3">
+              <img src="${p.image}" alt="${p.title}" class="w-10 h-10 rounded-lg object-cover bg-white border">
+              <div>
+                <p class="font-bold text-gray-900 truncate max-w-[180px] sm:max-w-xs">${p.title}</p>
+                <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price}</span>
+              </div>
+            </div>
+            <button type="button" onclick="deleteProductById(${p.id})" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-bold transition text-[11px] flex items-center space-x-1">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Delete 🗑️</span>
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    function deleteProductById(id) {
+      if (!confirm("Are you sure you want to delete this product from the store?")) return;
+
+      products = products.filter(p => p.id !== id);
+      localStorage.setItem('mfs_products_v21', JSON.stringify(products));
+
+      renderHomeProducts(products);
+      renderAdminProductManagement();
+
+      alert("Product deleted successfully!");
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
