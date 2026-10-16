@@ -430,17 +430,17 @@
           <div id="admin-orders-list" class="space-y-3"></div>
         </div>
 
-        <!-- TAB 2: PRODUCTS (MULTIPLE PHOTO UPLOAD, EDIT & DELETE) -->
+        <!-- TAB 2: PRODUCTS (FLEXIBLE PHOTO UPLOAD: SINGLE OR MULTIPLE, EDIT & DELETE) -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-            <h3 class="text-sm font-bold border-b pb-2">Publish New Item (Upload Multiple Photos from Device)</h3>
+            <h3 class="text-sm font-bold border-b pb-2">Publish New Item (Upload Single or Multiple Photos)</h3>
             <form id="add-product-form" onsubmit="handleProductAdd(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-medium">
               <div>
-                <label class="block text-gray-700 mb-1">Product Title</label>
+                <label class="block text-gray-700 mb-1 font-bold">Product Title</label>
                 <input type="text" id="prod-title" required class="w-full border border-gray-300 p-1.5 rounded" placeholder="Zubeen Garg Tribute Rock Tee">
               </div>
               <div>
-                <label class="block text-gray-700 mb-1">Category</label>
+                <label class="block text-gray-700 mb-1 font-bold">Category</label>
                 <select id="prod-category" class="w-full border border-gray-300 p-1.5 rounded bg-white">
                   <option value="Men">Men</option>
                   <option value="Women">Women</option>
@@ -448,11 +448,11 @@
                 </select>
               </div>
               <div>
-                <label class="block text-gray-700 mb-1">Price (₹)</label>
+                <label class="block text-gray-700 mb-1 font-bold">Price (₹)</label>
                 <input type="number" id="prod-price" required class="w-full border border-gray-300 p-1.5 rounded" placeholder="799">
               </div>
               <div>
-                <label class="block text-gray-700 mb-1">Sizes (Comma-separated)</label>
+                <label class="block text-gray-700 mb-1 font-bold">Sizes (Comma-separated)</label>
                 <input type="text" id="prod-sizes" class="w-full border border-gray-300 p-1.5 rounded" value="S, M, L, XL">
               </div>
 
@@ -466,20 +466,27 @@
               </div>
 
               <div class="md:col-span-2">
-                <label class="block text-gray-700 mb-1">Product Description</label>
+                <label class="block text-gray-700 mb-1 font-bold">Product Description</label>
                 <textarea id="prod-desc" rows="2" class="w-full border border-gray-300 p-1.5 rounded" placeholder="100% Cotton, Breathable, Bio-washed..."></textarea>
               </div>
               
-              <!-- MULTIPLE PHOTOS UPLOAD (Up to 4-5 Photos) -->
-              <div class="md:col-span-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
-                <label class="block text-gray-800 mb-1 font-bold">
-                  <i class="fa-solid fa-images mr-1 text-black"></i> Product Photos (Select 1 to 4 Photos together) *
-                </label>
-                <input type="file" id="prod-files" accept="image/*" multiple required onchange="handlePhotoSelectionPreview(event)" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
-                <p class="text-[10px] text-gray-500 mt-1">💡 Mobile se ek sath 3-4 photos select karein (Front, Back, Close-up, Angle).</p>
+              <!-- STEP-BY-STEP OR BATCH PHOTO UPLOAD -->
+              <div class="md:col-span-2 bg-gray-50 p-3.5 rounded-xl border border-gray-200 space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="block text-gray-800 font-bold text-xs">
+                    <i class="fa-solid fa-images mr-1 text-black"></i> Product Photos (Ek-ek karke ya ek sath chunein) *
+                  </label>
+                  <span id="add-photo-counter" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">0/5 Photos</span>
+                </div>
                 
-                <!-- Selected Photos Preview Strip -->
-                <div id="photo-preview-strip" class="flex flex-wrap gap-2 mt-2 hidden"></div>
+                <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
+                
+                <p class="text-[10px] text-gray-500">
+                  📌 <b>Tip:</b> Pehli photo Cover Image (#1) banegi. Aap ek-ek karke bar-bar file select kar sakte hain, wo queue me aage judti jayegi. Agar koi photo galat ho jaye, toh uspe bane ❌ se hata sakte hain.
+                </p>
+                
+                <!-- Selected Photos Preview Queue with Delete Buttons -->
+                <div id="add-photo-queue" class="flex flex-wrap gap-2.5 pt-2"></div>
               </div>
 
               <div class="md:col-span-2 pt-1">
@@ -622,20 +629,22 @@
           <textarea id="edit-prod-desc" rows="2" class="w-full border border-gray-300 p-2 rounded"></textarea>
         </div>
 
-        <!-- Current Photos Preview -->
-        <div class="md:col-span-2 space-y-1">
-          <label class="block text-gray-700 font-bold">Current Photos:</label>
-          <div id="edit-current-photos-preview" class="flex flex-wrap gap-2"></div>
-        </div>
+        <!-- Manage Photos in Edit Modal (Single/Batch + Delete) -->
+        <div class="md:col-span-2 bg-gray-50 p-3 rounded-xl border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="block text-gray-800 font-bold">
+              <i class="fa-solid fa-camera mr-1"></i> Manage Photos (Add / Remove)
+            </label>
+            <span id="edit-photo-counter" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">0/5 Photos</span>
+          </div>
 
-        <!-- Replace Photos File Input -->
-        <div class="md:col-span-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
-          <label class="block text-gray-800 font-bold mb-1">
-            <i class="fa-solid fa-camera mr-1"></i> Replace Photos (Optional - Select 1 to 4 new photos)
-          </label>
-          <input type="file" id="edit-prod-files" accept="image/*" multiple onchange="handleEditPhotoPreview(event)" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
-          <p class="text-[10px] text-gray-500 mt-1">Agar purani photo hi rakhni hai toh ise khali chhod dein.</p>
-          <div id="edit-new-photos-preview" class="flex flex-wrap gap-2 mt-2 hidden"></div>
+          <input type="file" id="edit-prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
+          
+          <p class="text-[10px] text-gray-500">
+            Kisi bhi photo ke upar bane ❌ button par click karke use hata sakte hain ya neeche se nayi photos single ya batch me jod sakte hain.
+          </p>
+
+          <div id="edit-photo-queue" class="flex flex-wrap gap-2.5 pt-2"></div>
         </div>
 
         <div class="md:col-span-2 pt-2 flex gap-2">
@@ -1013,6 +1022,10 @@
     let appliedCoupon = null;
     let currentActiveTrackingOrder = null;
 
+    // In-memory Photo Queues for Step-by-Step and Batch Upload
+    let addPhotosQueue = [];
+    let editPhotosQueue = [];
+
     // Navigation Switcher
     window.navigate = function(view) {
       document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
@@ -1107,7 +1120,7 @@
       renderAllProducts(filtered);
     }
 
-    // Product Details View (Displays Multiple Photos)
+    // Product Details View
     function openProductDetailPage(id) {
       const prod = products.find(p => p.id === id);
       if (!prod) return;
@@ -1278,52 +1291,88 @@
       });
     }
 
-    // Live Photo Preview while uploading in Admin
-    function handlePhotoSelectionPreview(event) {
+    // ================= FLEXIBLE PHOTO QUEUE MANAGER (SINGLE OR BATCH) =================
+    async function handleQueuePhotoSelection(event, context) {
       const files = Array.from(event.target.files);
-      const previewContainer = document.getElementById('photo-preview-strip');
-      previewContainer.innerHTML = '';
+      if (files.length === 0) return;
 
-      if (files.length === 0) {
-        previewContainer.classList.add('hidden');
+      const currentQueue = context === 'add' ? addPhotosQueue : editPhotosQueue;
+
+      if (currentQueue.length + files.length > 5) {
+        alert('⚠️ Maximum 5 photos allow hain! Sirf bachi hui slots add ki jayengi.');
+      }
+
+      const availableSlots = 5 - currentQueue.length;
+      const filesToAdd = files.slice(0, availableSlots);
+
+      for (let file of filesToAdd) {
+        try {
+          const base64 = await compressImageFile(file);
+          currentQueue.push(base64);
+        } catch (err) {
+          console.error("Compression error:", err);
+        }
+      }
+
+      event.target.value = ''; // Reset input so user can pick single files repeatedly
+      renderQueuePhotos(context);
+    }
+
+    function removePhotoFromQueue(index, context) {
+      if (context === 'add') {
+        addPhotosQueue.splice(index, 1);
+        renderQueuePhotos('add');
+      } else {
+        editPhotosQueue.splice(index, 1);
+        renderQueuePhotos('edit');
+      }
+    }
+
+    function renderQueuePhotos(context) {
+      const isAdd = context === 'add';
+      const queue = isAdd ? addPhotosQueue : editPhotosQueue;
+      const container = document.getElementById(isAdd ? 'add-photo-queue' : 'edit-photo-queue');
+      const counterEl = document.getElementById(isAdd ? 'add-photo-counter' : 'edit-photo-counter');
+
+      if (!container) return;
+      container.innerHTML = '';
+      if (counterEl) counterEl.innerText = `${queue.length}/5 Photos`;
+
+      if (queue.length === 0) {
+        container.innerHTML = `<span class="text-[11px] text-gray-400 italic">Abhi koi photo add nahi hui hai.</span>`;
         return;
       }
 
-      if (files.length > 5) {
-        alert('⚠️ Maximum 5 photos allow hain. Pehli 5 photos use hongi.');
-      }
-
-      previewContainer.classList.remove('hidden');
-      files.slice(0, 5).forEach((file, index) => {
-        const previewUrl = URL.createObjectURL(file);
-        previewContainer.innerHTML += `
-          <div class="relative w-14 h-14 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
-            <img src="${previewUrl}" class="w-full h-full object-cover">
-            <span class="absolute bottom-0 right-0 bg-black text-white text-[8px] px-1 font-bold">#${index + 1}</span>
+      queue.forEach((photoUrl, idx) => {
+        const isCover = idx === 0;
+        container.innerHTML += `
+          <div class="relative w-16 h-16 rounded-xl overflow-hidden border-2 ${isCover ? 'border-black' : 'border-gray-300'} shadow-sm group">
+            <img src="${photoUrl}" class="w-full h-full object-cover">
+            <span class="absolute bottom-0 left-0 right-0 ${isCover ? 'bg-black text-amber-300' : 'bg-black/70 text-white'} text-[8px] font-black text-center py-0.5">
+              ${isCover ? '⭐ Cover' : '#' + (idx + 1)}
+            </span>
+            <button type="button" onclick="removePhotoFromQueue(${idx}, '${context}')" class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] shadow transition">
+              ✕
+            </button>
           </div>
         `;
       });
     }
 
-    // Handle Product Add with MULTIPLE PHOTOS
+    // Handle Product Add with Final Photos Queue
     async function handleProductAdd(e) {
       e.preventDefault();
-      const fileInput = document.getElementById('prod-files');
-      const files = Array.from(fileInput.files);
       const supplierUrl = document.getElementById('prod-supplier-url').value.trim();
 
-      if (!files || files.length === 0) {
-        return alert('Please select at least 1 product photo from your device!');
+      if (addPhotosQueue.length === 0) {
+        return alert('⚠️ Please select at least 1 product photo from your device!');
       }
 
       const submitBtn = document.getElementById('prod-submit-btn');
       submitBtn.disabled = true;
-      submitBtn.innerText = `Processing ${files.length} Photos...`;
+      submitBtn.innerText = 'Publishing Apparel...';
 
       try {
-        const photoPromises = files.slice(0, 5).map(file => compressImageFile(file));
-        const uploadedImages = await Promise.all(photoPromises);
-
         const newProd = {
           id: Date.now(),
           title: document.getElementById('prod-title').value.trim(),
@@ -1331,8 +1380,8 @@
           price: Number(document.getElementById('prod-price').value),
           sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()),
           description: document.getElementById('prod-desc').value.trim(),
-          image: uploadedImages[0],          // Primary Cover Image
-          images: uploadedImages,            // Array of All Angles Photos
+          image: addPhotosQueue[0],          // Primary Cover Image
+          images: [...addPhotosQueue],       // Array of All Angles Photos in Exact Selected Order
           supplierUrl: supplierUrl || ""     // Meesho/Flipkart secret link
         };
 
@@ -1343,10 +1392,10 @@
         renderAdminProductManagement();
         
         e.target.reset();
-        document.getElementById('photo-preview-strip').innerHTML = '';
-        document.getElementById('photo-preview-strip').classList.add('hidden');
+        addPhotosQueue = [];
+        renderQueuePhotos('add');
 
-        alert(`🎉 Product successfully published with ${uploadedImages.length} photos!`);
+        alert(`🎉 Product successfully published with ${newProd.images.length} photos!`);
         switchAdminTab('products');
       } catch (err) {
         console.error(err);
@@ -1357,7 +1406,7 @@
       }
     }
 
-    // ================= EDIT PRODUCT SYSTEM =================
+    // ================= EDIT PRODUCT MODAL SYSTEM =================
     function openEditProductModal(id) {
       const prod = products.find(p => p.id === id);
       if (!prod) return;
@@ -1370,50 +1419,16 @@
       document.getElementById('edit-prod-supplier-url').value = prod.supplierUrl || '';
       document.getElementById('edit-prod-desc').value = prod.description || '';
 
-      // Preview current photos
-      const currentPhotosBox = document.getElementById('edit-current-photos-preview');
-      currentPhotosBox.innerHTML = '';
-      const photos = (prod.images && prod.images.length > 0) ? prod.images : [prod.image];
-      photos.forEach(imgUrl => {
-        currentPhotosBox.innerHTML += `
-          <div class="w-14 h-14 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
-            <img src="${imgUrl}" class="w-full h-full object-cover">
-          </div>
-        `;
-      });
-
-      // Clear replacement photos input
-      document.getElementById('edit-prod-files').value = '';
-      document.getElementById('edit-new-photos-preview').innerHTML = '';
-      document.getElementById('edit-new-photos-preview').classList.add('hidden');
+      // Populate Edit Photos Queue with existing photos
+      editPhotosQueue = prod.images && prod.images.length > 0 ? [...prod.images] : [prod.image];
+      renderQueuePhotos('edit');
 
       document.getElementById('edit-product-modal').classList.remove('hidden');
     }
 
     function closeEditProductModal() {
       document.getElementById('edit-product-modal').classList.add('hidden');
-    }
-
-    function handleEditPhotoPreview(event) {
-      const files = Array.from(event.target.files);
-      const previewContainer = document.getElementById('edit-new-photos-preview');
-      previewContainer.innerHTML = '';
-
-      if (files.length === 0) {
-        previewContainer.classList.add('hidden');
-        return;
-      }
-
-      previewContainer.classList.remove('hidden');
-      files.slice(0, 5).forEach((file, index) => {
-        const previewUrl = URL.createObjectURL(file);
-        previewContainer.innerHTML += `
-          <div class="relative w-14 h-14 rounded-lg overflow-hidden border border-blue-400 shadow-sm">
-            <img src="${previewUrl}" class="w-full h-full object-cover">
-            <span class="absolute bottom-0 right-0 bg-blue-600 text-white text-[8px] px-1 font-bold">New #${index + 1}</span>
-          </div>
-        `;
-      });
+      editPhotosQueue = [];
     }
 
     async function handleProductEditSave(e) {
@@ -1422,31 +1437,23 @@
       const prodIndex = products.findIndex(p => p.id === id);
       if (prodIndex === -1) return alert('Product not found!');
 
+      if (editPhotosQueue.length === 0) {
+        return alert('⚠️ Product must have at least 1 photo!');
+      }
+
       const submitBtn = document.getElementById('edit-prod-submit-btn');
       submitBtn.disabled = true;
       submitBtn.innerText = 'Saving Changes...';
 
       try {
-        const replacementFiles = Array.from(document.getElementById('edit-prod-files').files);
-        let finalImages = products[prodIndex].images || [products[prodIndex].image];
-        let finalPrimary = products[prodIndex].image;
-
-        // If admin selected new photos, compress and replace
-        if (replacementFiles.length > 0) {
-          const photoPromises = replacementFiles.slice(0, 5).map(file => compressImageFile(file));
-          finalImages = await Promise.all(photoPromises);
-          finalPrimary = finalImages[0];
-        }
-
-        // Update product values
         products[prodIndex].title = document.getElementById('edit-prod-title').value.trim();
         products[prodIndex].category = document.getElementById('edit-prod-category').value;
         products[prodIndex].price = Number(document.getElementById('edit-prod-price').value);
         products[prodIndex].sizes = document.getElementById('edit-prod-sizes').value.split(',').map(s => s.trim());
         products[prodIndex].supplierUrl = document.getElementById('edit-prod-supplier-url').value.trim();
         products[prodIndex].description = document.getElementById('edit-prod-desc').value.trim();
-        products[prodIndex].images = finalImages;
-        products[prodIndex].image = finalPrimary;
+        products[prodIndex].images = [...editPhotosQueue];
+        products[prodIndex].image = editPhotosQueue[0];
 
         localStorage.setItem('mfs_products_v21', JSON.stringify(products));
 
