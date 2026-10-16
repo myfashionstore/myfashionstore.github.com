@@ -415,12 +415,12 @@
           </button>
         </div>
 
-        <!-- TAB 1: ORDERS & RETURNS -->
+        <!-- TAB 1: ORDERS & RETURNS (With Direct Supplier Link Button) -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
           <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
             <div>
               <h3 class="font-bold text-xs">Real-time Cloud Orders (Firebase)</h3>
-              <p class="text-[10px] text-gray-500">Manage Status, Returns, Exchanges & Decisions</p>
+              <p class="text-[10px] text-gray-500">Manage Status, Direct Supplier Links, Returns & Decisions</p>
             </div>
             <button type="button" onclick="fetchCloudOrders()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1 rounded border font-semibold">
               <i class="fa-solid fa-rotate mr-1"></i> Refresh
@@ -429,7 +429,7 @@
           <div id="admin-orders-list" class="space-y-3"></div>
         </div>
 
-        <!-- TAB 2: PRODUCTS (ADD FROM GALLERY & DELETE) -->
+        <!-- TAB 2: PRODUCTS (ADD WITH SUPPLIER LINK & GALLERY PHOTO) -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <h3 class="text-sm font-bold border-b pb-2">Publish New Item (Upload from Device / Gallery)</h3>
@@ -454,6 +454,16 @@
                 <label class="block text-gray-700 mb-1">Sizes (Comma-separated)</label>
                 <input type="text" id="prod-sizes" class="w-full border border-gray-300 p-1.5 rounded" value="S, M, L, XL">
               </div>
+
+              <!-- SUPPLIER / MEESHO / FLIPKART LINK (SECRET INPUT) -->
+              <div class="md:col-span-2">
+                <label class="block text-blue-700 font-bold mb-1">
+                  <i class="fa-solid fa-link mr-1"></i> Supplier Product Link (Meesho / Flipkart / Amazon URL) *
+                </label>
+                <input type="url" id="prod-supplier-url" placeholder="Paste original product link from Meesho or Flipkart here..." class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs">
+                <p class="text-[10px] text-gray-400 mt-0.5">Yeh link sirf aapko Admin Orders mein dikhega taaki order aane par aap 1-click mein wahi exact product khol sakein.</p>
+              </div>
+
               <div class="md:col-span-2">
                 <label class="block text-gray-700 mb-1">Product Description</label>
                 <textarea id="prod-desc" rows="2" class="w-full border border-gray-300 p-1.5 rounded" placeholder="100% Cotton, Breathable, Bio-washed..."></textarea>
@@ -697,7 +707,7 @@
     </div>
   </div>
 
-  <!-- ================= CART / CHECKOUT DRAWER (WITH COUPON & PAYMENT QR) ================= -->
+  <!-- ================= CART / CHECKOUT DRAWER ================= -->
   <div id="cart-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end backdrop-blur-sm">
     <div class="bg-white w-full max-w-md h-full flex flex-col p-5 shadow-2xl overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
@@ -811,12 +821,12 @@
     };
 
     const defaultProducts = [
-      { id: 101, title: "Zubeen Da Tribute Black Graphic Rock Tee", price: 799, category: "Men", sizes: ["M", "L", "XL"], description: "Special Birthday Edition 240 GSM Pure Combed Cotton with Mayabini Rock Typography.", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600" },
-      { id: 102, title: "Chhath Puja Special Saffron Silk Kurta", price: 1199, category: "Men", sizes: ["M", "L", "XL"], description: "Pure hand-spun saffron festive kurta designed for Chhath Puja rituals.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600" },
-      { id: 103, title: "Chhath Mahaparv Red & Gold Zari Saree Set", price: 1799, category: "Women", sizes: ["Free Size"], description: "Traditional Banarasi blended soft silk saree in pure festive red and golden temple border.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600" },
-      { id: 104, title: "Christmas Holiday Fleece Oversized Hoodie", price: 1399, category: "Men", sizes: ["M", "L", "XL"], description: "Heavyweight 380 GSM fleece pullover hoodie in deep pine green & crimson red.", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600" },
-      { id: 105, title: "Royal Embroidered Silk Festive Kurta", price: 1299, category: "Men", sizes: ["M", "L", "XL"], description: "Premium blended art-silk with golden zari embroidery collar.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600" },
-      { id: 106, title: "Anarkali Festive Flared Kurti Set", price: 1699, category: "Women", sizes: ["S", "M", "L", "XL"], description: "Chanderi cotton silk festive dress with matching dupatta.", image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600" }
+      { id: 101, title: "Zubeen Da Tribute Black Graphic Rock Tee", price: 799, category: "Men", sizes: ["M", "L", "XL"], description: "Special Birthday Edition 240 GSM Pure Combed Cotton with Mayabini Rock Typography.", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", supplierUrl: "https://www.meesho.com" },
+      { id: 102, title: "Chhath Puja Special Saffron Silk Kurta", price: 1199, category: "Men", sizes: ["M", "L", "XL"], description: "Pure hand-spun saffron festive kurta designed for Chhath Puja rituals.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", supplierUrl: "https://www.meesho.com" },
+      { id: 103, title: "Chhath Mahaparv Red & Gold Zari Saree Set", price: 1799, category: "Women", sizes: ["Free Size"], description: "Traditional Banarasi blended soft silk saree in pure festive red and golden temple border.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", supplierUrl: "https://www.meesho.com" },
+      { id: 104, title: "Christmas Holiday Fleece Oversized Hoodie", price: 1399, category: "Men", sizes: ["M", "L", "XL"], description: "Heavyweight 380 GSM fleece pullover hoodie in deep pine green & crimson red.", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600", supplierUrl: "https://www.meesho.com" },
+      { id: 105, title: "Royal Embroidered Silk Festive Kurta", price: 1299, category: "Men", sizes: ["M", "L", "XL"], description: "Premium blended art-silk with golden zari embroidery collar.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", supplierUrl: "https://www.meesho.com" },
+      { id: 106, title: "Anarkali Festive Flared Kurti Set", price: 1699, category: "Women", sizes: ["S", "M", "L", "XL"], description: "Chanderi cotton silk festive dress with matching dupatta.", image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600", supplierUrl: "https://www.meesho.com" }
     ];
 
     const initialCoupons = [
@@ -849,7 +859,7 @@
     let appliedCoupon = null;
     let currentActiveTrackingOrder = null;
 
-    // Navigation Handler
+    // Navigation Switcher
     window.navigate = function(view) {
       document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
       const target = document.getElementById('page-' + view);
@@ -867,7 +877,7 @@
       window.scrollTo(0, 0);
     };
 
-    // Render Home Products (Trending Drops)
+    // Render Home Products
     function renderHomeProducts(items) {
       const grid = document.getElementById('home-product-grid');
       if (!grid) return;
@@ -911,7 +921,7 @@
       `;
     }
 
-    // Filter by Category
+    // Category Filtering
     window.filterCategory = function(cat) {
       window.navigate('all');
       currentCategory = cat;
@@ -974,7 +984,13 @@
 
       document.getElementById('detail-buy-btn').onclick = () => {
         if (!currentSelectedSize) return alert('⚠️ Please select a size first (e.g. S, M, L, XL)!');
-        cart = [{ ...prod, title: `${prod.title} (Size: ${currentSelectedSize})` }];
+        
+        // Product buy object with secret supplierUrl attached
+        cart = [{ 
+          ...prod, 
+          title: `${prod.title} (Size: ${currentSelectedSize})`,
+          supplierUrl: prod.supplierUrl || "" 
+        }];
         updateCartDisplay();
         toggleCart(true);
       };
@@ -1046,7 +1062,7 @@
       alert('Review published successfully!');
     }
 
-    // Direct Image Upload (Base64)
+    // Direct Image Upload (Base64) & Saving Supplier URL
     function fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1060,6 +1076,7 @@
       e.preventDefault();
       const file = document.getElementById('prod-file').files[0];
       const altFile = document.getElementById('prod-file-alt').files[0];
+      const supplierUrl = document.getElementById('prod-supplier-url').value.trim();
 
       if (!file) return alert('Please choose a primary product photo from your device!');
       if (file.size > 2 * 1024 * 1024) return alert('Photo size must be less than 2MB!');
@@ -1080,7 +1097,8 @@
           sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()),
           description: document.getElementById('prod-desc').value.trim(),
           image: base64Img,
-          altImage: altBase64
+          altImage: altBase64,
+          supplierUrl: supplierUrl || "" // Meesho/Flipkart link saved secretly
         };
 
         products.unshift(newProd);
@@ -1088,7 +1106,7 @@
         renderHomeProducts(products);
         renderAdminProductManagement();
         e.target.reset();
-        alert('🎉 Product published successfully!');
+        alert('🎉 Product published successfully with secret supplier link!');
         switchAdminTab('products');
       } catch (err) {
         alert('Upload failed. Try again.');
@@ -1112,6 +1130,7 @@
             <div>
               <p class="font-bold text-gray-900 truncate max-w-[180px] sm:max-w-xs">${p.title}</p>
               <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price}</span>
+              ${p.supplierUrl ? `<span class="block text-[9px] text-blue-600 font-bold truncate max-w-[160px]">🔗 ${p.supplierUrl}</span>` : ''}
             </div>
           </div>
           <button type="button" onclick="deleteProductById(${p.id})" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-bold text-[11px] transition">
@@ -1247,6 +1266,7 @@
       updateCartDisplay();
     }
 
+    // Direct Order Booking (Attaches Supplier URL into Order Data)
     async function processOrderDirect() {
       if(cart.length === 0) return alert('Your cart is empty!');
 
@@ -1271,11 +1291,15 @@
 
       const addressString = flat ? `${flat}, ${area}, ${city}, ${state} - PIN: ${pincode}` : `${area}, ${city}, ${state} - PIN: ${pincode}`;
 
+      // Pick secret supplier URL from first item in cart
+      const primarySupplierUrl = cart[0]?.supplierUrl || "";
+
       const orderData = {
         orderId: 'MFS-' + Math.floor(100000 + Math.random() * 900000),
         name, phone,
         address: { house: flat || 'N/A', area, city, state, pincode, full: addressString },
         items: cart.map(i => i.title).join(', '),
+        supplierUrl: primarySupplierUrl, // Secretly attached to the order!
         subtotal: document.getElementById('cart-subtotal').innerText,
         couponUsed: appliedCoupon ? appliedCoupon.code : 'None',
         discount: appliedCoupon ? `₹${appliedCoupon.discount}` : '₹0',
@@ -1552,6 +1576,7 @@
       document.getElementById('tab-btn-' + tab).classList.add('border-black', 'text-black');
     }
 
+    // Admin Live Orders with DIRECT SUPPLIER LINK BUTTON
     async function fetchCloudOrders() {
       const container = document.getElementById('admin-orders-list');
       container.innerHTML = '<p class="text-xs text-gray-500 py-3 text-center">Fetching live orders...</p>';
@@ -1572,8 +1597,11 @@
           const statusText = o.status || 'Order Confirmed';
           const isReturnReq = statusText.includes('Requested');
 
+          // Direct Supplier URL stored in order or fallback
+          const supplierLink = o.supplierUrl || "";
+
           container.innerHTML += `
-            <div class="border border-gray-200 p-3 rounded-xl text-xs space-y-1.5 bg-white shadow-sm">
+            <div class="border border-gray-200 p-3 rounded-xl text-xs space-y-2 bg-white shadow-sm">
               <div class="flex justify-between font-bold">
                 <span class="text-blue-700">${o.orderId} — ${o.name} (📞 ${o.phone})</span>
                 <span class="text-black font-extrabold">${o.total} [${o.mode}]</span>
@@ -1584,6 +1612,17 @@
               <div class="bg-gray-50 p-2 rounded border border-gray-200 text-[11px] space-y-0.5">
                 <p><strong>Address:</strong> ${addr.full}</p>
                 <span class="text-black font-bold">PIN: ${addr.pincode || 'N/A'}</span>
+              </div>
+
+              <!-- DIRECT 1-CLICK SUPPLIER LINK BUTTON -->
+              <div class="pt-1">
+                ${supplierLink ? `
+                  <a href="${supplierLink}" target="_blank" class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shadow transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in Meesho / Flipkart 🛍️
+                  </a>
+                ` : `
+                  <span class="text-[10px] text-gray-400 italic">No direct supplier link attached to this order.</span>
+                `}
               </div>
 
               ${isReturnReq ? `
@@ -1755,7 +1794,9 @@
       secretTapCount++;
       clearTimeout(secretTapTimer);
       secretTapTimer = setTimeout(() => {
-        if (secretTapCount >= 3) navigate('admin');
+        if (secretTapCount >= 3) {
+          navigate('admin');
+        }
         secretTapCount = 0;
       }, 500);
     }
@@ -1764,31 +1805,30 @@
       if (window.location.hash === '#admin') navigate('admin');
     }
 
-    // 6-Slide Carousel Controls (Manual + Auto)
+    // 6-Slide Carousel Controls
     let currentSlide = 0;
     let slideTimer = null;
 
-    function updateCarouselPosition() {
+    function nextSlide() { goToSlide((currentSlide + 1) % 6); }
+    function prevSlide() { goToSlide((currentSlide - 1 + 6) % 6); }
+
+    function goToSlide(idx) {
+      currentSlide = idx;
       const track = document.getElementById('slider-track');
-      if (track) track.style.transform = `translateX(-${currentSlide * (100 / 6)}%)`;
+      if (track) {
+        track.style.transform = `translateX(-${currentSlide * (100 / 6)}%)`;
+      }
       document.querySelectorAll('.slider-dot').forEach((dot, idx) => {
         dot.className = idx === currentSlide ? 'slider-dot w-3 h-2 rounded-full bg-amber-400 transition' : 'slider-dot w-2 h-2 rounded-full bg-white/40 transition';
       });
     }
 
-    function nextSlide() { currentSlide = (currentSlide + 1) % 6; updateCarouselPosition(); resetSlideTimer(); }
-    function prevSlide() { currentSlide = (currentSlide - 1 + 6) % 6; updateCarouselPosition(); resetSlideTimer(); }
-    function goToSlide(idx) { currentSlide = idx; updateCarouselPosition(); resetSlideTimer(); }
-
     function resetSlideTimer() {
       if (slideTimer) clearInterval(slideTimer);
-      slideTimer = setInterval(() => {
-        currentSlide = (currentSlide + 1) % 6;
-        updateCarouselPosition();
-      }, 4500);
+      slideTimer = setInterval(nextSlide, 4500);
     }
 
-    // Init App
+    // Initialize App
     window.addEventListener('DOMContentLoaded', () => {
       applySettings();
       renderHomeProducts(products);
