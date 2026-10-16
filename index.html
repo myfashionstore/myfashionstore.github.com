@@ -297,6 +297,7 @@
               </button>
             </div>
 
+            <!-- Auto-Selected Free Size or Multiple Size Selector -->
             <div id="detail-sizes-container" class="flex flex-wrap gap-2 pt-1"></div>
 
             <div id="detail-size-chart" class="hidden border border-gray-200 rounded-lg p-2.5 bg-gray-50 text-[10px] mt-2">
@@ -488,7 +489,7 @@
                 <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
                 
                 <p class="text-[10px] text-gray-500">
-                  📌 <b>Tip:</b> Pehli photo Cover Image (#1) banegi. Aap ek-ek karke bar-bar file select kar sakte hain, wo queue me aage judti jayegi. Agar koi photo galat ho jaye, toh uspe bane ❌ se hata sakte hain.
+                  📌 <b>Tip:</b> Pehli photo Cover Image (#1) banegi. HD quality maintain rahegi. Galat photo ko ❌ se hata sakte hain.
                 </p>
                 
                 <!-- Selected Photos Preview Queue with Delete Buttons -->
@@ -1121,13 +1122,12 @@
       renderAllProducts(filtered);
     }
 
-    // Product Details View
+    // ================= PRODUCT DETAILS VIEW (WITH AUTO-SELECT FREE SIZE) =================
     function openProductDetailPage(id) {
       const prod = products.find(p => p.id === id);
       if (!prod) return;
 
       currentSelectedProduct = prod;
-      currentSelectedSize = null;
 
       const allPhotos = (prod.images && prod.images.length > 0) ? prod.images : [prod.image];
 
@@ -1151,16 +1151,36 @@
         `;
       });
 
+      // Sizes logic with AUTO-SELECT for Free Size / Single Size (Sarees, etc.)
+      const rawSizes = (prod.sizes && prod.sizes.length > 0) ? prod.sizes : ["Free Size"];
+      const cleanSizes = rawSizes.map(s => s.trim()).filter(s => s.length > 0);
+      const productSizes = cleanSizes.length > 0 ? cleanSizes : ["Free Size"];
+
+      // Agar sirf 1 size hai (jaise Free Size), toh auto-select kar lo
+      if (productSizes.length === 1) {
+        currentSelectedSize = productSizes[0];
+      } else {
+        currentSelectedSize = null;
+      }
+
       const sizeBox = document.getElementById('detail-sizes-container');
       sizeBox.innerHTML = '';
-      (prod.sizes || ["Free Size"]).forEach(sz => {
+
+      productSizes.forEach(sz => {
+        const isAutoSelected = (productSizes.length === 1);
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.innerText = sz;
-        btn.className = 'size-btn border-2 border-gray-300 font-bold text-xs px-3.5 py-1.5 rounded-lg hover:border-black transition';
+        
+        btn.className = isAutoSelected 
+          ? 'size-btn border-2 border-black bg-black text-white font-black text-xs px-3.5 py-1.5 rounded-lg transition'
+          : 'size-btn border-2 border-gray-300 font-bold text-xs px-3.5 py-1.5 rounded-lg hover:border-black transition text-gray-800';
+
         btn.onclick = () => {
           currentSelectedSize = sz;
-          sizeBox.querySelectorAll('.size-btn').forEach(b => b.className = 'size-btn border-2 border-gray-300 font-bold text-xs px-3.5 py-1.5 rounded-lg hover:border-black transition text-gray-800');
+          sizeBox.querySelectorAll('.size-btn').forEach(b => {
+            b.className = 'size-btn border-2 border-gray-300 font-bold text-xs px-3.5 py-1.5 rounded-lg hover:border-black transition text-gray-800';
+          });
           btn.className = 'size-btn border-2 border-black bg-black text-white font-black text-xs px-3.5 py-1.5 rounded-lg transition';
         };
         sizeBox.appendChild(btn);
@@ -1255,8 +1275,8 @@
       alert('Review published successfully!');
     }
 
-    // Image Compressor & Converter Helper
-    function compressImageFile(file, maxWidth = 800, maxHeight = 800, quality = 0.75) {
+    // ================= HD IMAGE COMPRESSOR (NO BLURRINESS) =================
+    function compressImageFile(file, maxWidth = 1400, maxHeight = 1400, quality = 0.88) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -1281,6 +1301,11 @@
             canvas.width = width;
             canvas.height = height;
             const ctx = canvas.getContext('2d');
+
+            // High Quality Smoothing to prevent blurriness
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
             ctx.drawImage(img, 0, 0, width, height);
             resolve(canvas.toDataURL('image/jpeg', quality));
           };
@@ -1387,14 +1412,13 @@
         const data = await res.json();
         
         if (data && Array.isArray(data) && data.length > 0) {
-          // Cloud has official list - direct overwrite local to respect deletes
           products = data;
           localStorage.setItem('mfs_products_v21', JSON.stringify(products));
         } else if (data && typeof data === 'object') {
           products = Object.values(data);
           localStorage.setItem('mfs_products_v21', JSON.stringify(products));
         } else {
-          // Only if cloud is completely empty, initialize cloud with current products
+          // Cloud empty hai toh initialize karein
           await syncProductsToCloud();
         }
       } catch (err) {
@@ -1433,7 +1457,6 @@
         products.unshift(newProd);
         localStorage.setItem('mfs_products_v21', JSON.stringify(products));
 
-        // Save to Firebase so other mobiles immediately see it
         await syncProductsToCloud();
 
         renderHomeProducts(products);
@@ -1504,7 +1527,6 @@
 
         localStorage.setItem('mfs_products_v21', JSON.stringify(products));
 
-        // Sync edited updates to Firebase
         await syncProductsToCloud();
 
         renderHomeProducts(products);
@@ -1555,7 +1577,6 @@
       }).join('');
     }
 
-    // Direct, Permanent Delete (Updates Firebase immediately)
     async function deleteProductById(id) {
       if (!confirm("Are you sure you want to permanently delete this product? Yeh sabhi mobiles se gayab ho jayega.")) return;
       products = products.filter(p => p.id !== id);
@@ -2249,7 +2270,7 @@
     // Initialize App & Auto-fetch Cloud Products
     window.addEventListener('DOMContentLoaded', () => {
       applySettings();
-      fetchCloudProducts(); // Cloud se official list fetch karega
+      fetchCloudProducts();
       resetSlideTimer();
       checkUrlAdminHash();
     });
