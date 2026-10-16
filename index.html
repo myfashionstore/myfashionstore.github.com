@@ -1007,10 +1007,9 @@
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
     
-    // Check all previous localStorage versions to make sure user-added products are never lost
+    // Load local storage safely
     let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21')) || 
                              JSON.parse(localStorage.getItem('mfs_products_v20')) || 
-                             JSON.parse(localStorage.getItem('mfs_products')) || 
                              defaultProducts;
 
     let products = Array.isArray(localSavedProducts) && localSavedProducts.length > 0 ? localSavedProducts : defaultProducts;
@@ -1024,7 +1023,7 @@
     let appliedCoupon = null;
     let currentActiveTrackingOrder = null;
 
-    // In-memory Photo Queues for Step-by-Step and Batch Upload
+    // Photo Queues
     let addPhotosQueue = [];
     let editPhotosQueue = [];
 
@@ -1381,32 +1380,21 @@
       alert("✅ Aapke sabhi local products Cloud Database par sync ho chuke hain! Ab yeh har phone par dikhenge.");
     }
 
-    // Safe Cloud Products Fetch & Auto-Preserve
+    // Single Source of Truth (Pure Cloud Authority - No ghost re-adds)
     async function fetchCloudProducts() {
       try {
         const res = await fetch(`${FIREBASE_DB_URL}/products.json`);
         const data = await res.json();
         
-        // Agar cloud par products hain toh merge karein
         if (data && Array.isArray(data) && data.length > 0) {
-          // Local products jo cloud par nahi the, unhe bachayein
-          const localOnly = products.filter(lp => !data.some(cp => cp.id === lp.id));
-          products = [...localOnly, ...data];
+          // Cloud has official list - direct overwrite local to respect deletes
+          products = data;
           localStorage.setItem('mfs_products_v21', JSON.stringify(products));
-          
-          if(localOnly.length > 0) {
-            await syncProductsToCloud(); // Naye local products ko cloud par daal dein
-          }
         } else if (data && typeof data === 'object') {
-          const list = Object.values(data);
-          const localOnly = products.filter(lp => !list.some(cp => cp.id === lp.id));
-          products = [...localOnly, ...list];
+          products = Object.values(data);
           localStorage.setItem('mfs_products_v21', JSON.stringify(products));
-          if(localOnly.length > 0) {
-            await syncProductsToCloud();
-          }
         } else {
-          // Agar Cloud bilkul khali hai toh is device ke saare products turant cloud par bhej do
+          // Only if cloud is completely empty, initialize cloud with current products
           await syncProductsToCloud();
         }
       } catch (err) {
@@ -1567,13 +1555,16 @@
       }).join('');
     }
 
+    // Direct, Permanent Delete (Updates Firebase immediately)
     async function deleteProductById(id) {
-      if (!confirm("Are you sure you want to delete this product?")) return;
+      if (!confirm("Are you sure you want to permanently delete this product? Yeh sabhi mobiles se gayab ho jayega.")) return;
       products = products.filter(p => p.id !== id);
       localStorage.setItem('mfs_products_v21', JSON.stringify(products));
       await syncProductsToCloud();
       renderHomeProducts(products);
       renderAdminProductManagement();
+      renderAllProducts(products);
+      alert("🗑️ Product deleted from cloud & all devices!");
     }
 
     // Cart, Coupons & Payments
@@ -2258,7 +2249,7 @@
     // Initialize App & Auto-fetch Cloud Products
     window.addEventListener('DOMContentLoaded', () => {
       applySettings();
-      fetchCloudProducts(); // Cloud + Local products auto-sync
+      fetchCloudProducts(); // Cloud se official list fetch karega
       resetSlideTimer();
       checkUrlAdminHash();
     });
