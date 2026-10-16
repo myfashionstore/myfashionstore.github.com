@@ -273,7 +273,8 @@
           <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 h-80 md:h-96">
             <img id="detail-main-img" src="" alt="Main Image" class="w-full h-full object-cover">
           </div>
-          <div id="detail-thumbnails" class="flex gap-2"></div>
+          <!-- Multiple Photos Thumbnail Strip -->
+          <div id="detail-thumbnails" class="flex flex-wrap gap-2 pt-1"></div>
         </div>
 
         <div class="space-y-4">
@@ -405,7 +406,7 @@
             <i class="fa-solid fa-receipt mr-1"></i> 1. Live Orders & Returns
           </button>
           <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-black whitespace-nowrap">
-            <i class="fa-solid fa-plus mr-1"></i> 2. Add / Delete Apparel
+            <i class="fa-solid fa-plus mr-1"></i> 2. Add / Edit / Delete Apparel
           </button>
           <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-black whitespace-nowrap">
             <i class="fa-solid fa-ticket mr-1"></i> 3. Coupon Codes
@@ -429,10 +430,10 @@
           <div id="admin-orders-list" class="space-y-3"></div>
         </div>
 
-        <!-- TAB 2: PRODUCTS (ADD WITH SUPPLIER LINK & GALLERY PHOTO) -->
+        <!-- TAB 2: PRODUCTS (MULTIPLE PHOTO UPLOAD, EDIT & DELETE) -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-            <h3 class="text-sm font-bold border-b pb-2">Publish New Item (Upload from Device / Gallery)</h3>
+            <h3 class="text-sm font-bold border-b pb-2">Publish New Item (Upload Multiple Photos from Device)</h3>
             <form id="add-product-form" onsubmit="handleProductAdd(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-medium">
               <div>
                 <label class="block text-gray-700 mb-1">Product Title</label>
@@ -469,28 +470,32 @@
                 <textarea id="prod-desc" rows="2" class="w-full border border-gray-300 p-1.5 rounded" placeholder="100% Cotton, Breathable, Bio-washed..."></textarea>
               </div>
               
-              <!-- Direct Photo Upload -->
-              <div class="md:col-span-2">
-                <label class="block text-gray-700 mb-1 font-bold">Primary Product Photo (Choose from Device) *</label>
-                <input type="file" id="prod-file" accept="image/*" required class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
-              </div>
-              <div class="md:col-span-2">
-                <label class="block text-gray-700 mb-1 font-bold">Secondary / Angle Photo (Optional)</label>
-                <input type="file" id="prod-file-alt" accept="image/*" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
+              <!-- MULTIPLE PHOTOS UPLOAD (Up to 4-5 Photos) -->
+              <div class="md:col-span-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
+                <label class="block text-gray-800 mb-1 font-bold">
+                  <i class="fa-solid fa-images mr-1 text-black"></i> Product Photos (Select 1 to 4 Photos together) *
+                </label>
+                <input type="file" id="prod-files" accept="image/*" multiple required onchange="handlePhotoSelectionPreview(event)" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
+                <p class="text-[10px] text-gray-500 mt-1">💡 Mobile se ek sath 3-4 photos select karein (Front, Back, Close-up, Angle).</p>
+                
+                <!-- Selected Photos Preview Strip -->
+                <div id="photo-preview-strip" class="flex flex-wrap gap-2 mt-2 hidden"></div>
               </div>
 
-              <div class="md:col-span-2">
-                <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2 rounded text-xs font-bold uppercase hover:bg-neutral-800">Publish Now</button>
+              <div class="md:col-span-2 pt-1">
+                <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase hover:bg-neutral-800 transition shadow">
+                  Publish Apparel with Photos
+                </button>
               </div>
             </form>
           </div>
 
-          <!-- Product Management & Delete List -->
+          <!-- Product Management & Edit/Delete List -->
           <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
               <div>
-                <h3 class="text-sm font-bold">Manage Existing Products</h3>
-                <p class="text-[11px] text-gray-500">Delete demo apparel or unwanted inventory</p>
+                <h3 class="text-sm font-bold">Manage & Edit Existing Products</h3>
+                <p class="text-[11px] text-gray-500">Edit price, title, photos, description or delete unwanted items</p>
               </div>
             </div>
             <div id="admin-product-management-list" class="space-y-2"></div>
@@ -572,6 +577,78 @@
       </div>
     </div>
   </main>
+
+  <!-- ================= EDIT PRODUCT MODAL ================= -->
+  <div id="edit-product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-gray-200 my-8">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <div>
+          <h3 class="text-sm font-black text-gray-900">Edit Product Details</h3>
+          <p class="text-[11px] text-gray-500">Update title, price, photos, description or supplier link</p>
+        </div>
+        <button type="button" onclick="closeEditProductModal()" class="text-gray-400 hover:text-black text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="edit-product-form" onsubmit="handleProductEditSave(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-medium">
+        <input type="hidden" id="edit-prod-id">
+        <div class="md:col-span-2">
+          <label class="block text-gray-700 mb-1 font-bold">Product Title</label>
+          <input type="text" id="edit-prod-title" required class="w-full border border-gray-300 p-2 rounded">
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1 font-bold">Category</label>
+          <select id="edit-prod-category" class="w-full border border-gray-300 p-2 rounded bg-white">
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Kids">Kids</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1 font-bold">Price (₹)</label>
+          <input type="number" id="edit-prod-price" required class="w-full border border-gray-300 p-2 rounded">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-gray-700 mb-1 font-bold">Sizes (Comma-separated)</label>
+          <input type="text" id="edit-prod-sizes" class="w-full border border-gray-300 p-2 rounded">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-blue-700 font-bold mb-1">
+            <i class="fa-solid fa-link mr-1"></i> Supplier Product Link (Meesho / Flipkart / Amazon URL)
+          </label>
+          <input type="url" id="edit-prod-supplier-url" class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-gray-700 mb-1 font-bold">Product Description</label>
+          <textarea id="edit-prod-desc" rows="2" class="w-full border border-gray-300 p-2 rounded"></textarea>
+        </div>
+
+        <!-- Current Photos Preview -->
+        <div class="md:col-span-2 space-y-1">
+          <label class="block text-gray-700 font-bold">Current Photos:</label>
+          <div id="edit-current-photos-preview" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Replace Photos File Input -->
+        <div class="md:col-span-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+          <label class="block text-gray-800 font-bold mb-1">
+            <i class="fa-solid fa-camera mr-1"></i> Replace Photos (Optional - Select 1 to 4 new photos)
+          </label>
+          <input type="file" id="edit-prod-files" accept="image/*" multiple onchange="handleEditPhotoPreview(event)" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
+          <p class="text-[10px] text-gray-500 mt-1">Agar purani photo hi rakhni hai toh ise khali chhod dein.</p>
+          <div id="edit-new-photos-preview" class="flex flex-wrap gap-2 mt-2 hidden"></div>
+        </div>
+
+        <div class="md:col-span-2 pt-2 flex gap-2">
+          <button type="submit" id="edit-prod-submit-btn" class="flex-1 bg-black text-white py-2.5 rounded-lg text-xs font-bold uppercase hover:bg-neutral-800 transition shadow">
+            Save Changes
+          </button>
+          <button type="button" onclick="closeEditProductModal()" class="px-4 py-2.5 rounded-lg border border-gray-300 text-xs font-bold text-gray-600 hover:bg-gray-100 transition">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ================= WRITE REVIEW MODAL ================= -->
   <div id="review-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
@@ -821,12 +898,89 @@
     };
 
     const defaultProducts = [
-      { id: 101, title: "Zubeen Da Tribute Black Graphic Rock Tee", price: 799, category: "Men", sizes: ["M", "L", "XL"], description: "Special Birthday Edition 240 GSM Pure Combed Cotton with Mayabini Rock Typography.", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", supplierUrl: "https://www.meesho.com" },
-      { id: 102, title: "Chhath Puja Special Saffron Silk Kurta", price: 1199, category: "Men", sizes: ["M", "L", "XL"], description: "Pure hand-spun saffron festive kurta designed for Chhath Puja rituals.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", supplierUrl: "https://www.meesho.com" },
-      { id: 103, title: "Chhath Mahaparv Red & Gold Zari Saree Set", price: 1799, category: "Women", sizes: ["Free Size"], description: "Traditional Banarasi blended soft silk saree in pure festive red and golden temple border.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", supplierUrl: "https://www.meesho.com" },
-      { id: 104, title: "Christmas Holiday Fleece Oversized Hoodie", price: 1399, category: "Men", sizes: ["M", "L", "XL"], description: "Heavyweight 380 GSM fleece pullover hoodie in deep pine green & crimson red.", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600", supplierUrl: "https://www.meesho.com" },
-      { id: 105, title: "Royal Embroidered Silk Festive Kurta", price: 1299, category: "Men", sizes: ["M", "L", "XL"], description: "Premium blended art-silk with golden zari embroidery collar.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", supplierUrl: "https://www.meesho.com" },
-      { id: 106, title: "Anarkali Festive Flared Kurti Set", price: 1699, category: "Women", sizes: ["S", "M", "L", "XL"], description: "Chanderi cotton silk festive dress with matching dupatta.", image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600", supplierUrl: "https://www.meesho.com" }
+      { 
+        id: 101, 
+        title: "Zubeen Da Tribute Black Graphic Rock Tee", 
+        price: 799, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Special Birthday Edition 240 GSM Pure Combed Cotton with Mayabini Rock Typography.", 
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600",
+          "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600",
+          "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600"
+        ],
+        supplierUrl: "https://www.meesho.com" 
+      },
+      { 
+        id: 102, 
+        title: "Chhath Puja Special Saffron Silk Kurta", 
+        price: 1199, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Pure hand-spun saffron festive kurta designed for Chhath Puja rituals.", 
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600",
+          "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"
+        ],
+        supplierUrl: "https://www.meesho.com" 
+      },
+      { 
+        id: 103, 
+        title: "Chhath Mahaparv Red & Gold Zari Saree Set", 
+        price: 1799, 
+        category: "Women", 
+        sizes: ["Free Size"], 
+        description: "Traditional Banarasi blended soft silk saree in pure festive red and golden border.", 
+        image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600",
+          "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600"
+        ],
+        supplierUrl: "https://www.meesho.com" 
+      },
+      { 
+        id: 104, 
+        title: "Christmas Holiday Fleece Oversized Hoodie", 
+        price: 1399, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Heavyweight 380 GSM fleece pullover hoodie in deep pine green & crimson red.", 
+        image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600",
+          "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600"
+        ],
+        supplierUrl: "https://www.meesho.com" 
+      },
+      { 
+        id: 105, 
+        title: "Royal Embroidered Silk Festive Kurta", 
+        price: 1299, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Premium blended art-silk with golden zari embroidery collar.", 
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"
+        ],
+        supplierUrl: "https://www.meesho.com" 
+      },
+      { 
+        id: 106, 
+        title: "Anarkali Festive Flared Kurti Set", 
+        price: 1699, 
+        category: "Women", 
+        sizes: ["S", "M", "L", "XL"], 
+        description: "Chanderi cotton silk festive dress with matching dupatta.", 
+        image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600"
+        ],
+        supplierUrl: "https://www.meesho.com" 
+      }
     ];
 
     const initialCoupons = [
@@ -899,10 +1053,17 @@
     }
 
     function getProductCardHTML(p) {
+      const mainImg = (p.images && p.images.length > 0) ? p.images[0] : (p.image || '');
+      const photoCount = (p.images && p.images.length > 1) ? p.images.length : 1;
       return `
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
-          <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer">
-            <img src="${p.image}" alt="${p.title}" class="w-full h-44 md:h-52 object-cover">
+          <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer relative">
+            <img src="${mainImg}" alt="${p.title}" class="w-full h-44 md:h-52 object-cover">
+            ${photoCount > 1 ? `
+              <span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-camera"></i> ${photoCount} Photos
+              </span>
+            ` : ''}
             <div class="p-3">
               <span class="text-[9px] text-gray-400 uppercase font-bold">${p.category}</span>
               <h3 class="font-bold text-xs text-gray-900 line-clamp-1">${p.title}</h3>
@@ -946,7 +1107,7 @@
       renderAllProducts(filtered);
     }
 
-    // Product Details View
+    // Product Details View (Displays Multiple Photos)
     function openProductDetailPage(id) {
       const prod = products.find(p => p.id === id);
       if (!prod) return;
@@ -954,18 +1115,27 @@
       currentSelectedProduct = prod;
       currentSelectedSize = null;
 
-      document.getElementById('detail-main-img').src = prod.image;
+      const allPhotos = (prod.images && prod.images.length > 0) ? prod.images : [prod.image];
+
+      const mainImgEl = document.getElementById('detail-main-img');
+      mainImgEl.src = allPhotos[0];
+
       document.getElementById('detail-category').innerText = prod.category;
       document.getElementById('detail-title').innerText = prod.title;
       document.getElementById('detail-price').innerText = '₹' + prod.price;
       document.getElementById('detail-desc').innerText = prod.description || "100% genuine breathable fabric designed for comfort and styling.";
 
+      // Render Multiple Clickable Thumbnails
       const thumbBox = document.getElementById('detail-thumbnails');
-      thumbBox.innerHTML = `
-        <button type="button" onclick="document.getElementById('detail-main-img').src='${prod.image}'" class="w-12 h-12 rounded border-2 border-black overflow-hidden shadow">
-          <img src="${prod.image}" class="w-full h-full object-cover">
-        </button>
-      `;
+      thumbBox.innerHTML = '';
+      allPhotos.forEach((imgUrl, idx) => {
+        const isFirst = idx === 0;
+        thumbBox.innerHTML += `
+          <button type="button" onclick="changeDetailPhoto('${imgUrl}', this)" class="detail-thumb-btn w-14 h-14 rounded-lg overflow-hidden border-2 ${isFirst ? 'border-black' : 'border-gray-200'} transition hover:border-black shadow-sm">
+            <img src="${imgUrl}" class="w-full h-full object-cover">
+          </button>
+        `;
+      });
 
       const sizeBox = document.getElementById('detail-sizes-container');
       sizeBox.innerHTML = '';
@@ -985,7 +1155,6 @@
       document.getElementById('detail-buy-btn').onclick = () => {
         if (!currentSelectedSize) return alert('⚠️ Please select a size first (e.g. S, M, L, XL)!');
         
-        // Product buy object with secret supplierUrl attached
         cart = [{ 
           ...prod, 
           title: `${prod.title} (Size: ${currentSelectedSize})`,
@@ -1001,7 +1170,7 @@
       document.getElementById('similar-count').innerText = `${similarItems.length} Products`;
       simContainer.innerHTML = similarItems.map(p => `
         <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer bg-gray-50 p-2.5 rounded-xl border border-gray-200 hover:shadow-md transition">
-          <img src="${p.image}" class="w-full h-36 object-cover rounded-lg mb-1.5">
+          <img src="${(p.images && p.images[0]) || p.image}" class="w-full h-36 object-cover rounded-lg mb-1.5">
           <p class="text-[11px] font-bold text-gray-900 truncate">${p.title}</p>
           <span class="text-xs font-black">₹${p.price}</span>
         </div>
@@ -1009,6 +1178,16 @@
 
       renderProductReviews(prod.id);
       navigate('product-detail');
+    }
+
+    function changeDetailPhoto(url, btn) {
+      document.getElementById('detail-main-img').src = url;
+      document.querySelectorAll('.detail-thumb-btn').forEach(b => {
+        b.classList.remove('border-black');
+        b.classList.add('border-gray-200');
+      });
+      btn.classList.add('border-black');
+      btn.classList.remove('border-gray-200');
     }
 
     function toggleSizeChartDetail() {
@@ -1062,32 +1241,88 @@
       alert('Review published successfully!');
     }
 
-    // Direct Image Upload (Base64) & Saving Supplier URL
-    function fileToBase64(file) {
+    // Image Compressor & Converter Helper
+    function compressImageFile(file, maxWidth = 800, maxHeight = 800, quality = 0.75) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
     }
 
+    // Live Photo Preview while uploading in Admin
+    function handlePhotoSelectionPreview(event) {
+      const files = Array.from(event.target.files);
+      const previewContainer = document.getElementById('photo-preview-strip');
+      previewContainer.innerHTML = '';
+
+      if (files.length === 0) {
+        previewContainer.classList.add('hidden');
+        return;
+      }
+
+      if (files.length > 5) {
+        alert('⚠️ Maximum 5 photos allow hain. Pehli 5 photos use hongi.');
+      }
+
+      previewContainer.classList.remove('hidden');
+      files.slice(0, 5).forEach((file, index) => {
+        const previewUrl = URL.createObjectURL(file);
+        previewContainer.innerHTML += `
+          <div class="relative w-14 h-14 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+            <img src="${previewUrl}" class="w-full h-full object-cover">
+            <span class="absolute bottom-0 right-0 bg-black text-white text-[8px] px-1 font-bold">#${index + 1}</span>
+          </div>
+        `;
+      });
+    }
+
+    // Handle Product Add with MULTIPLE PHOTOS
     async function handleProductAdd(e) {
       e.preventDefault();
-      const file = document.getElementById('prod-file').files[0];
-      const altFile = document.getElementById('prod-file-alt').files[0];
+      const fileInput = document.getElementById('prod-files');
+      const files = Array.from(fileInput.files);
       const supplierUrl = document.getElementById('prod-supplier-url').value.trim();
 
-      if (!file) return alert('Please choose a primary product photo from your device!');
-      if (file.size > 2 * 1024 * 1024) return alert('Photo size must be less than 2MB!');
+      if (!files || files.length === 0) {
+        return alert('Please select at least 1 product photo from your device!');
+      }
 
       const submitBtn = document.getElementById('prod-submit-btn');
       submitBtn.disabled = true;
-      submitBtn.innerText = 'Publishing...';
+      submitBtn.innerText = `Processing ${files.length} Photos...`;
 
       try {
-        const base64Img = await fileToBase64(file);
-        const altBase64 = altFile ? await fileToBase64(altFile) : "";
+        const photoPromises = files.slice(0, 5).map(file => compressImageFile(file));
+        const uploadedImages = await Promise.all(photoPromises);
 
         const newProd = {
           id: Date.now(),
@@ -1096,26 +1331,141 @@
           price: Number(document.getElementById('prod-price').value),
           sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()),
           description: document.getElementById('prod-desc').value.trim(),
-          image: base64Img,
-          altImage: altBase64,
-          supplierUrl: supplierUrl || "" // Meesho/Flipkart link saved secretly
+          image: uploadedImages[0],          // Primary Cover Image
+          images: uploadedImages,            // Array of All Angles Photos
+          supplierUrl: supplierUrl || ""     // Meesho/Flipkart secret link
         };
 
         products.unshift(newProd);
         localStorage.setItem('mfs_products_v21', JSON.stringify(products));
+
         renderHomeProducts(products);
         renderAdminProductManagement();
+        
         e.target.reset();
-        alert('🎉 Product published successfully with secret supplier link!');
+        document.getElementById('photo-preview-strip').innerHTML = '';
+        document.getElementById('photo-preview-strip').classList.add('hidden');
+
+        alert(`🎉 Product successfully published with ${uploadedImages.length} photos!`);
         switchAdminTab('products');
       } catch (err) {
-        alert('Upload failed. Try again.');
+        console.error(err);
+        alert('Photo upload me error aaya. Kripya dobara try karein.');
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerText = 'Publish Now';
+        submitBtn.innerText = 'Publish Apparel with Photos';
       }
     }
 
+    // ================= EDIT PRODUCT SYSTEM =================
+    function openEditProductModal(id) {
+      const prod = products.find(p => p.id === id);
+      if (!prod) return;
+
+      document.getElementById('edit-prod-id').value = prod.id;
+      document.getElementById('edit-prod-title').value = prod.title;
+      document.getElementById('edit-prod-category').value = prod.category;
+      document.getElementById('edit-prod-price').value = prod.price;
+      document.getElementById('edit-prod-sizes').value = (prod.sizes || []).join(', ');
+      document.getElementById('edit-prod-supplier-url').value = prod.supplierUrl || '';
+      document.getElementById('edit-prod-desc').value = prod.description || '';
+
+      // Preview current photos
+      const currentPhotosBox = document.getElementById('edit-current-photos-preview');
+      currentPhotosBox.innerHTML = '';
+      const photos = (prod.images && prod.images.length > 0) ? prod.images : [prod.image];
+      photos.forEach(imgUrl => {
+        currentPhotosBox.innerHTML += `
+          <div class="w-14 h-14 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+            <img src="${imgUrl}" class="w-full h-full object-cover">
+          </div>
+        `;
+      });
+
+      // Clear replacement photos input
+      document.getElementById('edit-prod-files').value = '';
+      document.getElementById('edit-new-photos-preview').innerHTML = '';
+      document.getElementById('edit-new-photos-preview').classList.add('hidden');
+
+      document.getElementById('edit-product-modal').classList.remove('hidden');
+    }
+
+    function closeEditProductModal() {
+      document.getElementById('edit-product-modal').classList.add('hidden');
+    }
+
+    function handleEditPhotoPreview(event) {
+      const files = Array.from(event.target.files);
+      const previewContainer = document.getElementById('edit-new-photos-preview');
+      previewContainer.innerHTML = '';
+
+      if (files.length === 0) {
+        previewContainer.classList.add('hidden');
+        return;
+      }
+
+      previewContainer.classList.remove('hidden');
+      files.slice(0, 5).forEach((file, index) => {
+        const previewUrl = URL.createObjectURL(file);
+        previewContainer.innerHTML += `
+          <div class="relative w-14 h-14 rounded-lg overflow-hidden border border-blue-400 shadow-sm">
+            <img src="${previewUrl}" class="w-full h-full object-cover">
+            <span class="absolute bottom-0 right-0 bg-blue-600 text-white text-[8px] px-1 font-bold">New #${index + 1}</span>
+          </div>
+        `;
+      });
+    }
+
+    async function handleProductEditSave(e) {
+      e.preventDefault();
+      const id = Number(document.getElementById('edit-prod-id').value);
+      const prodIndex = products.findIndex(p => p.id === id);
+      if (prodIndex === -1) return alert('Product not found!');
+
+      const submitBtn = document.getElementById('edit-prod-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Saving Changes...';
+
+      try {
+        const replacementFiles = Array.from(document.getElementById('edit-prod-files').files);
+        let finalImages = products[prodIndex].images || [products[prodIndex].image];
+        let finalPrimary = products[prodIndex].image;
+
+        // If admin selected new photos, compress and replace
+        if (replacementFiles.length > 0) {
+          const photoPromises = replacementFiles.slice(0, 5).map(file => compressImageFile(file));
+          finalImages = await Promise.all(photoPromises);
+          finalPrimary = finalImages[0];
+        }
+
+        // Update product values
+        products[prodIndex].title = document.getElementById('edit-prod-title').value.trim();
+        products[prodIndex].category = document.getElementById('edit-prod-category').value;
+        products[prodIndex].price = Number(document.getElementById('edit-prod-price').value);
+        products[prodIndex].sizes = document.getElementById('edit-prod-sizes').value.split(',').map(s => s.trim());
+        products[prodIndex].supplierUrl = document.getElementById('edit-prod-supplier-url').value.trim();
+        products[prodIndex].description = document.getElementById('edit-prod-desc').value.trim();
+        products[prodIndex].images = finalImages;
+        products[prodIndex].image = finalPrimary;
+
+        localStorage.setItem('mfs_products_v21', JSON.stringify(products));
+
+        renderHomeProducts(products);
+        renderAdminProductManagement();
+        renderAllProducts(products);
+
+        closeEditProductModal();
+        alert('🎉 Product updated successfully!');
+      } catch (err) {
+        console.error(err);
+        alert('Error updating product. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Save Changes';
+      }
+    }
+
+    // Render Admin Management List with EDIT + DELETE Buttons
     function renderAdminProductManagement() {
       const container = document.getElementById('admin-product-management-list');
       if (!container) return;
@@ -1123,21 +1473,30 @@
         container.innerHTML = '<p class="text-xs text-gray-400 py-2">No products in inventory.</p>';
         return;
       }
-      container.innerHTML = products.map(p => `
-        <div class="flex items-center justify-between border border-gray-200 p-2.5 rounded-xl bg-gray-50 text-xs">
-          <div class="flex items-center space-x-3">
-            <img src="${p.image}" class="w-10 h-10 rounded-lg object-cover bg-white border">
-            <div>
-              <p class="font-bold text-gray-900 truncate max-w-[180px] sm:max-w-xs">${p.title}</p>
-              <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price}</span>
-              ${p.supplierUrl ? `<span class="block text-[9px] text-blue-600 font-bold truncate max-w-[160px]">🔗 ${p.supplierUrl}</span>` : ''}
+      container.innerHTML = products.map(p => {
+        const coverImg = (p.images && p.images[0]) || p.image;
+        const totalPics = (p.images && p.images.length) || 1;
+        return `
+          <div class="flex items-center justify-between border border-gray-200 p-2.5 rounded-xl bg-gray-50 text-xs">
+            <div class="flex items-center space-x-3">
+              <img src="${coverImg}" class="w-10 h-10 rounded-lg object-cover bg-white border">
+              <div>
+                <p class="font-bold text-gray-900 truncate max-w-[150px] sm:max-w-xs">${p.title}</p>
+                <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price} • <b class="text-blue-600">${totalPics} Photos</b></span>
+                ${p.supplierUrl ? `<span class="block text-[9px] text-blue-600 font-bold truncate max-w-[150px]">🔗 ${p.supplierUrl}</span>` : ''}
+              </div>
+            </div>
+            <div class="flex items-center space-x-1.5">
+              <button type="button" onclick="openEditProductModal(${p.id})" class="px-2.5 py-1 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-lg font-bold text-[11px] transition flex items-center gap-1">
+                <i class="fa-solid fa-pen-to-square"></i> Edit ✏️
+              </button>
+              <button type="button" onclick="deleteProductById(${p.id})" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-bold text-[11px] transition flex items-center gap-1">
+                <i class="fa-solid fa-trash-can"></i> Delete 🗑️
+              </button>
             </div>
           </div>
-          <button type="button" onclick="deleteProductById(${p.id})" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-bold text-[11px] transition">
-            Delete 🗑️
-          </button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function deleteProductById(id) {
@@ -1266,7 +1625,7 @@
       updateCartDisplay();
     }
 
-    // Direct Order Booking (Attaches Supplier URL into Order Data)
+    // Direct Order Booking
     async function processOrderDirect() {
       if(cart.length === 0) return alert('Your cart is empty!');
 
@@ -1290,8 +1649,6 @@
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
       const addressString = flat ? `${flat}, ${area}, ${city}, ${state} - PIN: ${pincode}` : `${area}, ${city}, ${state} - PIN: ${pincode}`;
-
-      // Pick secret supplier URL from first item in cart
       const primarySupplierUrl = cart[0]?.supplierUrl || "";
 
       const orderData = {
@@ -1299,7 +1656,7 @@
         name, phone,
         address: { house: flat || 'N/A', area, city, state, pincode, full: addressString },
         items: cart.map(i => i.title).join(', '),
-        supplierUrl: primarySupplierUrl, // Secretly attached to the order!
+        supplierUrl: primarySupplierUrl,
         subtotal: document.getElementById('cart-subtotal').innerText,
         couponUsed: appliedCoupon ? appliedCoupon.code : 'None',
         discount: appliedCoupon ? `₹${appliedCoupon.discount}` : '₹0',
@@ -1543,7 +1900,7 @@
       }
     }
 
-    // Admin Tabs & Operations
+    // Admin Auth & Tabs
     function checkAdminAuth() {
       const pin = document.getElementById('admin-pin-input').value;
       if(pin === storeSettings.pin) {
@@ -1596,8 +1953,6 @@
           const addr = typeof o.address === 'object' ? o.address : { full: o.address, city: 'N/A', pincode: 'N/A', state: 'N/A' };
           const statusText = o.status || 'Order Confirmed';
           const isReturnReq = statusText.includes('Requested');
-
-          // Direct Supplier URL stored in order or fallback
           const supplierLink = o.supplierUrl || "";
 
           container.innerHTML += `
