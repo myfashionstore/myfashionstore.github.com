@@ -271,7 +271,7 @@
       <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="space-y-3">
           <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 h-80 md:h-96">
-            <img id="detail-main-img" src="" alt="Main Image" class="w-full h-full object-cover">
+            <img id="detail-main-img" src="" alt="Main Image" class="w-full h-full object-contain bg-white">
           </div>
           <!-- Multiple Photos Thumbnail Strip -->
           <div id="detail-thumbnails" class="flex flex-wrap gap-2 pt-1"></div>
@@ -1073,7 +1073,7 @@
       return `
         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
           <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer relative">
-            <img src="${mainImg}" alt="${p.title}" class="w-full h-44 md:h-52 object-cover">
+            <img src="${mainImg}" alt="${p.title}" class="w-full h-44 md:h-52 object-contain bg-white">
             ${photoCount > 1 ? `
               <span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                 <i class="fa-solid fa-camera"></i> ${photoCount} Photos
@@ -1276,7 +1276,7 @@
     }
 
     // ================= HD IMAGE COMPRESSOR (NO BLURRINESS) =================
-    function compressImageFile(file, maxWidth = 1400, maxHeight = 1400, quality = 0.88) {
+    function compressImageFile(file, maxWidth = 1920, maxHeight = 1920, quality = 0.95) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -1302,7 +1302,6 @@
             canvas.height = height;
             const ctx = canvas.getContext('2d');
 
-            // High Quality Smoothing to prevent blurriness
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
 
@@ -1557,7 +1556,7 @@
         return `
           <div class="flex items-center justify-between border border-gray-200 p-2.5 rounded-xl bg-gray-50 text-xs">
             <div class="flex items-center space-x-3">
-              <img src="${coverImg}" class="w-10 h-10 rounded-lg object-cover bg-white border">
+              <img src="${coverImg}" class="w-10 h-10 rounded-lg object-contain bg-white border">
               <div>
                 <p class="font-bold text-gray-900 truncate max-w-[150px] sm:max-w-xs">${p.title}</p>
                 <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price} • <b class="text-blue-600">${totalPics} Photos</b></span>
