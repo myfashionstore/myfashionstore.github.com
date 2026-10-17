@@ -620,8 +620,8 @@
           <input type="text" id="edit-prod-sizes" class="w-full border border-gray-300 p-2 rounded">
         </div>
         <div class="md:col-span-2">
-          <label class="block text-blue-700 font-bold mb-1"><i class="fa-solid fa-link"></i> Supplier Link (Admin Only)</label>
-          <input type="url" id="edit-prod-supplier-url" class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs" placeholder="https://www.meesho.com/p/...">
+          <label class="block text-blue-700 font-bold mb-1">Supplier Link</label>
+          <input type="url" id="edit-prod-supplier-url" class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs">
         </div>
         <div class="md:col-span-2">
           <label class="block text-gray-700 mb-1 font-bold">Description</label>
@@ -838,8 +838,6 @@
     ];
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
-    
-    // Smart Merge: Purane saved products ko rakhenge aur naye bulk products ko jod denge
     let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21'));
     let products = [];
 
@@ -1106,6 +1104,7 @@
 
     function renderProductReviews(prodId) {
       const list = document.getElementById('product-reviews-list');
+      if(!list) return;
       list.innerHTML = '';
       const reviews = productReviews[prodId] || [];
       if(reviews.length === 0) {
@@ -1700,7 +1699,9 @@
       }
     }
 
+    // Automatically render products on startup
     window.addEventListener('DOMContentLoaded', () => {
+      renderHomeProducts(products);
       fetchCloudProducts();
     });
   </script>
