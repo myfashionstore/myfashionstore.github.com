@@ -792,13 +792,18 @@
   </div>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-1">
+  <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-2">
     <p class="text-xs font-extrabold uppercase brand-name-display">MY FASHION STORE</p>
     <div class="flex justify-center space-x-4 text-[11px] text-gray-500 py-1">
       <button type="button" onclick="navigate('home')">Home</button>
       <button type="button" onclick="navigate('all')">All Collection</button>
       <button type="button" onclick="navigate('myorders')">My Orders</button>
       <button type="button" onclick="navigate('policies')">Policies</button>
+    </div>
+    <div>
+      <button type="button" onclick="emergencyResetStore()" class="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-full font-bold border border-red-200 shadow-sm">
+        🔄 Reset Store & Load Products
+      </button>
     </div>
     <p id="secret-admin-trigger" onclick="handleSecretAdminTrigger()" class="text-[10px] text-gray-400 cursor-pointer select-none py-1">
       © 2026 My Fashion Store. All Rights Reserved.
@@ -1668,42 +1673,4 @@
       const val = Number(document.getElementById('cpn-val').value);
       coupons.unshift({ code, type: 'FLAT', value: val, minOrder: 0 });
       localStorage.setItem('mfs_coupons_v21', JSON.stringify(coupons));
-      renderAdminCoupons();
-      e.target.reset();
-      alert('Coupon added successfully!');
-    }
-
-    function saveAdminSettings() {
-      storeSettings.name = document.getElementById('setting-store-name').value.trim() || storeSettings.name;
-      storeSettings.phone = document.getElementById('setting-store-phone').value.trim() || storeSettings.phone;
-      storeSettings.upiId = document.getElementById('setting-upi-id').value.trim() || storeSettings.upiId;
-      
-      const newPin = document.getElementById('setting-new-pin').value.trim();
-      if (newPin) {
-        storeSettings.pin = newPin;
-      }
-      
-      storeSettings.returnPolicy = document.getElementById('setting-policy-return').value.trim();
-      storeSettings.shippingPolicy = document.getElementById('setting-policy-shipping').value.trim();
-
-      localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
-      alert('✅ All Settings & PIN Saved Successfully!');
-    }
-
-    let secretTapCount = 0;
-    function handleSecretAdminTrigger() {
-      secretTapCount++;
-      if (secretTapCount >= 3) {
-        navigate('admin');
-        secretTapCount = 0;
-      }
-    }
-
-    // Automatically render products on startup
-    window.addEventListener('DOMContentLoaded', () => {
-      renderHomeProducts(products);
-      fetchCloudProducts();
-    });
-  </script>
-</body>
-</html>
+      render
