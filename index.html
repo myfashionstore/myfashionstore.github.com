@@ -4,13 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- ================= SEO & GOOGLE VERIFICATION ================= -->
+  <!-- ================= SEO & TITLE ================= -->
   <title id="site-title">My Fashion Store | Official Store</title>
-  <meta name="google-site-verification" content="XOr8Ci9rVVt-M_oRAZTV0J9OhI0ctAc7ba4O9GUYwLA" />
   <meta name="description" content="Shop premium festive wear, ethnic kurtas, graphic tees, and streetwear at My Fashion Store. Fast delivery across India.">
-  <meta name="keywords" content="fashion store, festive kurta, chhath puja clothes, zubeen garg tshirt, diwali kurtas, streetwear india">
-  <meta name="robots" content="index, follow">
-
+  
   <!-- Tailwind CSS & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,7 +17,7 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.96); }
     
-    /* 6-Slide Smooth Carousel */
+    /* Carousel Smooth Track */
     #slider-track {
       display: flex;
       width: 600%;
@@ -35,13 +32,13 @@
 <body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen antialiased select-none">
 
   <!-- ================= TOP ANNOUNCEMENT ================= -->
-  <div id="announcement-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-indigo-700 text-white text-[11px] py-1.5 px-4 text-center font-bold tracking-wide shadow-sm">
+  <div class="bg-gradient-to-r from-red-700 via-amber-600 to-indigo-700 text-white text-[11px] py-1.5 px-4 text-center font-bold tracking-wide shadow-sm">
     🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery
   </div>
 
   <!-- ================= GLOBAL FLOATING BACK BUTTON ================= -->
   <div id="floating-back-btn" class="hidden fixed bottom-5 left-5 z-50">
-    <button type="button" onclick="goBackHistory()" class="bg-black/80 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
+    <button type="button" onclick="goBackHistory()" class="bg-black/90 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
       <i class="fa-solid fa-arrow-left"></i> Back
     </button>
   </div>
@@ -50,7 +47,7 @@
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       
-      <!-- Brand Logo SVG -->
+      <!-- Brand Logo -->
       <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
         <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
@@ -69,13 +66,13 @@
         <button type="button" onclick="filterCategory('Men')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Men</button>
         <button type="button" onclick="filterCategory('Women')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Women</button>
         <button type="button" onclick="filterCategory('Kids')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Kids</button>
-        <button type="button" onclick="navigate('myorders')" class="hover:text-blue-600 flex items-center font-bold text-blue-600 py-1 px-2 rounded hover:bg-blue-50">
+        <button type="button" onclick="navigate('myorders')" class="text-blue-600 flex items-center font-bold py-1 px-2 rounded hover:bg-blue-50">
           <i class="fa-solid fa-bag-shopping mr-1"></i> My Orders
         </button>
         <button type="button" onclick="navigate('policies')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Policies</button>
       </nav>
 
-      <!-- Cart Button & Mobile My Orders -->
+      <!-- Cart Button & Mobile Orders -->
       <div class="flex items-center space-x-3">
         <button type="button" onclick="navigate('myorders')" class="md:hidden text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-lg font-bold">
           My Orders
@@ -219,7 +216,7 @@
         </div>
       </section>
 
-      <!-- Featured Apparel Grid on Home -->
+      <!-- Featured Apparel Grid -->
       <section class="max-w-7xl mx-auto px-4 py-4 space-y-4">
         <div class="border-b pb-2 flex justify-between items-center">
           <div>
@@ -843,6 +840,7 @@
     ];
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
+    
     let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21'));
     let products = [];
 
@@ -1673,4 +1671,51 @@
       const val = Number(document.getElementById('cpn-val').value);
       coupons.unshift({ code, type: 'FLAT', value: val, minOrder: 0 });
       localStorage.setItem('mfs_coupons_v21', JSON.stringify(coupons));
-      render
+      renderAdminCoupons();
+      e.target.reset();
+      alert('Coupon added successfully!');
+    }
+
+    function saveAdminSettings() {
+      storeSettings.name = document.getElementById('setting-store-name').value.trim() || storeSettings.name;
+      storeSettings.phone = document.getElementById('setting-store-phone').value.trim() || storeSettings.phone;
+      storeSettings.upiId = document.getElementById('setting-upi-id').value.trim() || storeSettings.upiId;
+      
+      const newPin = document.getElementById('setting-new-pin').value.trim();
+      if (newPin) {
+        storeSettings.pin = newPin;
+      }
+      
+      storeSettings.returnPolicy = document.getElementById('setting-policy-return').value.trim();
+      storeSettings.shippingPolicy = document.getElementById('setting-policy-shipping').value.trim();
+
+      localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
+      alert('✅ All Settings & PIN Saved Successfully!');
+    }
+
+    function emergencyResetStore() {
+      if(confirm("Are you sure you want to reset store cache and load default products?")) {
+        localStorage.removeItem('mfs_products_v21');
+        localStorage.removeItem('mfs_settings_v21');
+        localStorage.removeItem('mfs_coupons_v21');
+        location.reload();
+      }
+    }
+
+    let secretTapCount = 0;
+    function handleSecretAdminTrigger() {
+      secretTapCount++;
+      if (secretTapCount >= 3) {
+        navigate('admin');
+        secretTapCount = 0;
+      }
+    }
+
+    // Ensure products render properly on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHomeProducts(products);
+      fetchCloudProducts();
+    });
+  </script>
+</body>
+</html>
