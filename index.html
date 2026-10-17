@@ -486,10 +486,10 @@
                   <span id="add-photo-counter" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">0/5 Photos</span>
                 </div>
                 
-                <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
+                <input type="file" id="prod-files-input" accept="image/jpeg, image/jpg, image/png, image/webp" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
                 
                 <p class="text-[10px] text-gray-500">
-                  📌 <b>Tip:</b> Pehli photo Cover Image (#1) banegi. Photos 100% Original HD Quality mein upload hongi.
+                  📌 <b>Tip:</b> Photos 100% Original High-Resolution <b>.JPG</b> Format mein convert hokar save hongi.
                 </p>
                 
                 <!-- Selected Photos Preview Queue with Delete Buttons -->
@@ -645,10 +645,10 @@
             <span id="edit-photo-counter" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">0/5 Photos</span>
           </div>
 
-          <input type="file" id="edit-prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
+          <input type="file" id="edit-prod-files-input" accept="image/jpeg, image/jpg, image/png, image/webp" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
           
           <p class="text-[10px] text-gray-500">
-            Kisi bhi photo ke upar bane ❌ button par click karke use hata sakte hain ya nayi HD photos add karein.
+            Kisi bhi photo ke upar bane ❌ button par click karke use hata sakte hain ya nayi HD JPG photos add karein.
           </p>
 
           <div id="edit-photo-queue" class="flex flex-wrap gap-2.5 pt-2"></div>
@@ -1276,11 +1276,35 @@
       alert('Review published successfully!');
     }
 
-    // ================= 100% ORIGINAL HD PHOTO LOADER (ZERO COMPRESSION) =================
-    function readFileAsBase64(file) {
+    // ================= 100% STRICT HD JPG CONVERTER & LOADER (NO BLUR) =================
+    function convertFileToHDJpg(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            
+            // Maximum quality settings
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
+            // White background fill for transparent images
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.drawImage(img, 0, 0);
+            
+            // Strictly force to image/jpeg (JPG format) at 100% crystal clear quality
+            const jpgBase64 = canvas.toDataURL('image/jpeg', 1.0);
+            resolve(jpgBase64);
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
@@ -1302,11 +1326,11 @@
 
       for (let file of filesToAdd) {
         try {
-          // Direct Original HD Base64 Load (Zero Compression)
-          const base64 = await readFileAsBase64(file);
-          currentQueue.push(base64);
+          // Strictly force convert to HD JPG without blur or distortion
+          const hdJpgBase64 = await convertFileToHDJpg(file);
+          currentQueue.push(hdJpgBase64);
         } catch (err) {
-          console.error("File read error:", err);
+          console.error("JPG conversion error:", err);
         }
       }
 
