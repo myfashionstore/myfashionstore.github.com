@@ -489,7 +489,7 @@
                 <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border border-gray-300 p-2 rounded bg-white text-xs">
                 
                 <p class="text-[10px] text-gray-500">
-                  📌 <b>Tip:</b> Pehli photo Cover Image (#1) banegi. HD quality maintain rahegi. Galat photo ko ❌ se hata sakte hain.
+                  📌 <b>Tip:</b> Pehli photo Cover Image (#1) banegi. Photos 100% Original HD Quality mein upload hongi.
                 </p>
                 
                 <!-- Selected Photos Preview Queue with Delete Buttons -->
@@ -648,7 +648,7 @@
           <input type="file" id="edit-prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border border-gray-300 p-1.5 rounded bg-white text-xs">
           
           <p class="text-[10px] text-gray-500">
-            Kisi bhi photo ke upar bane ❌ button par click karke use hata sakte hain ya neeche se nayi photos single ya batch me jod sakte hain.
+            Kisi bhi photo ke upar bane ❌ button par click karke use hata sakte hain ya nayi HD photos add karein.
           </p>
 
           <div id="edit-photo-queue" class="flex flex-wrap gap-2.5 pt-2"></div>
@@ -1145,8 +1145,8 @@
       allPhotos.forEach((imgUrl, idx) => {
         const isFirst = idx === 0;
         thumbBox.innerHTML += `
-          <button type="button" onclick="changeDetailPhoto('${imgUrl}', this)" class="detail-thumb-btn w-14 h-14 rounded-lg overflow-hidden border-2 ${isFirst ? 'border-black' : 'border-gray-200'} transition hover:border-black shadow-sm">
-            <img src="${imgUrl}" class="w-full h-full object-cover">
+          <button type="button" onclick="changeDetailPhoto('${imgUrl}', this)" class="detail-thumb-btn w-14 h-14 rounded-lg overflow-hidden border-2 ${isFirst ? 'border-black' : 'border-gray-200'} transition hover:border-black shadow-sm bg-white p-0.5">
+            <img src="${imgUrl}" class="w-full h-full object-contain">
           </button>
         `;
       });
@@ -1156,7 +1156,6 @@
       const cleanSizes = rawSizes.map(s => s.trim()).filter(s => s.length > 0);
       const productSizes = cleanSizes.length > 0 ? cleanSizes : ["Free Size"];
 
-      // Agar sirf 1 size hai (jaise Free Size), toh auto-select kar lo
       if (productSizes.length === 1) {
         currentSelectedSize = productSizes[0];
       } else {
@@ -1204,7 +1203,9 @@
       document.getElementById('similar-count').innerText = `${similarItems.length} Products`;
       simContainer.innerHTML = similarItems.map(p => `
         <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer bg-gray-50 p-2.5 rounded-xl border border-gray-200 hover:shadow-md transition">
-          <img src="${(p.images && p.images[0]) || p.image}" class="w-full h-36 object-cover rounded-lg mb-1.5">
+          <div class="w-full h-36 bg-white rounded-lg mb-1.5 flex items-center justify-center p-1">
+            <img src="${(p.images && p.images[0]) || p.image}" class="w-full h-full object-contain">
+          </div>
           <p class="text-[11px] font-bold text-gray-900 truncate">${p.title}</p>
           <span class="text-xs font-black">₹${p.price}</span>
         </div>
@@ -1248,7 +1249,7 @@
               <span class="text-[11px]">${stars}</span>
             </div>
             <p class="text-gray-600 text-[11px]">${r.comment}</p>
-            ${r.photo ? `<img src="${r.photo}" class="w-20 h-20 object-cover rounded-lg border mt-1">` : ''}
+            ${r.photo ? `<img src="${r.photo}" class="w-20 h-20 object-contain rounded-lg border mt-1 bg-white">` : ''}
           </div>
         `;
       });
@@ -1275,42 +1276,11 @@
       alert('Review published successfully!');
     }
 
-    // ================= HD IMAGE COMPRESSOR (NO BLURRINESS) =================
-    function compressImageFile(file, maxWidth = 1920, maxHeight = 1920, quality = 0.95) {
+    // ================= 100% ORIGINAL HD PHOTO LOADER (ZERO COMPRESSION) =================
+    function readFileAsBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-              if (width > maxWidth) {
-                height = Math.round((height * maxWidth) / width);
-                width = maxWidth;
-              }
-            } else {
-              if (height > maxHeight) {
-                width = Math.round((width * maxHeight) / height);
-                height = maxHeight;
-              }
-            }
-
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-
-            ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/jpeg', quality));
-          };
-          img.onerror = reject;
-          img.src = e.target.result;
-        };
+        reader.onload = (e) => resolve(e.target.result);
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
@@ -1332,10 +1302,11 @@
 
       for (let file of filesToAdd) {
         try {
-          const base64 = await compressImageFile(file);
+          // Direct Original HD Base64 Load (Zero Compression)
+          const base64 = await readFileAsBase64(file);
           currentQueue.push(base64);
         } catch (err) {
-          console.error("Compression error:", err);
+          console.error("File read error:", err);
         }
       }
 
@@ -1371,8 +1342,8 @@
       queue.forEach((photoUrl, idx) => {
         const isCover = idx === 0;
         container.innerHTML += `
-          <div class="relative w-16 h-16 rounded-xl overflow-hidden border-2 ${isCover ? 'border-black' : 'border-gray-300'} shadow-sm group">
-            <img src="${photoUrl}" class="w-full h-full object-cover">
+          <div class="relative w-16 h-16 rounded-xl overflow-hidden border-2 ${isCover ? 'border-black' : 'border-gray-300'} shadow-sm group bg-white p-0.5">
+            <img src="${photoUrl}" class="w-full h-full object-contain">
             <span class="absolute bottom-0 left-0 right-0 ${isCover ? 'bg-black text-amber-300' : 'bg-black/70 text-white'} text-[8px] font-black text-center py-0.5">
               ${isCover ? '⭐ Cover' : '#' + (idx + 1)}
             </span>
