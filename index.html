@@ -924,6 +924,8 @@
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
     let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21')) || defaultProducts;
     let products = Array.isArray(localSavedProducts) && localSavedProducts.length > 0 ? localSavedProducts : defaultProducts;
+    
+    // Loaded from localStorage to support permanent deletion
     let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || initialCoupons;
     let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v21')) || {};
 
@@ -1189,7 +1191,7 @@
       alert('Review published successfully!');
     }
 
-    // Optimized Image Compression to prevent local storage quota errors
+    // Optimized Image Compression
     function compressImage(file, maxWidth = 800, quality = 0.7) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -1592,6 +1594,14 @@
       if(document.getElementById('admin-pin-input').value === storeSettings.pin) {
         document.getElementById('admin-login-box').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
+        
+        // Fill existing settings values into inputs
+        document.getElementById('setting-store-name').value = storeSettings.name;
+        document.getElementById('setting-store-phone').value = storeSettings.phone;
+        document.getElementById('setting-upi-id').value = storeSettings.upiId;
+        document.getElementById('setting-policy-return').value = storeSettings.returnPolicy;
+        document.getElementById('setting-policy-shipping').value = storeSettings.shippingPolicy;
+
         renderAdminProductManagement();
         renderAdminCoupons();
       } else {
@@ -1607,12 +1617,19 @@
 
     function renderAdminCoupons() {
       const container = document.getElementById('admin-coupons-table');
+      if(!container) return;
       container.innerHTML = coupons.map((c, idx) => `
-        <div class="flex justify-between border p-2 rounded text-xs bg-gray-50">
-          <span><b>${c.code}</b> - ${c.value} Off</span>
-          <button onclick="coupons.splice(${idx},1);renderAdminCoupons();" class="text-red-600 font-bold">Delete</button>
+        <div class="flex justify-between items-center border p-2 rounded text-xs bg-gray-50">
+          <span><b>${c.code}</b> - ${c.value} ${c.type === 'FLAT' ? '₹ Off' : '% Off'}</span>
+          <button type="button" onclick="deleteCoupon(${idx})" class="text-red-600 font-bold hover:underline">Delete 🗑️</button>
         </div>
       `).join('');
+    }
+
+    function deleteCoupon(idx) {
+      coupons.splice(idx, 1);
+      localStorage.setItem('mfs_coupons_v21', JSON.stringify(coupons));
+      renderAdminCoupons();
     }
 
     function handleCreateCoupon(e) {
@@ -1623,7 +1640,24 @@
       localStorage.setItem('mfs_coupons_v21', JSON.stringify(coupons));
       renderAdminCoupons();
       e.target.reset();
-      alert('Coupon added!');
+      alert('Coupon added successfully!');
+    }
+
+    function saveAdminSettings() {
+      storeSettings.name = document.getElementById('setting-store-name').value.trim() || storeSettings.name;
+      storeSettings.phone = document.getElementById('setting-store-phone').value.trim() || storeSettings.phone;
+      storeSettings.upiId = document.getElementById('setting-upi-id').value.trim() || storeSettings.upiId;
+      
+      const newPin = document.getElementById('setting-new-pin').value.trim();
+      if (newPin) {
+        storeSettings.pin = newPin;
+      }
+      
+      storeSettings.returnPolicy = document.getElementById('setting-policy-return').value.trim();
+      storeSettings.shippingPolicy = document.getElementById('setting-policy-shipping').value.trim();
+
+      localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
+      alert('✅ All Settings & PIN Saved Successfully!');
     }
 
     let secretTapCount = 0;
