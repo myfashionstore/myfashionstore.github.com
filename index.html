@@ -39,13 +39,6 @@
     🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery
   </div>
 
-  <!-- ================= GLOBAL FLOATING BACK BUTTON ================= -->
-  <div id="floating-back-btn" class="hidden fixed bottom-5 left-5 z-50">
-    <button type="button" onclick="goBackHistory()" class="bg-black/80 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
-      <i class="fa-solid fa-arrow-left"></i> Back
-    </button>
-  </div>
-
   <!-- ================= NAVBAR ================= -->
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
@@ -943,54 +936,6 @@
     let addPhotosQueue = [];
     let editPhotosQueue = [];
 
-    // --- NAVIGATION HISTORY STACK FOR BACK BUTTON ---
-    let navigationHistory = ['home'];
-
-    window.navigate = function(view, pushHistory = true) {
-      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
-      const target = document.getElementById('page-' + view);
-      if (target) target.classList.remove('hidden');
-
-      if (pushHistory) {
-        if (navigationHistory[navigationHistory.length - 1] !== view) {
-          navigationHistory.push(view);
-        }
-      }
-
-      // Show/Hide Floating Back Button (Visible when not on home)
-      const floatBackBtn = document.getElementById('floating-back-btn');
-      if (view === 'home') {
-        floatBackBtn.classList.add('hidden');
-        navigationHistory = ['home']; // Reset stack on home
-      } else {
-        floatBackBtn.classList.remove('hidden');
-      }
-
-      if (view === 'home') {
-        renderHomeProducts(products);
-      } else if (view === 'all') {
-        currentCategory = 'All';
-        renderAllProducts(products);
-      } else if (view === 'myorders') {
-        renderCustomerOrdersDirect();
-      } else if (view === 'policies') {
-        document.getElementById('policy-return-display').innerText = storeSettings.returnPolicy;
-        document.getElementById('policy-shipping-display').innerText = storeSettings.shippingPolicy;
-      }
-      window.scrollTo(0, 0);
-    };
-
-    function goBackHistory() {
-      if (navigationHistory.length > 1) {
-        navigationHistory.pop(); // Remove current
-        const previousView = navigationHistory[navigationHistory.length - 1];
-        window.navigate(previousView, false);
-      } else {
-        window.navigate('home', false);
-      }
-    }
-    // ----------------------------------------------
-
     // --- CAROUSEL SLIDER LOGIC ---
     let currentSlideIndex = 0;
     const totalSlides = 6;
@@ -1029,6 +974,25 @@
       nextSlide();
     }, 4000);
     // ----------------------------
+
+    window.navigate = function(view) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+      const target = document.getElementById('page-' + view);
+      if (target) target.classList.remove('hidden');
+
+      if (view === 'home') {
+        renderHomeProducts(products);
+      } else if (view === 'all') {
+        currentCategory = 'All';
+        renderAllProducts(products);
+      } else if (view === 'myorders') {
+        renderCustomerOrdersDirect();
+      } else if (view === 'policies') {
+        document.getElementById('policy-return-display').innerText = storeSettings.returnPolicy;
+        document.getElementById('policy-shipping-display').innerText = storeSettings.shippingPolicy;
+      }
+      window.scrollTo(0, 0);
+    };
 
     function renderHomeProducts(items) {
       const grid = document.getElementById('home-product-grid');
@@ -1610,6 +1574,7 @@
       navigate('myorders');
     }
 
+    // Fixed Customer Orders Lookup by Mobile Number
     async function fetchCustomerCloudOrders() {
       const phoneInput = (document.getElementById('cust-search-phone').value || '').trim();
       const container = document.getElementById('customer-orders-container');
@@ -1628,6 +1593,7 @@
         const cloudData = await res.json();
         if (cloudData) {
           const cloudOrdersList = Object.values(cloudData);
+          // Merge unique orders
           cloudOrdersList.forEach(co => {
             if (!allOrders.some(localO => localO.orderId === co.orderId)) {
               allOrders.push(co);
