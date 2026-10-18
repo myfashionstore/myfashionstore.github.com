@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- ================= SEO & TITLE ================= -->
+  <!-- ================= SEO & GOOGLE VERIFICATION ================= -->
   <title id="site-title">My Fashion Store | Official Store</title>
+  <meta name="google-site-verification" content="XOr8Ci9rVVt-M_oRAZTV0J9OhI0ctAc7ba4O9GUYwLA" />
   <meta name="description" content="Shop premium festive wear, ethnic kurtas, graphic tees, and streetwear at My Fashion Store. Fast delivery across India.">
-  
+  <meta name="keywords" content="fashion store, festive kurta, chhath puja clothes, zubeen garg tshirt, diwali kurtas, streetwear india">
+  <meta name="robots" content="index, follow">
+
   <!-- Tailwind CSS & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,6 +20,7 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.96); }
     
+    /* 6-Slide Smooth Carousel */
     #slider-track {
       display: flex;
       width: 600%;
@@ -30,23 +34,23 @@
 </head>
 <body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen antialiased select-none">
 
-  <!-- TOP ANNOUNCEMENT -->
-  <div class="bg-gradient-to-r from-red-700 via-amber-600 to-indigo-700 text-white text-[11px] py-1.5 px-4 text-center font-bold tracking-wide shadow-sm">
+  <!-- ================= TOP ANNOUNCEMENT ================= -->
+  <div id="announcement-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-indigo-700 text-white text-[11px] py-1.5 px-4 text-center font-bold tracking-wide shadow-sm">
     🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery
   </div>
 
-  <!-- GLOBAL FLOATING BACK BUTTON -->
+  <!-- ================= GLOBAL FLOATING BACK BUTTON ================= -->
   <div id="floating-back-btn" class="hidden fixed bottom-5 left-5 z-50">
-    <button type="button" onclick="goBackHistory()" class="bg-black/90 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
+    <button type="button" onclick="goBackHistory()" class="bg-black/80 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
       <i class="fa-solid fa-arrow-left"></i> Back
     </button>
   </div>
 
-  <!-- NAVBAR -->
+  <!-- ================= NAVBAR ================= -->
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       
-      <!-- Brand Logo -->
+      <!-- Brand Logo SVG -->
       <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
         <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
@@ -65,13 +69,13 @@
         <button type="button" onclick="filterCategory('Men')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Men</button>
         <button type="button" onclick="filterCategory('Women')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Women</button>
         <button type="button" onclick="filterCategory('Kids')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Kids</button>
-        <button type="button" onclick="navigate('myorders')" class="text-blue-600 flex items-center font-bold py-1 px-2 rounded hover:bg-blue-50">
+        <button type="button" onclick="navigate('myorders')" class="hover:text-blue-600 flex items-center font-bold text-blue-600 py-1 px-2 rounded hover:bg-blue-50">
           <i class="fa-solid fa-bag-shopping mr-1"></i> My Orders
         </button>
         <button type="button" onclick="navigate('policies')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Policies</button>
       </nav>
 
-      <!-- Cart Button & Mobile Orders -->
+      <!-- Cart Button & Mobile My Orders -->
       <div class="flex items-center space-x-3">
         <button type="button" onclick="navigate('myorders')" class="md:hidden text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-lg font-bold">
           My Orders
@@ -84,13 +88,13 @@
     </div>
   </header>
 
-  <!-- MAIN VIEWS -->
+  <!-- ================= MAIN VIEWS ================= -->
   <main class="flex-grow">
     
-    <!-- VIEW 1: HOME -->
+    <!-- ====== VIEW 1: HOME PAGE ====== -->
     <div id="page-home" class="page-view">
       
-      <!-- Carousel -->
+      <!-- 6-SLIDE CAROUSEL -->
       <section class="relative bg-neutral-950 text-white overflow-hidden py-4 md:py-6 shadow-md">
         <div class="max-w-5xl mx-auto overflow-hidden relative rounded-2xl">
           <div id="slider-track">
@@ -215,7 +219,7 @@
         </div>
       </section>
 
-      <!-- Featured Apparel Grid -->
+      <!-- Featured Apparel Grid on Home -->
       <section class="max-w-7xl mx-auto px-4 py-4 space-y-4">
         <div class="border-b pb-2 flex justify-between items-center">
           <div>
@@ -231,7 +235,7 @@
 
     </div>
 
-    <!-- VIEW 2: ALL COLLECTION -->
+    <!-- ====== VIEW 2: ALL COLLECTION ====== -->
     <div id="page-all" class="page-view hidden max-w-7xl mx-auto px-4 py-6 space-y-4">
       <div class="border-b pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
@@ -265,7 +269,7 @@
       <div id="all-product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 pt-2"></div>
     </div>
 
-    <!-- VIEW 3: PRODUCT DETAILS -->
+    <!-- ====== VIEW 3: PRODUCT DETAILS ====== -->
     <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6">
       <button type="button" onclick="navigate('home')" class="text-xs font-bold text-gray-700 hover:text-black mb-4 flex items-center gap-1.5 bg-gray-100 px-3.5 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-200 transition">
         <i class="fa-solid fa-arrow-left"></i> Back to Collection
@@ -346,7 +350,7 @@
       </div>
     </div>
 
-    <!-- VIEW 4: MY ORDERS -->
+    <!-- ====== VIEW 4: MY ORDERS ====== -->
     <div id="page-myorders" class="page-view hidden max-w-3xl mx-auto px-4 py-6">
       <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
         <div class="flex justify-between items-center border-b pb-2">
@@ -369,7 +373,7 @@
       </div>
     </div>
 
-    <!-- VIEW 5: POLICIES -->
+    <!-- ====== VIEW 5: POLICIES ====== -->
     <div id="page-policies" class="page-view hidden max-w-4xl mx-auto px-4 py-8 space-y-4">
       <div class="border-b pb-2">
         <h1 class="text-xl font-extrabold">Store Policies</h1>
@@ -384,7 +388,7 @@
       </div>
     </div>
 
-    <!-- VIEW 6: SECRET ADMIN DASHBOARD -->
+    <!-- ====== VIEW 6: SECRET ADMIN DASHBOARD ====== -->
     <div id="page-admin" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-md my-8 text-center space-y-3">
         <i class="fa-solid fa-shield-cat text-3xl text-black"></i>
@@ -585,7 +589,7 @@
     </div>
   </main>
 
-  <!-- EDIT MODAL -->
+  <!-- ================= EDIT MODAL ================= -->
   <div id="edit-product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-gray-200 my-8">
       <div class="flex justify-between items-center border-b pb-2.5">
@@ -645,7 +649,7 @@
     </div>
   </div>
 
-  <!-- REVIEW MODAL -->
+  <!-- ================= REVIEW MODAL ================= -->
   <div id="review-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-200">
       <div class="flex justify-between items-center border-b pb-2.5">
@@ -678,7 +682,7 @@
     </div>
   </div>
 
-  <!-- TRACKING MODAL -->
+  <!-- ================= TRACKING MODAL ================= -->
   <div id="tracking-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl space-y-4 border border-gray-200">
       <div class="flex justify-between items-center border-b pb-2.5">
@@ -693,10 +697,53 @@
         <p><strong>Items:</strong> <span id="track-items"></span></p>
         <p><strong>Shipping Address:</strong> <span id="track-address"></span></p>
       </div>
+      <div id="order-actions-container" class="space-y-2 pt-1 border-t">
+        <button type="button" id="cust-cancel-btn" onclick="handleCustomerCancelOrder()" class="w-full bg-red-50 text-red-700 border border-red-200 py-2.5 rounded-xl text-xs font-bold uppercase hover:bg-red-100 transition hidden">
+          Cancel This Order
+        </button>
+        <button type="button" id="cust-return-btn" onclick="openReturnModal()" class="w-full bg-amber-50 text-amber-800 border border-amber-200 py-2.5 rounded-xl text-xs font-bold uppercase hover:bg-amber-100 transition hidden">
+          Request Return / Exchange
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- SUCCESS MODAL -->
+  <!-- ================= RETURN MODAL ================= -->
+  <div id="return-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-gray-200">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="text-sm font-black text-gray-900">Return / Exchange Request</h3>
+        <button type="button" onclick="closeReturnModal()" class="text-gray-400 hover:text-black text-xl font-bold">&times;</button>
+      </div>
+      <p class="text-[11px] text-gray-500">Order ID: <span id="return-modal-order-id" class="font-bold text-black font-mono"></span></p>
+      <form onsubmit="submitReturnRequest(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Request Type *</label>
+          <select id="return-type" class="w-full border p-2 rounded-lg bg-white font-semibold" required>
+            <option value="Exchange">Exchange (Size / Color)</option>
+            <option value="Return">Return & Refund</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Reason *</label>
+          <select id="return-reason" class="w-full border p-2 rounded-lg bg-white font-semibold" required>
+            <option value="Size issue">Size issue (Too small/large)</option>
+            <option value="Defective or Damaged">Defective or Damaged</option>
+            <option value="Quality not as expected">Quality not as expected</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Additional Note</label>
+          <textarea id="return-notes" rows="2" class="w-full border p-2 rounded-lg"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-black text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition">
+          Submit Request
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= SUCCESS MODAL ================= -->
   <div id="order-success-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-3.5 shadow-2xl border border-gray-200">
       <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center text-xl mx-auto">
@@ -705,6 +752,9 @@
       <h3 class="text-base font-black text-gray-900">Order Confirmed!</h3>
       <p class="text-xs text-gray-600">Order ID: <span id="success-order-id" class="font-bold text-blue-700 font-mono"></span></p>
       <div class="pt-2 space-y-2">
+        <a id="success-whatsapp-btn" target="_blank" href="#" class="w-full bg-green-600 text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-green-700 flex items-center justify-center gap-1.5 shadow">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Get WhatsApp Receipt
+        </a>
         <button type="button" onclick="closeOrderSuccessModal()" class="w-full bg-black text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wider">
           Go To My Orders
         </button>
@@ -712,7 +762,7 @@
     </div>
   </div>
 
-  <!-- CART DRAWER -->
+  <!-- ================= CART DRAWER ================= -->
   <div id="cart-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end backdrop-blur-sm">
     <div class="bg-white w-full max-w-md h-full flex flex-col p-5 shadow-2xl overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
@@ -787,8 +837,8 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-2">
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-1">
     <p class="text-xs font-extrabold uppercase brand-name-display">MY FASHION STORE</p>
     <div class="flex justify-center space-x-4 text-[11px] text-gray-500 py-1">
       <button type="button" onclick="navigate('home')">Home</button>
@@ -796,17 +846,12 @@
       <button type="button" onclick="navigate('myorders')">My Orders</button>
       <button type="button" onclick="navigate('policies')">Policies</button>
     </div>
-    <div>
-      <button type="button" onclick="emergencyResetStore()" class="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-full font-bold border border-red-200 shadow-sm">
-        🔄 Reset Store & Load Products
-      </button>
-    </div>
     <p id="secret-admin-trigger" onclick="handleSecretAdminTrigger()" class="text-[10px] text-gray-400 cursor-pointer select-none py-1">
       © 2026 My Fashion Store. All Rights Reserved.
     </p>
   </footer>
 
-  <!-- JAVASCRIPT -->
+  <!-- ================= JAVASCRIPT ================= -->
   <script>
     const FIREBASE_DB_URL = "https://myfashionstore-a7200-default-rtdb.firebaseio.com";
 
@@ -821,39 +866,71 @@
     };
 
     const defaultProducts = [
-      { id: 101, title: "Zubeen Da Tribute Black Graphic Rock Tee", price: 799, category: "Men", sizes: ["M", "L", "XL"], description: "Special Birthday Edition 240 GSM Pure Combed Cotton.", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", images: ["https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600"], supplierUrl: "https://www.meesho.com/p/sample1" },
-      { id: 102, title: "Chhath Puja Special Saffron Silk Kurta", price: 1199, category: "Men", sizes: ["M", "L", "XL"], description: "Pure hand-spun saffron festive kurta designed for rituals.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"], supplierUrl: "https://www.meesho.com/p/sample2" },
-      { id: 103, title: "Chhath Mahaparv Red & Gold Zari Saree Set", price: 1799, category: "Women", sizes: ["Free Size"], description: "Traditional Banarasi soft silk saree with golden border.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", images: ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"], supplierUrl: "https://www.meesho.com/p/sample3" },
-      { id: 104, title: "Christmas Holiday Fleece Oversized Hoodie", price: 1399, category: "Men", sizes: ["M", "L", "XL"], description: "Heavyweight 380 GSM fleece pullover hoodie.", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600", images: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600"], supplierUrl: "https://www.meesho.com/p/sample4" },
-      { id: 105, title: "Royal Embroidered Silk Festive Kurta", price: 1299, category: "Men", sizes: ["M", "L", "XL"], description: "Premium blended art-silk with golden zari collar.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"], supplierUrl: "https://www.meesho.com/p/sample5" },
-      { id: 106, title: "Anarkali Festive Flared Kurti Set", price: 1699, category: "Women", sizes: ["S", "M", "L", "XL"], description: "Chanderi cotton silk dress with dupatta.", image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600", images: ["https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600"], supplierUrl: "https://www.meesho.com/p/sample6" },
-      { id: 107, title: "Urban Streetwear Oversized Black Tee", price: 699, category: "Men", sizes: ["S", "M", "L", "XL"], description: "240 GSM bio-washed heavy cotton tee.", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600", images: ["https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600"], supplierUrl: "https://www.meesho.com/p/sample7" },
-      { id: 108, title: "Designer Party Wear Georgette Saree", price: 1499, category: "Women", sizes: ["Free Size"], description: "Soft georgette saree with stone work.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", images: ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"], supplierUrl: "https://www.meesho.com/p/sample8" },
-      { id: 109, title: "Kids Festive Sherwani Kurta Set", price: 999, category: "Kids", sizes: ["2-4 Yrs", "4-6 Yrs", "6-8 Yrs"], description: "Traditional ethnic wear for kids celebration.", image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600", images: ["https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600"], supplierUrl: "https://www.meesho.com/p/sample9" },
-      { id: 110, title: "Tactical Utility Cargo Pants", price: 1399, category: "Men", sizes: ["30", "32", "34", "36"], description: "Relaxed fit multi-pocket cargo streetwear.", image: "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=600", images: ["https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=600"], supplierUrl: "https://www.meesho.com/p/sample10" },
-      { id: 111, title: "Embroidered Cotton Straight Kurti", price: 799, category: "Women", sizes: ["S", "M", "L", "XL"], description: "Daily wear straight fit breathable kurti.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"], supplierUrl: "https://www.meesho.com/p/sample11" },
-      { id: 112, title: "Classic White Linen Casual Shirt", price: 899, category: "Men", sizes: ["M", "L", "XL"], description: "Breathable pure linen slim-fit shirt.", image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600", images: ["https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600"], supplierUrl: "https://www.meesho.com/p/sample12" },
-      { id: 113, title: "Kids Cute Party Frock Dress", price: 849, category: "Kids", sizes: ["3-5 Yrs", "5-7 Yrs"], description: "Net flared festive frock with bow.", image: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=600", images: ["https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=600"], supplierUrl: "https://www.meesho.com/p/sample13" },
-      { id: 114, title: "Heavy Winter Bomber Jacket", price: 1899, category: "Men", sizes: ["M", "L", "XL"], description: "Windproof padded winter jacket.", image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=600", images: ["https://images.unsplash.com/photo-1544441893-675973e31985?w=600"], supplierUrl: "https://www.meesho.com/p/sample14" },
-      { id: 115, title: "Bandhani Print Traditional Saree", price: 1299, category: "Women", sizes: ["Free Size"], description: "Authentic bandhani print festive saree.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", images: ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"], supplierUrl: "https://www.meesho.com/p/sample15" }
+      { 
+        id: 101, 
+        title: "Zubeen Da Tribute Black Graphic Rock Tee", 
+        price: 799, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Special Birthday Edition 240 GSM Pure Combed Cotton with Mayabini Rock Typography.", 
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600",
+          "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600",
+          "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600"
+        ]
+      },
+      { 
+        id: 102, 
+        title: "Chhath Puja Special Saffron Silk Kurta", 
+        price: 1199, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Pure hand-spun saffron festive kurta designed for Chhath Puja rituals.", 
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600",
+          "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"
+        ]
+      },
+      { 
+        id: 103, 
+        title: "Chhath Mahaparv Red & Gold Zari Saree Set", 
+        price: 1799, 
+        category: "Women", 
+        sizes: ["Free Size"], 
+        description: "Traditional Banarasi blended soft silk saree in pure festive red and golden border.", 
+        image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600",
+          "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600"
+        ]
+      },
+      { 
+        id: 104, 
+        title: "Christmas Holiday Fleece Oversized Hoodie", 
+        price: 1399, 
+        category: "Men", 
+        sizes: ["M", "L", "XL"], 
+        description: "Heavyweight 380 GSM fleece pullover hoodie in deep pine green & crimson red.", 
+        image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600", 
+        images: [
+          "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600",
+          "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600"
+        ]
+      }
+    ];
+
+    const initialCoupons = [
+      { code: "ZUBEEN52", type: "FLAT", value: 150, minOrder: 699 },
+      { code: "CHHATH50", type: "FLAT", value: 50, minOrder: 499 },
+      { code: "FESTIVE100", type: "FLAT", value: 100, minOrder: 500 },
+      { code: "XMAS25", type: "PERCENT", value: 25, minOrder: 999 }
     ];
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
-    let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21'));
-    let products = [];
-
-    if (Array.isArray(localSavedProducts) && localSavedProducts.length > 0) {
-      products = localSavedProducts;
-      defaultProducts.forEach(defP => {
-        if (!products.some(p => p.title.toLowerCase() === defP.title.toLowerCase())) {
-          products.push(defP);
-        }
-      });
-    } else {
-      products = defaultProducts;
-    }
-    localStorage.setItem('mfs_products_v21', JSON.stringify(products));
-
+    let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21')) || defaultProducts;
+    let products = Array.isArray(localSavedProducts) && localSavedProducts.length > 0 ? localSavedProducts : defaultProducts;
     let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || initialCoupons;
     let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v21')) || {};
 
@@ -866,6 +943,7 @@
     let addPhotosQueue = [];
     let editPhotosQueue = [];
 
+    // --- NAVIGATION HISTORY STACK FOR BACK BUTTON ---
     let navigationHistory = ['home'];
 
     window.navigate = function(view, pushHistory = true) {
@@ -879,10 +957,11 @@
         }
       }
 
+      // Show/Hide Floating Back Button (Visible when not on home)
       const floatBackBtn = document.getElementById('floating-back-btn');
       if (view === 'home') {
         floatBackBtn.classList.add('hidden');
-        navigationHistory = ['home'];
+        navigationHistory = ['home']; // Reset stack on home
       } else {
         floatBackBtn.classList.remove('hidden');
       }
@@ -903,14 +982,16 @@
 
     function goBackHistory() {
       if (navigationHistory.length > 1) {
-        navigationHistory.pop();
+        navigationHistory.pop(); // Remove current
         const previousView = navigationHistory[navigationHistory.length - 1];
         window.navigate(previousView, false);
       } else {
         window.navigate('home', false);
       }
     }
+    // ----------------------------------------------
 
+    // --- CAROUSEL SLIDER LOGIC ---
     let currentSlideIndex = 0;
     const totalSlides = 6;
 
@@ -947,6 +1028,7 @@
     setInterval(() => {
       nextSlide();
     }, 4000);
+    // ----------------------------
 
     function renderHomeProducts(items) {
       const grid = document.getElementById('home-product-grid');
@@ -1105,7 +1187,6 @@
 
     function renderProductReviews(prodId) {
       const list = document.getElementById('product-reviews-list');
-      if(!list) return;
       list.innerHTML = '';
       const reviews = productReviews[prodId] || [];
       if(reviews.length === 0) {
@@ -1144,6 +1225,7 @@
       alert('Review published successfully!');
     }
 
+    // Optimized Image Compression
     function compressImage(file, maxWidth = 800, quality = 0.7) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -1691,15 +1773,6 @@
       alert('✅ All Settings & PIN Saved Successfully!');
     }
 
-    function emergencyResetStore() {
-      if(confirm("Are you sure you want to reset store cache and load default products?")) {
-        localStorage.removeItem('mfs_products_v21');
-        localStorage.removeItem('mfs_settings_v21');
-        localStorage.removeItem('mfs_coupons_v21');
-        location.reload();
-      }
-    }
-
     let secretTapCount = 0;
     function handleSecretAdminTrigger() {
       secretTapCount++;
@@ -1709,9 +1782,7 @@
       }
     }
 
-    // Safe execution on startup
     window.addEventListener('DOMContentLoaded', () => {
-      renderHomeProducts(products);
       fetchCloudProducts();
     });
   </script>
