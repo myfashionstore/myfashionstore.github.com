@@ -39,27 +39,27 @@
     🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery
   </div>
 
+  <!-- ================= GLOBAL FLOATING BACK BUTTON ================= -->
+  <div id="floating-back-btn" class="hidden fixed bottom-5 left-5 z-50">
+    <button type="button" onclick="goBackHistory()" class="bg-black/80 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
+      <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+  </div>
+
   <!-- ================= NAVBAR ================= -->
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       
-      <!-- Brand Logo SVG & Top Back Button -->
-      <div class="flex items-center space-x-3">
-        <div id="top-back-btn-container" class="hidden">
-          <button type="button" onclick="goBackHistory()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition border border-gray-300">
-            <i class="fa-solid fa-arrow-left"></i> Back
-          </button>
-        </div>
-        <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
-          <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
-            <path d="M35 22C35 20 37 18 39 18C41 18 43 20 43 22C43 25 39 27 35 29" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M20 48L35 32L50 48" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M27 48V39M43 48V39" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
-            <text x="75" y="44" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#111111" letter-spacing="1">MFS</text>
-            <text x="75" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#777777" letter-spacing="3">MYFASHIONSTORE</text>
-          </svg>
-        </div>
+      <!-- Brand Logo SVG -->
+      <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
+        <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
+          <path d="M35 22C35 20 37 18 39 18C41 18 43 20 43 22C43 25 39 27 35 29" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 48L35 32L50 48" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M27 48V39M43 48V39" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="75" y="44" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#111111" letter-spacing="1">MFS</text>
+          <text x="75" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#777777" letter-spacing="3">MYFASHIONSTORE</text>
+        </svg>
       </div>
       
       <!-- Navigation Menu -->
@@ -422,7 +422,7 @@
           </button>
         </div>
 
-        <!-- TAB 1: ORDERS -->
+        <!-- TAB 1: ORDERS (WITH SUPPLIER LINK) -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
           <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
             <div>
@@ -438,19 +438,6 @@
 
         <!-- TAB 2: PRODUCTS -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
-          
-          <!-- CUSTOM CODE / JSON PRODUCT IMPORTER BOX -->
-          <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 space-y-2">
-            <label class="block text-blue-900 font-bold text-xs">
-              <i class="fa-solid fa-code mr-1"></i> Custom Code / JSON Product Importer
-            </label>
-            <p class="text-[10px] text-gray-600">Yahan apne products ka JSON code paste karein aur import dabayein:</p>
-            <textarea id="custom-json-input" rows="3" placeholder='[{"id":501, "title":"Saree Name", "price":799, "category":"Women", "image":"...", "supplierUrl":"..."}]' class="w-full border border-blue-300 p-2 rounded bg-white text-xs font-mono"></textarea>
-            <button type="button" onclick="handleCustomCodeImport()" class="bg-blue-600 text-white px-4 py-2 rounded text-xs font-bold uppercase hover:bg-blue-700 shadow transition">
-              Add Products via Code 🚀
-            </button>
-          </div>
-
           <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
               <h3 class="text-sm font-bold">Publish New Item (Upload Photos)</h3>
@@ -795,6 +782,11 @@
       <button type="button" onclick="navigate('myorders')">My Orders</button>
       <button type="button" onclick="navigate('policies')">Policies</button>
     </div>
+    <div>
+      <button type="button" onclick="emergencyResetStore()" class="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-full font-bold border border-red-200 shadow-sm">
+        🔄 Reset Store & Load Products
+      </button>
+    </div>
     <p id="secret-admin-trigger" onclick="handleSecretAdminTrigger()" class="text-[10px] text-gray-400 cursor-pointer select-none py-1">
       © 2026 My Fashion Store. All Rights Reserved.
     </p>
@@ -814,48 +806,29 @@
       pin: "9876"
     };
 
+    const defaultProducts = [
+      { id: 101, title: "Zubeen Da Tribute Black Graphic Rock Tee", price: 799, category: "Men", sizes: ["M", "L", "XL"], description: "Special Birthday Edition 240 GSM Pure Combed Cotton.", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", images: ["https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600"], supplierUrl: "https://www.meesho.com/p/sample1" },
+      { id: 102, title: "Chhath Puja Special Saffron Silk Kurta", price: 1199, category: "Men", sizes: ["M", "L", "XL"], description: "Pure hand-spun saffron festive kurta designed for rituals.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"], supplierUrl: "https://www.meesho.com/p/sample2" },
+      { id: 103, title: "Chhath Mahaparv Red & Gold Zari Saree Set", price: 1799, category: "Women", sizes: ["Free Size"], description: "Traditional Banarasi soft silk saree with golden border.", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600", images: ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"], supplierUrl: "https://www.meesho.com/p/sample3" },
+      { id: 104, title: "Christmas Holiday Fleece Oversized Hoodie", price: 1399, category: "Men", sizes: ["M", "L", "XL"], description: "Heavyweight 380 GSM fleece pullover hoodie.", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600", images: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600"], supplierUrl: "https://www.meesho.com/p/sample4" },
+      { id: 105, title: "Royal Embroidered Silk Festive Kurta", price: 1299, category: "Men", sizes: ["M", "L", "XL"], description: "Premium blended art-silk with golden zari collar.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"], supplierUrl: "https://www.meesho.com/p/sample5" }
+    ];
+
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
     let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21'));
     let products = [];
 
-    // Sirf aapke save kiye hue aur custom products hi load honge, koi dummy default product nahi aayega
     if (Array.isArray(localSavedProducts) && localSavedProducts.length > 0) {
       products = localSavedProducts;
+      defaultProducts.forEach(defP => {
+        if (!products.some(p => p.title.toLowerCase() === defP.title.toLowerCase())) {
+          products.push(defP);
+        }
+      });
     } else {
-      products = [];
+      products = defaultProducts;
     }
     localStorage.setItem('mfs_products_v21', JSON.stringify(products));
-
-    // Custom Code / JSON Product Importer Function
-    function handleCustomCodeImport() {
-      const rawCode = document.getElementById('custom-json-input').value.trim();
-      if(!rawCode) return alert('⚠️ Pehle code ya JSON paste karein!');
-      try {
-        const newItems = JSON.parse(rawCode);
-        if(!Array.isArray(newItems)) return alert('⚠️ Format galat hai! Array [] format hona chahiye.');
-        
-        let currentProds = JSON.parse(localStorage.getItem('mfs_products_v21')) || products;
-        let added = 0;
-        
-        newItems.forEach(item => {
-          if(!currentProds.some(p => p.title.toLowerCase() === item.title.toLowerCase())) {
-            currentProds.unshift(item);
-            added++;
-          }
-        });
-        
-        products = currentProds;
-        localStorage.setItem('mfs_products_v21', JSON.stringify(products));
-        syncProductsToCloud();
-        renderAdminProductManagement();
-        renderHomeProducts(products);
-        
-        document.getElementById('custom-json-input').value = '';
-        alert(`🎉 Success! ${added} naye products code ke zariye successfully add ho gaye hain!`);
-      } catch(err) {
-        alert('❌ JSON Parsing Error: ' + err.message);
-      }
-    }
 
     let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || [
       { code: "ZUBEEN52", type: "FLAT", value: 150, minOrder: 699 }
@@ -883,12 +856,12 @@
         }
       }
 
-      const topBackBtn = document.getElementById('top-back-btn-container');
+      const floatBackBtn = document.getElementById('floating-back-btn');
       if (view === 'home') {
-        topBackBtn.classList.add('hidden');
+        floatBackBtn.classList.add('hidden');
         navigationHistory = ['home'];
       } else {
-        topBackBtn.classList.remove('hidden');
+        floatBackBtn.classList.remove('hidden');
       }
 
       if (view === 'home') {
@@ -1614,6 +1587,7 @@
       }
     }
 
+    // --- FULLY RESTORED ADMIN ORDERS & SUPPLIER LINK INTEGRATION ---
     async function fetchCloudOrders() {
       const container = document.getElementById('admin-orders-list');
       if(!container) return;
@@ -1644,6 +1618,7 @@
       container.innerHTML = allOrders.map((o, index) => {
         const currentStatus = o.status || "Order Confirmed";
         
+        // Match product title to extract supplier link automatically
         let matchedSupplierHtml = '<span class="text-[10px] text-gray-400">No Supplier Link Linked</span>';
         if (o.items && Array.isArray(products)) {
           let foundProd = products.find(p => o.items.toLowerCase().includes(p.title.toLowerCase()));
@@ -1664,6 +1639,7 @@
               <p class="sm:col-span-2"><b>Items:</b> ${o.items}</p>
               <p class="sm:col-span-2 text-gray-500"><b>Address:</b> ${o.address ? o.address.full : ''}</p>
               
+              <!-- Supplier Link Box -->
               <div class="sm:col-span-2 pt-1 pb-1 bg-blue-50/50 p-2 rounded-lg border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1">
                 <span class="font-bold text-blue-900">Sourcing / Supplier Link:</span>
                 ${matchedSupplierHtml}
@@ -1779,6 +1755,15 @@
 
       localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
       alert('✅ All Settings & PIN Saved Successfully!');
+    }
+
+    function emergencyResetStore() {
+      if(confirm("Are you sure you want to reset store cache and load default products?")) {
+        localStorage.removeItem('mfs_products_v21');
+        localStorage.removeItem('mfs_settings_v21');
+        localStorage.removeItem('mfs_coupons_v21');
+        location.reload();
+      }
     }
 
     let secretTapCount = 0;
