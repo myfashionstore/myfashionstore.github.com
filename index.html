@@ -39,27 +39,27 @@
     🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery
   </div>
 
-  <!-- ================= GLOBAL FLOATING BACK BUTTON ================= -->
-  <div id="floating-back-btn" class="hidden fixed bottom-5 left-5 z-50">
-    <button type="button" onclick="goBackHistory()" class="bg-black/80 hover:bg-black text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1.5 transition">
-      <i class="fa-solid fa-arrow-left"></i> Back
-    </button>
-  </div>
-
   <!-- ================= NAVBAR ================= -->
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       
-      <!-- Brand Logo SVG -->
-      <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
-        <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
-          <path d="M35 22C35 20 37 18 39 18C41 18 43 20 43 22C43 25 39 27 35 29" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M20 48L35 32L50 48" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M27 48V39M43 48V39" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
-          <text x="75" y="44" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#111111" letter-spacing="1">MFS</text>
-          <text x="75" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#777777" letter-spacing="3">MYFASHIONSTORE</text>
-        </svg>
+      <!-- Brand Logo SVG & Top Back Button -->
+      <div class="flex items-center space-x-3">
+        <div id="top-back-btn-container" class="hidden">
+          <button type="button" onclick="goBackHistory()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition border border-gray-300">
+            <i class="fa-solid fa-arrow-left"></i> Back
+          </button>
+        </div>
+        <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
+          <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
+            <path d="M35 22C35 20 37 18 39 18C41 18 43 20 43 22C43 25 39 27 35 29" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M20 48L35 32L50 48" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M27 48V39M43 48V39" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="75" y="44" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#111111" letter-spacing="1">MFS</text>
+            <text x="75" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#777777" letter-spacing="3">MYFASHIONSTORE</text>
+          </svg>
+        </div>
       </div>
       
       <!-- Navigation Menu -->
@@ -444,7 +444,7 @@
             <label class="block text-blue-900 font-bold text-xs">
               <i class="fa-solid fa-code mr-1"></i> Custom Code / JSON Product Importer
             </label>
-            <p class="text-[10px] text-gray-600">Yahan apne 25+ products ka JSON code paste karein aur import dabayein:</p>
+            <p class="text-[10px] text-gray-600">Yahan apne products ka JSON code paste karein aur import dabayein:</p>
             <textarea id="custom-json-input" rows="3" placeholder='[{"id":501, "title":"Saree Name", "price":799, "category":"Women", "image":"...", "supplierUrl":"..."}]' class="w-full border border-blue-300 p-2 rounded bg-white text-xs font-mono"></textarea>
             <button type="button" onclick="handleCustomCodeImport()" class="bg-blue-600 text-white px-4 py-2 rounded text-xs font-bold uppercase hover:bg-blue-700 shadow transition">
               Add Products via Code 🚀
@@ -795,11 +795,6 @@
       <button type="button" onclick="navigate('myorders')">My Orders</button>
       <button type="button" onclick="navigate('policies')">Policies</button>
     </div>
-    <div>
-      <button type="button" onclick="emergencyResetStore()" class="text-[10px] bg-red-50 text-red-700 px-3 py-1 rounded-full font-bold border border-red-200 shadow-sm">
-        🔄 Reset Store & Load Products
-      </button>
-    </div>
     <p id="secret-admin-trigger" onclick="handleSecretAdminTrigger()" class="text-[10px] text-gray-400 cursor-pointer select-none py-1">
       © 2026 My Fashion Store. All Rights Reserved.
     </p>
@@ -819,24 +814,15 @@
       pin: "9876"
     };
 
-    const defaultProducts = [
-      { id: 101, title: "Zubeen Da Tribute Black Graphic Rock Tee", price: 799, category: "Men", sizes: ["M", "L", "XL"], description: "Special Birthday Edition 240 GSM Pure Combed Cotton.", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600", images: ["https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600"], supplierUrl: "https://www.meesho.com/p/sample1" },
-      { id: 102, title: "Chhath Puja Special Saffron Silk Kurta", price: 1199, category: "Men", sizes: ["M", "L", "XL"], description: "Pure hand-spun saffron festive kurta designed for rituals.", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600"], supplierUrl: "https://www.meesho.com/p/sample2" }
-    ];
-
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
     let localSavedProducts = JSON.parse(localStorage.getItem('mfs_products_v21'));
     let products = [];
 
+    // Sirf aapke save kiye hue aur custom products hi load honge, koi dummy default product nahi aayega
     if (Array.isArray(localSavedProducts) && localSavedProducts.length > 0) {
       products = localSavedProducts;
-      defaultProducts.forEach(defP => {
-        if (!products.some(p => p.title.toLowerCase() === defP.title.toLowerCase())) {
-          products.push(defP);
-        }
-      });
     } else {
-      products = defaultProducts;
+      products = [];
     }
     localStorage.setItem('mfs_products_v21', JSON.stringify(products));
 
@@ -897,12 +883,12 @@
         }
       }
 
-      const floatBackBtn = document.getElementById('floating-back-btn');
+      const topBackBtn = document.getElementById('top-back-btn-container');
       if (view === 'home') {
-        floatBackBtn.classList.add('hidden');
+        topBackBtn.classList.add('hidden');
         navigationHistory = ['home'];
       } else {
-        floatBackBtn.classList.remove('hidden');
+        topBackBtn.classList.remove('hidden');
       }
 
       if (view === 'home') {
@@ -1793,15 +1779,6 @@
 
       localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
       alert('✅ All Settings & PIN Saved Successfully!');
-    }
-
-    function emergencyResetStore() {
-      if(confirm("Are you sure you want to reset store cache and load default products?")) {
-        localStorage.removeItem('mfs_products_v21');
-        localStorage.removeItem('mfs_settings_v21');
-        localStorage.removeItem('mfs_coupons_v21');
-        location.reload();
-      }
     }
 
     let secretTapCount = 0;
