@@ -80,13 +80,20 @@
     </div>
   </header>
 
+  <!-- STICKY SUB-HEADER BACK BAR (SCROLL KARNE PAR BHI TOP PAR SHOW HOGA) -->
+  <div id="sticky-back-bar" class="hidden bg-white border-b px-4 py-2 sticky top-16 z-30 shadow-sm flex items-center">
+    <button type="button" onclick="navigate('home')" class="text-xs font-black text-gray-800 bg-gray-100 hover:bg-black hover:text-white px-3 py-1.5 rounded-lg border flex items-center gap-2 transition">
+      <i class="fa-solid fa-arrow-left"></i> Back to Store
+    </button>
+  </div>
+
   <!-- MAIN VIEWS -->
   <main class="flex-grow">
     
     <!-- HOME VIEW -->
     <div id="page-home" class="page-view space-y-4">
       
-      <!-- CATEGORIES BAR (FIXED INSIDE SCREEN) -->
+      <!-- CATEGORIES BAR -->
       <section class="bg-white border-b shadow-sm py-3 px-3 overflow-hidden">
         <div class="max-w-7xl mx-auto flex overflow-x-auto space-x-3 no-scrollbar items-center justify-start md:justify-center px-2">
           <button type="button" onclick="filterCategory('All')" class="px-4 py-2 rounded-full bg-black text-white text-xs font-black shadow-sm uppercase tracking-wide flex-shrink-0">🔥 All Items</button>
@@ -176,12 +183,6 @@
 
     <!-- PRODUCT DETAILS VIEW -->
     <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6 space-y-4">
-      <div class="flex justify-start">
-        <button type="button" onclick="navigate('home')" class="text-xs font-extrabold text-gray-800 bg-white hover:bg-gray-100 px-4 py-2 rounded-xl border shadow-sm flex items-center gap-2 transition">
-          <i class="fa-solid fa-arrow-left"></i> Back to Store
-        </button>
-      </div>
-
       <div class="bg-white rounded-2xl border p-5 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 shadow-sm">
         <div class="space-y-3">
           <div class="rounded-xl overflow-hidden border bg-gray-50 h-80 md:h-96">
@@ -222,11 +223,6 @@
 
     <!-- MY ORDERS VIEW -->
     <div id="page-myorders" class="page-view hidden max-w-3xl mx-auto px-4 py-6 space-y-4">
-      <div class="flex justify-start">
-        <button type="button" onclick="navigate('home')" class="text-xs font-extrabold text-gray-800 bg-white hover:bg-gray-100 px-4 py-2 rounded-xl border shadow-sm flex items-center gap-2 transition">
-          <i class="fa-solid fa-arrow-left"></i> Back to Store
-        </button>
-      </div>
       <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-4">
         <h2 class="text-lg font-black border-b pb-2">Track Orders</h2>
         <div class="bg-gray-50 p-3 rounded-xl border space-y-1.5">
@@ -242,11 +238,6 @@
 
     <!-- POLICIES VIEW -->
     <div id="page-policies" class="page-view hidden max-w-4xl mx-auto px-4 py-8 space-y-4">
-      <div class="flex justify-start">
-        <button type="button" onclick="navigate('home')" class="text-xs font-extrabold text-gray-800 bg-white hover:bg-gray-100 px-4 py-2 rounded-xl border shadow-sm flex items-center gap-2 transition">
-          <i class="fa-solid fa-arrow-left"></i> Back to Store
-        </button>
-      </div>
       <h1 class="text-xl font-extrabold border-b pb-2">Store Policies</h1>
       <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-2">
         <h3 class="text-sm font-bold">Return Policy</h3>
@@ -416,6 +407,14 @@
       const target = document.getElementById('page-' + view);
       if (target) target.classList.remove('hidden');
       else document.getElementById('page-home').classList.remove('hidden');
+
+      // Sticky back bar toggle (Home page par back bar nahi dikhega, baki sabhi pages par top par sticky rahega)
+      const stickyBackBar = document.getElementById('sticky-back-bar');
+      if (view === 'home') {
+        if (stickyBackBar) stickyBackBar.classList.add('hidden');
+      } else {
+        if (stickyBackBar) stickyBackBar.classList.remove('hidden');
+      }
 
       if (view === 'home') renderHomeProducts(products);
       else if (view === 'all') { currentCategory = 'All'; renderAllProducts(products); }
