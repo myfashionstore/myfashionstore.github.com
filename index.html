@@ -381,8 +381,8 @@
       </div>
     </div>
 
-    <!-- ====== VIEW 6: SECRET ADMIN DASHBOARD ====== -->
-    <div id="page-admin" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
+    <!-- ====== VIEW 6: SECRET SECURE ADMIN PORTAL (SECURED) ====== -->
+    <div id="page-sec-portal-9921" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-md my-8 text-center space-y-3">
         <i class="fa-solid fa-shield-cat text-3xl text-black"></i>
         <h3 class="text-lg font-extrabold">Authorized Access Only</h3>
@@ -976,9 +976,18 @@
     // ----------------------------
 
     window.navigate = function(view) {
+      // Security Check: Unauthorized direct URL access block for secret admin portal
+      if (view === 'sec-portal-9921' && !sessionStorage.getItem('mfs_admin_unlocked')) {
+        view = 'home';
+      }
+
       document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
       const target = document.getElementById('page-' + view);
-      if (target) target.classList.remove('hidden');
+      if (target) {
+        target.classList.remove('hidden');
+      } else {
+        document.getElementById('page-home').classList.remove('hidden');
+      }
 
       if (view === 'home') {
         renderHomeProducts(products);
@@ -1535,6 +1544,9 @@
         return alert('Please fill all shipping details correctly.');
       }
 
+      const matchedProduct = products.find(p => cart[0] && cart[0].title.includes(p.title));
+      const supplierUrl = matchedProduct ? (matchedProduct.supplierUrl || '') : '';
+
       const orderData = {
         orderId: 'MFS-' + Math.floor(100000 + Math.random() * 900000),
         name, phone,
@@ -1543,6 +1555,7 @@
         total: document.getElementById('cart-total').innerText,
         mode: payMode,
         status: "Order Confirmed",
+        supplierUrl: supplierUrl,
         date: new Date().toLocaleDateString('en-GB')
       };
 
@@ -1574,7 +1587,6 @@
       navigate('myorders');
     }
 
-    // Fixed Customer Orders Lookup by Mobile Number
     async function fetchCustomerCloudOrders() {
       const phoneInput = (document.getElementById('cust-search-phone').value || '').trim();
       const container = document.getElementById('customer-orders-container');
@@ -1593,7 +1605,6 @@
         const cloudData = await res.json();
         if (cloudData) {
           const cloudOrdersList = Object.values(cloudData);
-          // Merge unique orders
           cloudOrdersList.forEach(co => {
             if (!allOrders.some(localO => localO.orderId === co.orderId)) {
               allOrders.push(co);
@@ -1633,6 +1644,9 @@
 
     function checkAdminAuth() {
       if(document.getElementById('admin-pin-input').value === storeSettings.pin) {
+        // Unlock session so they can view admin panel
+        sessionStorage.setItem('mfs_admin_unlocked', 'true');
+
         document.getElementById('admin-login-box').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         
@@ -1660,12 +1674,7 @@
         const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
         const data = await res.json();
         if(data) {
-          const cloudList = Object.values(data);
-          cloudList.forEach(co => {
-            if(!localOrders.some(lo => lo.orderId === co.orderId)) {
-              localOrders.push(co);
-            }
-          });
+          localOrders = Object.keys(data).map(key => ({ firebaseKey: key, ...data[key] }));
           localStorage.setItem('mfs_orders_v21', JSON.stringify(localOrders));
         }
       } catch(e) {}
@@ -1676,19 +1685,60 @@
       }
 
       container.innerHTML = localOrders.map(o => `
-        <div class="border p-3 rounded-xl text-xs bg-white shadow-sm space-y-1">
-          <div class="flex justify-between font-bold">
+        <div class="border p-3.5 rounded-xl text-xs bg-white shadow-sm space-y-2">
+          <div class="flex justify-between items-center font-bold">
             <span class="text-blue-700">${o.orderId} (${o.name} - ${o.phone})</span>
-            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px]">${o.status}</span>
+            <select onchange="updateOrderStatus('${o.orderId}', this.value)" class="bg-amber-100 text-amber-900 px-2 py-1 rounded text-[11px] font-bold border border-amber-300">
+              <option value="Order Confirmed" ${o.status === 'Order Confirmed' ? 'selected' : ''}>Order Confirmed</option>
+              <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+              <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+              <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
           </div>
           <p class="text-gray-700"><b>Items:</b> ${o.items}</p>
-          <p class="text-gray-500"><b>Address:</b> ${o.address ? o.address.full : ''}</p>
-          <p class="font-extrabold">Total: ${o.total} | Mode: ${o.mode}</p>
+          <p class="text-gray-500"><b>Delivery Address:</b> ${o.address ? o.address.full : ''}</p>
+          <div class="pt-1 border-t flex justify-between items-center">
+            <span class="font-extrabold">Total: ${o.total} | Mode: ${o.mode}</span>
+            ${o.supplierUrl ? `<a href="${o.supplierUrl}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded font-bold text-[11px] hover:bg-blue-700 flex items-center gap-1"><i class="fa-solid fa-link"></i> Open Supplier Link</a>` : '<span class="text-gray-400 italic text-[11px]">No supplier link attached</span>'}
+          </div>
         </div>
       `).join('');
     }
 
-    function adminLogout() { navigate('home'); }
+    async function updateOrderStatus(orderId, newStatus) {
+      let localOrders = JSON.parse(localStorage.getItem('mfs_orders_v21')) || [];
+      let targetOrder = localOrders.find(o => o.orderId === orderId);
+      if(targetOrder) {
+        targetOrder.status = newStatus;
+        localStorage.setItem('mfs_orders_v21', JSON.stringify(localOrders));
+        
+        try {
+          const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
+          const data = await res.json();
+          if(data) {
+            for (let key in data) {
+              if (data[key].orderId === orderId) {
+                await fetch(`${FIREBASE_DB_URL}/orders/${key}.json`, {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ status: newStatus })
+                });
+              }
+            }
+          }
+        } catch(e) {}
+        
+        alert(`✅ Order status updated to: ${newStatus}`);
+        fetchCloudOrders();
+      }
+    }
+
+    function adminLogout() { 
+      sessionStorage.removeItem('mfs_admin_unlocked');
+      navigate('home'); 
+    }
+
     function switchAdminTab(tab) {
       document.querySelectorAll('.admin-content-section').forEach(sec => sec.classList.add('hidden'));
       document.getElementById('admin-section-' + tab).classList.remove('hidden');
@@ -1743,7 +1793,7 @@
     function handleSecretAdminTrigger() {
       secretTapCount++;
       if (secretTapCount >= 3) {
-        navigate('admin');
+        navigate('sec-portal-9921');
         secretTapCount = 0;
       }
     }
