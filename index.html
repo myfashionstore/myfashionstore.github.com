@@ -831,7 +831,7 @@
   </div>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-1">
+  <footer class="bg-white border-t border-gray-200 mt-8 py-6 text-center space-y-2">
     <p class="text-xs font-extrabold uppercase brand-name-display">MY FASHION STORE</p>
     <div class="flex justify-center space-x-4 text-[11px] text-gray-500 py-1">
       <button type="button" onclick="navigate('home')">Home</button>
@@ -839,7 +839,15 @@
       <button type="button" onclick="navigate('myorders')">My Orders</button>
       <button type="button" onclick="navigate('policies')">Policies</button>
     </div>
-    <p id="secret-admin-trigger" onclick="handleSecretAdminTrigger()" class="text-[10px] text-gray-400 cursor-pointer select-none py-1">
+    
+    <!-- MOBILE FRIENDLY SECRET ADMIN BUTTON -->
+    <div>
+      <button type="button" onclick="navigate('sec-portal-9921')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1 rounded-full border border-gray-300 inline-flex items-center gap-1">
+        <i class="fa-solid fa-lock text-[9px]"></i> Admin Portal Login
+      </button>
+    </div>
+
+    <p class="text-[10px] text-gray-400 select-none py-1">
       © 2026 My Fashion Store. All Rights Reserved.
     </p>
   </footer>
@@ -855,7 +863,7 @@
       announcement: "🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery",
       returnPolicy: "• 7-Day Doorstep Returns & Exchanges.\n• Product must be unused with tags attached.",
       shippingPolicy: "• Dispatched within 24-48 hours.\n• Delivery timeline: 3-5 business days across India.",
-      pin: "7890" // Naya aur secure PIN
+      pin: "7890" // Naya secure PIN
     };
 
     const defaultProducts = [
@@ -977,7 +985,7 @@
 
     window.navigate = function(view) {
       if (view === 'sec-portal-9921' && !sessionStorage.getItem('mfs_admin_unlocked')) {
-        view = 'home';
+        // Agar unlock nahi hai toh pehle login box dikhega
       }
 
       document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
@@ -1695,7 +1703,7 @@
             </select>
           </div>
           <p class="text-gray-700"><b>Items:</b> ${o.items}</p>
-          <p class="text-gray-500"><b>Delivery Address:</b> ${o.address ? o.address.full : ''}</p>
+          <p class="text-gray-500"><b>Address:</b> ${o.address ? o.address.full : ''}</p>
           <div class="pt-1 border-t flex justify-between items-center">
             <span class="font-extrabold">Total: ${o.total} | Mode: ${o.mode}</span>
             ${o.supplierUrl ? `<a href="${o.supplierUrl}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded font-bold text-[11px] hover:bg-blue-700 flex items-center gap-1"><i class="fa-solid fa-link"></i> Open Supplier Link</a>` : '<span class="text-gray-400 italic text-[11px]">No supplier link attached</span>'}
@@ -1785,15 +1793,6 @@
 
       localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
       alert('✅ All Settings & PIN Saved Successfully!');
-    }
-
-    let secretTapCount = 0;
-    function handleSecretAdminTrigger() {
-      secretTapCount++;
-      if (secretTapCount >= 3) {
-        navigate('sec-portal-9921');
-        secretTapCount = 0;
-      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
