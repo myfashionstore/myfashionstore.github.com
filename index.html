@@ -386,7 +386,7 @@
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-md my-8 text-center space-y-3">
         <i class="fa-solid fa-shield-cat text-3xl text-black"></i>
         <h3 class="text-lg font-extrabold">Authorized Access Only</h3>
-        <p class="text-[11px] text-gray-500">Enter Security PIN to open Dashboard (Default: 9876)</p>
+        <p class="text-[11px] text-gray-500">Enter Security PIN to open Dashboard</p>
         <input type="password" id="admin-pin-input" placeholder="Enter Security PIN" class="w-full border border-gray-300 p-2 rounded-lg text-center font-bold tracking-widest text-xs">
         <button type="button" onclick="checkAdminAuth()" class="w-full bg-black text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wider">Unlock Dashboard</button>
       </div>
@@ -855,7 +855,7 @@
       announcement: "🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery",
       returnPolicy: "• 7-Day Doorstep Returns & Exchanges.\n• Product must be unused with tags attached.",
       shippingPolicy: "• Dispatched within 24-48 hours.\n• Delivery timeline: 3-5 business days across India.",
-      pin: "9876"
+      pin: "7890" // Naya aur secure PIN
     };
 
     const defaultProducts = [
@@ -976,7 +976,6 @@
     // ----------------------------
 
     window.navigate = function(view) {
-      // Security Check: Unauthorized direct URL access block for secret admin portal
       if (view === 'sec-portal-9921' && !sessionStorage.getItem('mfs_admin_unlocked')) {
         view = 'home';
       }
@@ -1644,7 +1643,6 @@
 
     function checkAdminAuth() {
       if(document.getElementById('admin-pin-input').value === storeSettings.pin) {
-        // Unlock session so they can view admin panel
         sessionStorage.setItem('mfs_admin_unlocked', 'true');
 
         document.getElementById('admin-login-box').classList.add('hidden');
