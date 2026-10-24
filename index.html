@@ -32,7 +32,7 @@
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
       
-      <!-- UNIQUE CUSTOM DESIGNED LOGO -->
+      <!-- BRAND LOGO -->
       <div class="flex items-center space-x-2.5 cursor-pointer select-none py-1 flex-shrink-0" onclick="navigate('home')">
         <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-amber-400 shadow-md border border-amber-400/40">
           <i class="fa-solid fa-crown text-base"></i>
@@ -86,13 +86,13 @@
     <!-- HOME VIEW -->
     <div id="page-home" class="page-view space-y-4">
       
-      <!-- PROFESSIONAL TEXT CATEGORIES BAR -->
-      <section class="bg-white border-b shadow-sm py-3 px-3">
-        <div class="max-w-7xl mx-auto flex overflow-x-auto space-x-3 no-scrollbar items-center justify-center">
-          <button type="button" onclick="filterCategory('All')" class="px-5 py-2 rounded-full bg-black text-white text-xs font-black shadow-sm uppercase tracking-wide flex-shrink-0">🔥 All Items</button>
-          <button type="button" onclick="filterCategory('Men')" class="px-5 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">👔 Men Wear</button>
-          <button type="button" onclick="filterCategory('Women')" class="px-5 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">👗 Women (Saree & Kurtas)</button>
-          <button type="button" onclick="filterCategory('Kids')" class="px-5 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">🧸 Kids T-Shirts</button>
+      <!-- CATEGORIES BAR (FIXED INSIDE SCREEN) -->
+      <section class="bg-white border-b shadow-sm py-3 px-3 overflow-hidden">
+        <div class="max-w-7xl mx-auto flex overflow-x-auto space-x-3 no-scrollbar items-center justify-start md:justify-center px-2">
+          <button type="button" onclick="filterCategory('All')" class="px-4 py-2 rounded-full bg-black text-white text-xs font-black shadow-sm uppercase tracking-wide flex-shrink-0">🔥 All Items</button>
+          <button type="button" onclick="filterCategory('Men')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">👔 Men Wear</button>
+          <button type="button" onclick="filterCategory('Women')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">👗 Women (Saree & Kurtas)</button>
+          <button type="button" onclick="filterCategory('Kids')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">🧸 Kids T-Shirts</button>
         </div>
       </section>
 
@@ -174,8 +174,8 @@
       <div id="all-product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 pt-2"></div>
     </div>
 
-    <!-- PRODUCT DETAILS VIEW (WITH REVIEWS & SIMILAR PRODUCTS) -->
-    <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6 space-y-6">
+    <!-- PRODUCT DETAILS VIEW -->
+    <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6 space-y-4">
       <div class="flex justify-start">
         <button type="button" onclick="navigate('home')" class="text-xs font-extrabold text-gray-800 bg-white hover:bg-gray-100 px-4 py-2 rounded-xl border shadow-sm flex items-center gap-2 transition">
           <i class="fa-solid fa-arrow-left"></i> Back to Store
@@ -530,7 +530,6 @@
         toggleCart(true);
       };
 
-      // Render Reviews & Similar Products
       renderProductReviews(prod.id);
       renderSimilarProducts(prod);
 
@@ -649,4 +648,93 @@
     }
 
     function renderAdminProductManagement() {
-      const container = document.
+      const container = document.getElementById('admin-product-management-list');
+      if (!container) return;
+      container.innerHTML = products.map(p => `
+        <div class="flex items-center justify-between border p-2 rounded text-xs bg-gray-50">
+          <span class="font-bold">${p.title} - ₹${p.price}</span>
+          <button type="button" onclick="deleteProductById(${p.id})" class="text-red-600 font-bold">Delete 🗑️</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteProductById(id) {
+      if (!confirm("Delete product?")) return;
+      products = products.filter(p => Number(p.id) !== Number(id));
+      await syncProductsToCloud();
+      renderHomeProducts(products);
+      renderAdminProductManagement();
+      alert("🗑️ Deleted successfully!");
+    }
+
+    function toggleCart(show) { document.getElementById('cart-modal').classList.toggle('hidden', !show); }
+
+    function updateCartDisplay() {
+      document.getElementById('cart-count').innerText = cart.length;
+      const list = document.getElementById('cart-items');
+      let subtotal = 0;
+      list.innerHTML = cart.map(item => {
+        subtotal += item.price;
+        return `<div class="flex justify-between text-xs py-1 border-b"><span>${item.title}</span><b>₹${item.price}</b></div>`;
+      }).join('');
+      document.getElementById('cart-total').innerText = '₹' + subtotal;
+    }
+
+    async function processOrderDirect() {
+      if (cart.length === 0) return alert('Cart is empty!');
+      const orderData = {
+        orderId: 'MFS-' + Math.floor(100000 + Math.random() * 900000),
+        items: cart.map(i => i.title).join(', '),
+        total: document.getElementById('cart-total').innerText,
+        status: "Order Confirmed",
+        phone: "9876543210",
+        date: new Date().toLocaleDateString()
+      };
+      await fetch(`${FIREBASE_DB_URL}/orders.json`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+      cart = [];
+      updateCartDisplay();
+      toggleCart(false);
+      alert('Order placed successfully!');
+    }
+
+    async function fetchCustomerCloudOrders() {
+      const phone = document.getElementById('cust-search-phone').value.trim();
+      const container = document.getElementById('customer-orders-container');
+      if (phone.length !== 10) return alert('Enter valid 10-digit number');
+      
+      const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
+      const data = await res.json();
+      const orders = data ? Object.values(data).filter(o => o.phone === phone) : [];
+      
+      container.innerHTML = orders.length === 0 ? '<p class="text-xs text-red-500">No orders found.</p>' : orders.map(o => `
+        <div class="border p-2 rounded text-xs bg-gray-50">
+          <b>${o.orderId}</b> - ${o.items} (${o.status})
+        </div>
+      `).join('');
+    }
+
+    function checkAdminAuth() {
+      if (document.getElementById('admin-pin-input').value === storeSettings.pin) {
+        document.getElementById('admin-login-box').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        renderAdminProductManagement();
+      } else {
+        alert('Incorrect PIN!');
+      }
+    }
+
+    function adminLogout() { location.reload(); }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (products.length > 0) {
+        renderHomeProducts(products);
+      }
+      fetchCloudProducts();
+    });
+  </script>
+</body>
+</html>
