@@ -675,10 +675,13 @@
     async function syncProductsToCloud() {
       try {
         localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
+        // Object format mapping for bulletproof cloud deletion
+        const prodObj = {};
+        products.forEach(p => { prodObj[p.id] = p; });
         await fetch(`${FIREBASE_DB_URL}/products.json`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(products)
+          body: JSON.stringify(prodObj)
         });
       } catch (err) { console.error("Sync error:", err); }
     }
@@ -797,6 +800,12 @@
 
     async function deleteProductById(id) {
       if (!confirm("Delete product permanently from Cloud?")) return;
+      
+      // Direct individual node deletion from Firebase
+      try {
+        await fetch(`${FIREBASE_DB_URL}/products/${id}.json`, { method: 'DELETE' });
+      } catch(e) { console.error("Cloud delete error:", e); }
+
       products = products.filter(p => Number(p.id) !== Number(id));
       await syncProductsToCloud();
       renderHomeProducts(products);
