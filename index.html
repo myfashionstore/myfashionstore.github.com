@@ -506,7 +506,7 @@
       const grid = document.getElementById('home-product-grid');
       if (!grid) return;
       if (!items || items.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">Loading products...</p>';
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">No products available right now.</p>';
         return;
       }
       grid.innerHTML = items.map(p => getProductCardHTML(p)).join('');
@@ -678,7 +678,7 @@
         await fetch(`${FIREBASE_DB_URL}/products.json`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(products.length > 0 ? products : [])
+          body: JSON.stringify(products)
         });
       } catch (err) { console.error("Sync error:", err); }
     }
@@ -796,7 +796,7 @@
     }
 
     async function deleteProductById(id) {
-      if (!confirm("Delete product permanently?")) return;
+      if (!confirm("Delete product permanently from Cloud?")) return;
       products = products.filter(p => Number(p.id) !== Number(id));
       await syncProductsToCloud();
       renderHomeProducts(products);
