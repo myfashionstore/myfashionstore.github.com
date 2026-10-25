@@ -245,7 +245,7 @@
       </div>
     </div>
 
-    <!-- FULL DESKTOP-FRIENDLY ADMIN PORTAL -->
+    <!-- FULL DESKTOP ADMIN PORTAL (WITH EDIT, DELETE, PHOTO LIST & SUPPLIER LINKS) -->
     <div id="page-sec-portal-9921" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border shadow-md text-center space-y-3">
         <h3 class="text-lg font-extrabold">Secure Admin Login</h3>
@@ -261,12 +261,12 @@
 
         <div class="flex border-b space-x-6 overflow-x-auto text-xs font-bold">
           <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black">1. Live Orders & Supplier Links</button>
-          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Add / Delete / Edit Products</button>
+          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Add / Edit / Delete Products</button>
           <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">3. Coupon Codes</button>
           <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Store Settings & PIN</button>
         </div>
 
-        <!-- TAB 1: ORDERS WITH STATUS & SUPPLIER LINK -->
+        <!-- TAB 1: ORDERS -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
           <div class="flex justify-between items-center bg-white p-3 rounded-xl border">
             <h3 class="font-bold text-xs">Real-time Cloud Orders</h3>
@@ -275,7 +275,7 @@
           <div id="admin-orders-list" class="space-y-3"></div>
         </div>
 
-        <!-- TAB 2: PRODUCTS (WITH PHOTOS & FULL MANAGEMENT) -->
+        <!-- TAB 2: PRODUCTS (WITH PHOTO LIST, EDIT & DELETE) -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
@@ -346,6 +346,45 @@
     </div>
   </main>
 
+  <!-- EDIT PRODUCT MODAL -->
+  <div id="edit-product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-xs">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-sm">Edit Product</h3>
+        <button type="button" onclick="closeEditModal()" class="text-xl font-bold">&times;</button>
+      </div>
+      <form onsubmit="handleProductEditSave(event)" class="space-y-3">
+        <input type="hidden" id="edit-prod-id">
+        <div><label class="block font-bold mb-1">Title</label><input type="text" id="edit-prod-title" required class="w-full border p-2 rounded"></div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold mb-1">Category</label>
+            <select id="edit-prod-category" class="w-full border p-2 rounded bg-white">
+              <option value="Men">Men</option>
+              <option value="Women">Women</option>
+              <option value="Kids">Kids</option>
+            </select>
+          </div>
+          <div><label class="block font-bold mb-1">Price (₹)</label><input type="number" id="edit-prod-price" required class="w-full border p-2 rounded"></div>
+        </div>
+        <div><label class="block font-bold mb-1">Sizes</label><input type="text" id="edit-prod-sizes" class="w-full border p-2 rounded"></div>
+        <div><label class="block font-bold mb-1">Supplier Link</label><input type="url" id="edit-prod-supplier-url" class="w-full border p-2 rounded"></div>
+        <div><label class="block font-bold mb-1">Description</label><textarea id="edit-prod-desc" rows="2" class="w-full border p-2 rounded"></textarea></div>
+        
+        <div class="bg-gray-50 p-3 rounded border space-y-2">
+          <label class="block font-bold">Update Photos</label>
+          <input type="file" id="edit-prod-files" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border p-1 rounded bg-white text-xs">
+          <div id="edit-photo-queue" class="flex flex-wrap gap-2 pt-1"></div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="submit" class="flex-1 bg-black text-white py-2.5 rounded font-bold uppercase">Save Changes</button>
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2.5 border rounded font-bold">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- REVIEW MODAL -->
   <div id="review-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-5 space-y-3 text-xs">
@@ -412,6 +451,7 @@
     let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v21')) || {};
     let cart = [];
     let addPhotosQueue = [];
+    let editPhotosQueue = [];
     let currentCategory = 'All';
     let currentSelectedProduct = null;
     let currentSelectedSize = null;
@@ -457,6 +497,7 @@
         document.getElementById('setting-policy-return').value = storeSettings.returnPolicy;
         document.getElementById('setting-policy-shipping').value = storeSettings.shippingPolicy;
         renderAdminCoupons();
+        renderAdminProductManagement();
       }
       window.scrollTo(0, 0);
     };
@@ -672,23 +713,82 @@
     function renderAdminProductManagement() {
       const container = document.getElementById('admin-product-management-list');
       if (!container) return;
+      if (products.length === 0) {
+        container.innerHTML = '<p class="text-xs text-gray-400">No products found.</p>';
+        return;
+      }
       container.innerHTML = products.map(p => {
         const coverImg = (p.images && p.images[0]) || p.image;
         return `
           <div class="flex items-center justify-between border p-2.5 rounded-xl bg-gray-50 text-xs">
             <div class="flex items-center space-x-3">
-              <img src="${coverImg}" class="w-10 h-10 rounded-lg object-contain bg-white border">
+              <img src="${coverImg}" class="w-12 h-12 rounded-lg object-contain bg-white border">
               <div>
                 <p class="font-bold text-gray-900 truncate max-w-[200px]">${p.title}</p>
                 <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price}</span>
               </div>
             </div>
-            <div class="flex items-center space-x-1.5">
-              <button type="button" onclick="deleteProductById(${p.id})" class="px-3 py-1 bg-red-50 text-red-600 rounded-lg font-bold">Delete 🗑️</button>
+            <div class="flex items-center space-x-2">
+              <button type="button" onclick="openEditModal(${p.id})" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg font-bold">Edit ✏️</button>
+              <button type="button" onclick="deleteProductById(${p.id})" class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg font-bold">Delete 🗑️</button>
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    function openEditModal(id) {
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+      document.getElementById('edit-prod-id').value = p.id;
+      document.getElementById('edit-prod-title').value = p.title;
+      document.getElementById('edit-prod-category').value = p.category;
+      document.getElementById('edit-prod-price').value = p.price;
+      document.getElementById('edit-prod-sizes').value = (p.sizes || []).join(', ');
+      document.getElementById('edit-prod-supplier-url').value = p.supplierUrl || '';
+      document.getElementById('edit-prod-desc').value = p.description || '';
+      editPhotosQueue = p.images ? [...p.images] : [p.image];
+      renderEditQueuePhotos();
+      document.getElementById('edit-product-modal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-product-modal').classList.add('hidden');
+      editPhotosQueue = [];
+    }
+
+    function renderEditQueuePhotos() {
+      const container = document.getElementById('edit-photo-queue');
+      if (!container) return;
+      container.innerHTML = editPhotosQueue.map((url, i) => `
+        <div class="relative w-14 h-14 rounded border bg-white p-0.5">
+          <img src="${url}" class="w-full h-full object-contain">
+          <button type="button" onclick="editPhotosQueue.splice(${i},1);renderEditQueuePhotos()" class="absolute top-0 right-0 bg-red-600 text-white w-4 h-4 rounded-full text-[9px]">✕</button>
+        </div>
+      `).join('');
+    }
+
+    async function handleProductEditSave(e) {
+      e.preventDefault();
+      const id = Number(document.getElementById('edit-prod-id').value);
+      const index = products.findIndex(p => p.id === id);
+      if (index === -1) return;
+      if (editPhotosQueue.length === 0) return alert('At least 1 photo required!');
+
+      products[index].title = document.getElementById('edit-prod-title').value.trim();
+      products[index].category = document.getElementById('edit-prod-category').value;
+      products[index].price = Number(document.getElementById('edit-prod-price').value);
+      products[index].sizes = document.getElementById('edit-prod-sizes').value.split(',').map(s => s.trim());
+      products[index].supplierUrl = document.getElementById('edit-prod-supplier-url').value.trim();
+      products[index].description = document.getElementById('edit-prod-desc').value.trim();
+      products[index].images = [...editPhotosQueue];
+      products[index].image = editPhotosQueue[0];
+
+      await syncProductsToCloud();
+      renderHomeProducts(products);
+      renderAdminProductManagement();
+      closeEditModal();
+      alert('🎉 Product updated successfully!');
     }
 
     async function deleteProductById(id) {
@@ -837,11 +937,19 @@
       alert('✅ Settings saved successfully!');
     }
 
-    async function handleQueuePhotoSelection(event) {
+    async function handleQueuePhotoSelection(event, context) {
       const files = Array.from(event.target.files);
       for (let file of files) {
         const reader = new FileReader();
-        reader.onload = (e) => { addPhotosQueue.push(e.target.result); renderQueuePhotos(); };
+        reader.onload = (e) => {
+          if (context === 'add') {
+            addPhotosQueue.push(e.target.result);
+            renderQueuePhotos();
+          } else {
+            editPhotosQueue.push(e.target.result);
+            renderEditQueuePhotos();
+          }
+        };
         reader.readAsDataURL(file);
       }
       event.target.value = '';
