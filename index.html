@@ -245,7 +245,7 @@
       </div>
     </div>
 
-    <!-- FULL ADMIN PORTAL WITH SUPPLIER LINK, COUPONS & SETTINGS -->
+    <!-- FULL DESKTOP-FRIENDLY ADMIN PORTAL -->
     <div id="page-sec-portal-9921" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border shadow-md text-center space-y-3">
         <h3 class="text-lg font-extrabold">Secure Admin Login</h3>
@@ -255,18 +255,18 @@
 
       <div id="admin-panel" class="hidden space-y-4">
         <div class="flex justify-between items-center border-b pb-3">
-          <h2 class="text-xl font-black">Pro Management Dashboard</h2>
+          <h2 class="text-xl font-black">Management Dashboard</h2>
           <button type="button" onclick="adminLogout()" class="text-xs bg-red-50 text-red-700 px-3 py-1 rounded font-bold">Logout</button>
         </div>
 
         <div class="flex border-b space-x-6 overflow-x-auto text-xs font-bold">
-          <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black">1. Live Orders</button>
-          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Products</button>
-          <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">3. Coupons</button>
-          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Settings</button>
+          <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black">1. Live Orders & Supplier Links</button>
+          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Add / Delete / Edit Products</button>
+          <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">3. Coupon Codes</button>
+          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Store Settings & PIN</button>
         </div>
 
-        <!-- TAB 1: ORDERS WITH SUPPLIER LINK -->
+        <!-- TAB 1: ORDERS WITH STATUS & SUPPLIER LINK -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
           <div class="flex justify-between items-center bg-white p-3 rounded-xl border">
             <h3 class="font-bold text-xs">Real-time Cloud Orders</h3>
@@ -275,7 +275,7 @@
           <div id="admin-orders-list" class="space-y-3"></div>
         </div>
 
-        <!-- TAB 2: PRODUCTS -->
+        <!-- TAB 2: PRODUCTS (WITH PHOTOS & FULL MANAGEMENT) -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
@@ -314,7 +314,7 @@
           </div>
           
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-            <h3 class="text-sm font-bold border-b pb-2">Manage & Delete Products</h3>
+            <h3 class="text-sm font-bold border-b pb-2">Manage, Edit & Delete Products (With Photos)</h3>
             <div id="admin-product-management-list" class="space-y-2"></div>
           </div>
         </div>
@@ -332,7 +332,7 @@
 
         <!-- TAB 4: SETTINGS -->
         <div id="admin-section-settings" class="admin-content-section hidden bg-white p-5 rounded-2xl border space-y-3 text-xs">
-          <h3 class="font-bold border-b pb-2">Store Settings & PIN</h3>
+          <h3 class="font-bold border-b pb-2">Store Settings & Admin PIN</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div><label class="block font-bold mb-1">Store Name</label><input type="text" id="setting-store-name" class="w-full border p-1.5 rounded"></div>
             <div><label class="block font-bold mb-1">New Admin PIN</label><input type="password" id="setting-new-pin" class="w-full border p-1.5 rounded" placeholder="Leave blank to keep old"></div>
@@ -440,7 +440,7 @@
 
       const floatingBack = document.getElementById('floating-back-container');
       if (floatingBack) {
-        if (view === 'home') floatingBack.classList.add('hidden');
+        if (view === 'home' || view === 'sec-portal-9921') floatingBack.classList.add('hidden');
         else floatingBack.classList.remove('hidden');
       }
 
@@ -672,12 +672,23 @@
     function renderAdminProductManagement() {
       const container = document.getElementById('admin-product-management-list');
       if (!container) return;
-      container.innerHTML = products.map(p => `
-        <div class="flex items-center justify-between border p-2 rounded text-xs bg-gray-50">
-          <span class="font-bold">${p.title} - ₹${p.price}</span>
-          <button type="button" onclick="deleteProductById(${p.id})" class="text-red-600 font-bold">Delete 🗑️</button>
-        </div>
-      `).join('');
+      container.innerHTML = products.map(p => {
+        const coverImg = (p.images && p.images[0]) || p.image;
+        return `
+          <div class="flex items-center justify-between border p-2.5 rounded-xl bg-gray-50 text-xs">
+            <div class="flex items-center space-x-3">
+              <img src="${coverImg}" class="w-10 h-10 rounded-lg object-contain bg-white border">
+              <div>
+                <p class="font-bold text-gray-900 truncate max-w-[200px]">${p.title}</p>
+                <span class="text-[10px] text-gray-500">${p.category} • ₹${p.price}</span>
+              </div>
+            </div>
+            <div class="flex items-center space-x-1.5">
+              <button type="button" onclick="deleteProductById(${p.id})" class="px-3 py-1 bg-red-50 text-red-600 rounded-lg font-bold">Delete 🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     async function deleteProductById(id) {
@@ -736,21 +747,41 @@
         const data = await res.json();
         if (!data) { container.innerHTML = '<p class="text-xs text-gray-400 text-center">No orders found.</p>'; return; }
         
-        container.innerHTML = Object.values(data).map(o => `
-          <div class="border p-3 rounded text-xs bg-white space-y-1.5 shadow-sm">
-            <div class="flex justify-between font-bold">
-              <span class="text-blue-700">${o.orderId}</span>
-              <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-[10px]">${o.status}</span>
+        container.innerHTML = Object.keys(data).map(key => {
+          const o = data[key];
+          return `
+            <div class="border p-3.5 rounded-xl text-xs bg-white space-y-2 shadow-sm">
+              <div class="flex justify-between items-center font-bold">
+                <span class="text-blue-700">${o.orderId}</span>
+                <select onchange="updateOrderStatus('${key}', this.value)" class="bg-amber-100 text-amber-900 px-2 py-1 rounded text-[11px] font-bold border border-amber-300">
+                  <option value="Order Confirmed" ${o.status === 'Order Confirmed' ? 'selected' : ''}>Order Confirmed</option>
+                  <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                  <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                  <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                  <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </div>
+              <p><b>Items:</b> ${o.items}</p>
+              <p><b>Total:</b> ${o.total}</p>
+              <div class="pt-1 border-t flex justify-between items-center">
+                <span><b>Phone:</b> ${o.phone}</span>
+                ${o.supplierUrl ? `<a href="${o.supplierUrl}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded font-bold text-[11px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Supplier Link</a>` : '<span class="text-gray-400 italic">No supplier link</span>'}
+              </div>
             </div>
-            <p><b>Items:</b> ${o.items}</p>
-            <p><b>Total:</b> ${o.total}</p>
-            <div class="pt-1 border-t flex justify-between items-center">
-              <span><b>Phone:</b> ${o.phone}</span>
-              ${o.supplierUrl ? `<a href="${o.supplierUrl}" target="_blank" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold text-[11px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Supplier Link</a>` : '<span class="text-gray-400 italic">No supplier link</span>'}
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       } catch (e) { container.innerHTML = '<p class="text-xs text-red-500">Error loading orders.</p>'; }
+    }
+
+    async function updateOrderStatus(firebaseKey, newStatus) {
+      try {
+        await fetch(`${FIREBASE_DB_URL}/orders/${firebaseKey}.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        alert(`✅ Status updated to: ${newStatus}`);
+      } catch(e) { alert('Error updating status.'); }
     }
 
     function checkAdminAuth() {
@@ -771,6 +802,7 @@
       const activeBtn = document.getElementById('tab-btn-' + tab);
       if (activeBtn) { activeBtn.classList.add('border-black', 'text-black'); activeBtn.classList.remove('border-transparent', 'text-gray-500'); }
       if (tab === 'orders') fetchCloudOrders();
+      if (tab === 'products') renderAdminProductManagement();
     }
 
     function renderAdminCoupons() {
