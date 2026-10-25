@@ -80,13 +80,6 @@
     </div>
   </header>
 
-  <!-- STICKY SUB-HEADER BACK BAR (SCROLL KARNE PAR BHI TOP PAR SHOW HOGA) -->
-  <div id="sticky-back-bar" class="hidden bg-white border-b px-4 py-2 sticky top-16 z-30 shadow-sm flex items-center">
-    <button type="button" onclick="navigate('home')" class="text-xs font-black text-gray-800 bg-gray-100 hover:bg-black hover:text-white px-3 py-1.5 rounded-lg border flex items-center gap-2 transition">
-      <i class="fa-solid fa-arrow-left"></i> Back to Store
-    </button>
-  </div>
-
   <!-- MAIN VIEWS -->
   <main class="flex-grow">
     
@@ -249,7 +242,7 @@
       </div>
     </div>
 
-    <!-- SECRET ADMIN PORTAL -->
+    <!-- SECRET ADMIN PORTAL (ACCESSIBLE VIA FOOTER BUTTON) -->
     <div id="page-sec-portal-9921" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border shadow-md text-center space-y-3">
         <h3 class="text-lg font-extrabold">Secure Admin Login</h3>
@@ -347,12 +340,23 @@
     </div>
   </div>
 
-  <!-- CLEAN FOOTER -->
-  <footer class="bg-white border-t mt-8 py-6 text-center space-y-2">
+  <!-- CLEAN FOOTER WITH SECRET HIDDEN ADMIN BUTTON -->
+  <footer class="bg-white border-t mt-8 py-6 text-center space-y-3">
+    <div class="flex justify-center space-x-4 text-xs font-bold text-gray-600">
+      <button type="button" onclick="navigate('home')">Home</button>
+      <button type="button" onclick="navigate('all')">Collection</button>
+      <button type="button" onclick="navigate('myorders')">My Orders</button>
+      <button type="button" onclick="navigate('policies')">Policies</button>
+    </div>
+    
+    <!-- SECRET HIDDEN ADMIN ACCESS BUTTON (ONLY YOU KNOW IT'S HERE) -->
+    <div>
+      <button type="button" onclick="navigate('sec-portal-9921')" class="text-[9px] text-gray-300 hover:text-gray-500 font-mono tracking-widest px-2 py-1">⚙️ Admin Portal</button>
+    </div>
+
     <p class="text-[11px] text-gray-500 font-medium">
       © 2026 My Fashion Store. All Rights Reserved.
     </p>
-    <p class="text-[9px] text-gray-300">Secure Cloud Powered E-commerce</p>
   </footer>
 
   <!-- SCRIPT -->
@@ -408,17 +412,18 @@
       if (target) target.classList.remove('hidden');
       else document.getElementById('page-home').classList.remove('hidden');
 
-      // Sticky back bar toggle (Home page par back bar nahi dikhega, baki sabhi pages par top par sticky rahega)
       const stickyBackBar = document.getElementById('sticky-back-bar');
-      if (view === 'home') {
-        if (stickyBackBar) stickyBackBar.classList.add('hidden');
-      } else {
-        if (stickyBackBar) stickyBackBar.classList.remove('hidden');
+      if (stickyBackBar) {
+        if (view === 'home') stickyBackBar.classList.add('hidden');
+        else stickyBackBar.classList.remove('hidden');
       }
 
-      if (view === 'home') renderHomeProducts(products);
-      else if (view === 'all') { currentCategory = 'All'; renderAllProducts(products); }
-      else if (view === 'policies') {
+      if (view === 'home') {
+        if (products.length > 0) renderHomeProducts(products);
+      } else if (view === 'all') { 
+        currentCategory = 'All'; 
+        if (products.length > 0) renderAllProducts(products); 
+      } else if (view === 'policies') {
         document.getElementById('policy-return-display').innerText = storeSettings.returnPolicy;
         document.getElementById('policy-shipping-display').innerText = storeSettings.shippingPolicy;
       }
