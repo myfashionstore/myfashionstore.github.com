@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <title id="site-title">My Fashion Store | Wear Your Style</title>
   <meta name="robots" content="noindex, nofollow" />
 
@@ -28,7 +27,7 @@
     🔥 Maha Fashion Sale Live! Upto 80% OFF | Free Express Delivery 🇮🇳
   </div>
 
-  <!-- STICKY PROFESSIONAL HEADER & SEARCH BAR -->
+  <!-- STICKY HEADER & SEARCH BAR -->
   <header class="sticky top-0 z-40 glass-nav border-b border-gray-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
       
@@ -80,7 +79,7 @@
     </div>
   </header>
 
-  <!-- FLOATING STICKY BACK BUTTON (SCROLL KARNE PAR BHI HAMESHA TOP PAR DIKHEGA) -->
+  <!-- FLOATING BACK BUTTON -->
   <div id="floating-back-container" class="hidden max-w-7xl mx-auto px-4 w-full pt-3 z-30 sticky top-16 pointer-events-none">
     <button type="button" onclick="navigate('home')" class="pointer-events-auto bg-black text-white hover:bg-neutral-800 px-4 py-2 rounded-xl text-xs font-bold shadow-xl flex items-center gap-2 transition transform hover:scale-105">
       <i class="fa-solid fa-arrow-left"></i> Back to Store
@@ -92,8 +91,6 @@
     
     <!-- HOME VIEW -->
     <div id="page-home" class="page-view space-y-4">
-      
-      <!-- CATEGORIES BAR -->
       <section class="bg-white border-b shadow-sm py-3 px-3 overflow-hidden">
         <div class="max-w-7xl mx-auto flex overflow-x-auto space-x-3 no-scrollbar items-center justify-start md:justify-center px-2">
           <button type="button" onclick="filterCategory('All')" class="px-4 py-2 rounded-full bg-black text-white text-xs font-black shadow-sm uppercase tracking-wide flex-shrink-0">🔥 All Items</button>
@@ -103,7 +100,7 @@
         </div>
       </section>
 
-      <!-- CAROUSEL SLIDER WITH MANUAL ARROWS -->
+      <!-- CAROUSEL SLIDER -->
       <section class="relative bg-slate-950 text-white overflow-hidden py-4 shadow-lg">
         <div class="max-w-5xl mx-auto overflow-hidden relative rounded-2xl px-2">
           <button type="button" onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-9 h-9 rounded-full flex items-center justify-center z-20 transition shadow"><i class="fa-solid fa-chevron-left text-xs"></i></button>
@@ -248,7 +245,7 @@
       </div>
     </div>
 
-    <!-- SECRET ADMIN PORTAL -->
+    <!-- FULL ADMIN PORTAL WITH SUPPLIER LINK, COUPONS & SETTINGS -->
     <div id="page-sec-portal-9921" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
       <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border shadow-md text-center space-y-3">
         <h3 class="text-lg font-extrabold">Secure Admin Login</h3>
@@ -262,41 +259,89 @@
           <button type="button" onclick="adminLogout()" class="text-xs bg-red-50 text-red-700 px-3 py-1 rounded font-bold">Logout</button>
         </div>
 
-        <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-          <div class="flex justify-between items-center border-b pb-2">
-            <h3 class="text-sm font-bold">Publish New Apparel (Cloud Sync)</h3>
-            <button type="button" onclick="manualSyncAllProductsToCloud()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold">Sync All ☁️</button>
+        <div class="flex border-b space-x-6 overflow-x-auto text-xs font-bold">
+          <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black">1. Live Orders</button>
+          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Products</button>
+          <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">3. Coupons</button>
+          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Settings</button>
+        </div>
+
+        <!-- TAB 1: ORDERS WITH SUPPLIER LINK -->
+        <div id="admin-section-orders" class="admin-content-section space-y-3">
+          <div class="flex justify-between items-center bg-white p-3 rounded-xl border">
+            <h3 class="font-bold text-xs">Real-time Cloud Orders</h3>
+            <button type="button" onclick="fetchCloudOrders()" class="text-xs bg-gray-100 px-3 py-1 rounded font-bold">Refresh 🔄</button>
+          </div>
+          <div id="admin-orders-list" class="space-y-3"></div>
+        </div>
+
+        <!-- TAB 2: PRODUCTS -->
+        <div id="admin-section-products" class="admin-content-section hidden space-y-4">
+          <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
+            <div class="flex justify-between items-center border-b pb-2">
+              <h3 class="text-sm font-bold">Publish New Apparel</h3>
+              <button type="button" onclick="manualSyncAllProductsToCloud()" class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">Sync All ☁️</button>
+            </div>
+            
+            <form onsubmit="handleProductAdd(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div><input type="text" id="prod-title" required placeholder="Product Title" class="w-full border p-1.5 rounded"></div>
+              <div>
+                <select id="prod-category" class="w-full border p-1.5 rounded bg-white">
+                  <option value="Men">Men</option>
+                  <option value="Women">Women</option>
+                  <option value="Kids">Kids</option>
+                </select>
+              </div>
+              <div><input type="number" id="prod-price" required placeholder="Price (₹)" class="w-full border p-1.5 rounded"></div>
+              <div><input type="text" id="prod-sizes" value="S, M, L, XL" class="w-full border p-1.5 rounded"></div>
+              
+              <div class="md:col-span-2">
+                <input type="url" id="prod-supplier-url" placeholder="Supplier Product Link (Meesho/Wholesale link)" class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs">
+              </div>
+
+              <div class="md:col-span-2"><textarea id="prod-desc" placeholder="Description" class="w-full border p-1.5 rounded"></textarea></div>
+              
+              <div class="md:col-span-2 bg-gray-50 p-3 rounded border space-y-2">
+                <label class="block font-bold">Upload HD Photos</label>
+                <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border p-1 rounded bg-white">
+                <div id="add-photo-queue" class="flex flex-wrap gap-2 pt-1"></div>
+              </div>
+
+              <div class="md:col-span-2">
+                <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2 rounded text-xs font-bold uppercase">Publish Product</button>
+              </div>
+            </form>
           </div>
           
-          <form onsubmit="handleProductAdd(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div><input type="text" id="prod-title" required placeholder="Product Title" class="w-full border p-1.5 rounded"></div>
-            <div>
-              <select id="prod-category" class="w-full border p-1.5 rounded bg-white">
-                <option value="Men">Men</option>
-                <option value="Women">Women</option>
-                <option value="Kids">Kids</option>
-              </select>
-            </div>
-            <div><input type="number" id="prod-price" required placeholder="Price (₹)" class="w-full border p-1.5 rounded"></div>
-            <div><input type="text" id="prod-sizes" value="S, M, L, XL" class="w-full border p-1.5 rounded"></div>
-            <div class="md:col-span-2"><textarea id="prod-desc" placeholder="Description" class="w-full border p-1.5 rounded"></textarea></div>
-            
-            <div class="md:col-span-2 bg-gray-50 p-3 rounded border space-y-2">
-              <label class="block font-bold">Upload HD Photos</label>
-              <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border p-1 rounded bg-white">
-              <div id="add-photo-queue" class="flex flex-wrap gap-2 pt-1"></div>
-            </div>
+          <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
+            <h3 class="text-sm font-bold border-b pb-2">Manage & Delete Products</h3>
+            <div id="admin-product-management-list" class="space-y-2"></div>
+          </div>
+        </div>
 
-            <div class="md:col-span-2">
-              <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2 rounded text-xs font-bold uppercase">Publish Product</button>
-            </div>
+        <!-- TAB 3: COUPONS -->
+        <div id="admin-section-coupons" class="admin-content-section hidden bg-white p-5 rounded-2xl border space-y-4 text-xs">
+          <h3 class="font-bold border-b pb-2">Create Coupon Code</h3>
+          <form onsubmit="handleCreateCoupon(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <input type="text" id="cpn-code" required placeholder="CODE100" class="border p-2 rounded uppercase font-bold">
+            <input type="number" id="cpn-val" required placeholder="Discount Value (₹)" class="border p-2 rounded font-bold">
+            <button type="submit" class="bg-black text-white py-2 rounded font-bold uppercase">Add Coupon</button>
           </form>
+          <div id="admin-coupons-table" class="space-y-2 pt-2"></div>
         </div>
-        
-        <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-          <h3 class="text-sm font-bold border-b pb-2">Manage & Delete Products</h3>
-          <div id="admin-product-management-list" class="space-y-2"></div>
+
+        <!-- TAB 4: SETTINGS -->
+        <div id="admin-section-settings" class="admin-content-section hidden bg-white p-5 rounded-2xl border space-y-3 text-xs">
+          <h3 class="font-bold border-b pb-2">Store Settings & PIN</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div><label class="block font-bold mb-1">Store Name</label><input type="text" id="setting-store-name" class="w-full border p-1.5 rounded"></div>
+            <div><label class="block font-bold mb-1">New Admin PIN</label><input type="password" id="setting-new-pin" class="w-full border p-1.5 rounded" placeholder="Leave blank to keep old"></div>
+            <div class="md:col-span-2"><label class="block font-bold mb-1">Return Policy</label><textarea id="setting-policy-return" rows="2" class="w-full border p-1.5 rounded"></textarea></div>
+            <div class="md:col-span-2"><label class="block font-bold mb-1">Shipping Policy</label><textarea id="setting-policy-shipping" rows="2" class="w-full border p-1.5 rounded"></textarea></div>
+          </div>
+          <button type="button" onclick="saveAdminSettings()" class="bg-black text-white px-5 py-2 rounded font-bold uppercase">Save Settings</button>
         </div>
+
       </div>
     </div>
   </main>
@@ -308,22 +353,9 @@
         <h3 class="font-bold text-sm">Write a Review</h3>
         <button type="button" onclick="closeReviewModal()" class="text-lg font-bold">&times;</button>
       </div>
-      <div>
-        <label class="block font-bold mb-1">Your Name</label>
-        <input type="text" id="rev-name" placeholder="Rahul" class="w-full border p-2 rounded">
-      </div>
-      <div>
-        <label class="block font-bold mb-1">Rating</label>
-        <select id="rev-rating" class="w-full border p-2 rounded bg-white">
-          <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-          <option value="4">⭐⭐⭐⭐ (4/5)</option>
-          <option value="3">⭐⭐⭐ (3/5)</option>
-        </select>
-      </div>
-      <div>
-        <label class="block font-bold mb-1">Review Comment</label>
-        <textarea id="rev-comment" rows="2" placeholder="Great product quality..." class="w-full border p-2 rounded"></textarea>
-      </div>
+      <div><label class="block font-bold mb-1">Your Name</label><input type="text" id="rev-name" placeholder="Rahul" class="w-full border p-2 rounded"></div>
+      <div><label class="block font-bold mb-1">Rating</label><select id="rev-rating" class="w-full border p-2 rounded bg-white"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option></select></div>
+      <div><label class="block font-bold mb-1">Review Comment</label><textarea id="rev-comment" rows="2" placeholder="Great quality..." class="w-full border p-2 rounded"></textarea></div>
       <button type="button" onclick="submitReview()" class="w-full bg-black text-white py-2 rounded font-bold uppercase">Submit Review</button>
     </div>
   </div>
@@ -359,9 +391,7 @@
       <button type="button" onclick="navigate('sec-portal-9921')" class="text-[9px] text-gray-300 hover:text-gray-500 font-mono tracking-widest px-2 py-1">⚙️ Admin Portal</button>
     </div>
 
-    <p class="text-[11px] text-gray-500 font-medium">
-      © 2026 My Fashion Store. All Rights Reserved.
-    </p>
+    <p class="text-[11px] text-gray-500 font-medium">© 2026 My Fashion Store. All Rights Reserved.</p>
   </footer>
 
   <!-- SCRIPT -->
@@ -378,6 +408,7 @@
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
     let products = JSON.parse(localStorage.getItem('mfs_instant_cache_v21')) || [];
+    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || [{ code: 'FESTIVE100', value: 100 }];
     let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v21')) || {};
     let cart = [];
     let addPhotosQueue = [];
@@ -397,19 +428,9 @@
       if (track) track.style.transform = `translateX(-${currentSlideIndex * (100 / totalSlides)}%)`;
     }
 
-    function nextSlide() {
-      currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
-      updateSlidePosition();
-    }
-
-    function prevSlide() {
-      currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
-      updateSlidePosition();
-    }
-
-    setInterval(() => {
-      nextSlide();
-    }, 4000);
+    function nextSlide() { currentSlideIndex = (currentSlideIndex + 1) % totalSlides; updateSlidePosition(); }
+    function prevSlide() { currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides; updateSlidePosition(); }
+    setInterval(() => { nextSlide(); }, 4000);
 
     window.navigate = function(view) {
       document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
@@ -431,6 +452,11 @@
       } else if (view === 'policies') {
         document.getElementById('policy-return-display').innerText = storeSettings.returnPolicy;
         document.getElementById('policy-shipping-display').innerText = storeSettings.shippingPolicy;
+      } else if (view === 'sec-portal-9921') {
+        document.getElementById('setting-store-name').value = storeSettings.name;
+        document.getElementById('setting-policy-return').value = storeSettings.returnPolicy;
+        document.getElementById('setting-policy-shipping').value = storeSettings.shippingPolicy;
+        renderAdminCoupons();
       }
       window.scrollTo(0, 0);
     };
@@ -541,7 +567,6 @@
 
       renderProductReviews(prod.id);
       renderSimilarProducts(prod);
-
       navigate('product-detail');
     }
 
@@ -549,15 +574,12 @@
       const container = document.getElementById('product-reviews-list');
       const reviews = productReviews[prodId] || [];
       if (reviews.length === 0) {
-        container.innerHTML = '<p class="text-xs text-gray-400 py-2">No reviews yet. Be the first to review!</p>';
+        container.innerHTML = '<p class="text-xs text-gray-400 py-2">No reviews yet.</p>';
         return;
       }
       container.innerHTML = reviews.map(r => `
         <div class="border-b pb-2 text-xs space-y-1">
-          <div class="flex justify-between font-bold">
-            <span>${r.name}</span>
-            <span class="text-amber-500">${'⭐'.repeat(r.rating)}</span>
-          </div>
+          <div class="flex justify-between font-bold"><span>${r.name}</span><span class="text-amber-500">${'⭐'.repeat(r.rating)}</span></div>
           <p class="text-gray-600">${r.comment}</p>
         </div>
       `).join('');
@@ -571,23 +593,19 @@
       const name = document.getElementById('rev-name').value.trim();
       const rating = Number(document.getElementById('rev-rating').value);
       const comment = document.getElementById('rev-comment').value.trim();
-      if (!name || !comment) return alert('Please fill all review fields.');
+      if (!name || !comment) return alert('Please fill fields.');
 
       if (!productReviews[currentSelectedProduct.id]) productReviews[currentSelectedProduct.id] = [];
       productReviews[currentSelectedProduct.id].unshift({ name, rating, comment });
       localStorage.setItem('mfs_reviews_v21', JSON.stringify(productReviews));
       closeReviewModal();
       renderProductReviews(currentSelectedProduct.id);
-      alert('✅ Review added successfully!');
+      alert('✅ Review added!');
     }
 
     function renderSimilarProducts(prod) {
       const grid = document.getElementById('similar-products-grid');
       const similar = products.filter(p => p.category.toLowerCase() === prod.category.toLowerCase() && p.id !== prod.id).slice(0, 4);
-      if (similar.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-xs text-gray-400">No similar products found.</p>';
-        return;
-      }
       grid.innerHTML = similar.map(p => `
         <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer bg-gray-50 border p-2 rounded-xl">
           <img src="${(p.images && p.images[0]) || p.image}" class="w-full h-32 object-contain bg-white rounded-lg mb-1">
@@ -606,9 +624,7 @@
           localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
           renderHomeProducts(products);
         }
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
+      } catch (err) { console.error("Fetch error:", err); }
     }
 
     async function syncProductsToCloud() {
@@ -619,14 +635,12 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(products)
         });
-      } catch (err) {
-        console.error("Sync error:", err);
-      }
+      } catch (err) { console.error("Sync error:", err); }
     }
 
     async function manualSyncAllProductsToCloud() {
       await syncProductsToCloud();
-      alert("✅ Synced successfully!");
+      alert("✅ Synced successfully to Cloud!");
     }
 
     async function handleProductAdd(e) {
@@ -640,20 +654,19 @@
         price: Number(document.getElementById('prod-price').value),
         sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()),
         description: document.getElementById('prod-desc').value.trim(),
+        supplierUrl: document.getElementById('prod-supplier-url').value.trim() || "",
         image: addPhotosQueue[0],
         images: [...addPhotosQueue]
       };
 
       products.unshift(newProd);
       await syncProductsToCloud();
-
       renderHomeProducts(products);
       renderAdminProductManagement();
       e.target.reset();
-      document.getElementById('prod-files-input').value = '';
       addPhotosQueue = [];
       renderQueuePhotos();
-      alert('🎉 Published & form cleared!');
+      alert('🎉 Product published & form cleared!');
     }
 
     function renderAdminProductManagement() {
@@ -691,12 +704,16 @@
 
     async function processOrderDirect() {
       if (cart.length === 0) return alert('Cart is empty!');
+      const matchedProd = products.find(p => cart[0] && cart[0].title.includes(p.title));
+      const supplierUrl = matchedProd ? (matchedProd.supplierUrl || '') : '';
+
       const orderData = {
         orderId: 'MFS-' + Math.floor(100000 + Math.random() * 900000),
         items: cart.map(i => i.title).join(', '),
         total: document.getElementById('cart-total').innerText,
         status: "Order Confirmed",
         phone: "9876543210",
+        supplierUrl: supplierUrl,
         date: new Date().toLocaleDateString()
       };
       await fetch(`${FIREBASE_DB_URL}/orders.json`, {
@@ -710,20 +727,30 @@
       alert('Order placed successfully!');
     }
 
-    async function fetchCustomerCloudOrders() {
-      const phone = document.getElementById('cust-search-phone').value.trim();
-      const container = document.getElementById('customer-orders-container');
-      if (phone.length !== 10) return alert('Enter valid 10-digit number');
-      
-      const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
-      const data = await res.json();
-      const orders = data ? Object.values(data).filter(o => o.phone === phone) : [];
-      
-      container.innerHTML = orders.length === 0 ? '<p class="text-xs text-red-500">No orders found.</p>' : orders.map(o => `
-        <div class="border p-2 rounded text-xs bg-gray-50">
-          <b>${o.orderId}</b> - ${o.items} (${o.status})
-        </div>
-      `).join('');
+    async function fetchCloudOrders() {
+      const container = document.getElementById('admin-orders-list');
+      if (!container) return;
+      container.innerHTML = '<p class="text-xs text-gray-400 text-center">Loading orders...</p>';
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
+        const data = await res.json();
+        if (!data) { container.innerHTML = '<p class="text-xs text-gray-400 text-center">No orders found.</p>'; return; }
+        
+        container.innerHTML = Object.values(data).map(o => `
+          <div class="border p-3 rounded text-xs bg-white space-y-1.5 shadow-sm">
+            <div class="flex justify-between font-bold">
+              <span class="text-blue-700">${o.orderId}</span>
+              <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-[10px]">${o.status}</span>
+            </div>
+            <p><b>Items:</b> ${o.items}</p>
+            <p><b>Total:</b> ${o.total}</p>
+            <div class="pt-1 border-t flex justify-between items-center">
+              <span><b>Phone:</b> ${o.phone}</span>
+              ${o.supplierUrl ? `<a href="${o.supplierUrl}" target="_blank" class="bg-blue-600 text-white px-2.5 py-1 rounded font-bold text-[11px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Supplier Link</a>` : '<span class="text-gray-400 italic">No supplier link</span>'}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) { container.innerHTML = '<p class="text-xs text-red-500">Error loading orders.</p>'; }
     }
 
     function checkAdminAuth() {
@@ -731,12 +758,73 @@
         document.getElementById('admin-login-box').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         renderAdminProductManagement();
-      } else {
-        alert('Incorrect PIN!');
-      }
+        fetchCloudOrders();
+      } else { alert('Incorrect PIN!'); }
     }
 
     function adminLogout() { location.reload(); }
+
+    function switchAdminTab(tab) {
+      document.querySelectorAll('.admin-content-section').forEach(s => s.classList.add('hidden'));
+      document.querySelectorAll('.admin-tab-btn').forEach(b => { b.classList.remove('border-black', 'text-black'); b.classList.add('border-transparent', 'text-gray-500'); });
+      document.getElementById('admin-section-' + tab).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-btn-' + tab);
+      if (activeBtn) { activeBtn.classList.add('border-black', 'text-black'); activeBtn.classList.remove('border-transparent', 'text-gray-500'); }
+      if (tab === 'orders') fetchCloudOrders();
+    }
+
+    function renderAdminCoupons() {
+      const container = document.getElementById('admin-coupons-table');
+      if (!container) return;
+      container.innerHTML = coupons.map((c, i) => `
+        <div class="flex justify-between items-center border p-2 rounded">
+          <span><b>${c.code}</b> - ₹${c.value} OFF</span>
+          <button type="button" onclick="coupons.splice(${i},1);localStorage.setItem('mfs_coupons_v21',JSON.stringify(coupons));renderAdminCoupons()" class="text-red-600 font-bold">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    function handleCreateCoupon(e) {
+      e.preventDefault();
+      const code = document.getElementById('cpn-code').value.trim().toUpperCase();
+      const val = Number(document.getElementById('cpn-val').value);
+      coupons.push({ code, value: val });
+      localStorage.setItem('mfs_coupons_v21', JSON.stringify(coupons));
+      renderAdminCoupons();
+      e.target.reset();
+      alert('Coupon created!');
+    }
+
+    function saveAdminSettings() {
+      storeSettings.name = document.getElementById('setting-store-name').value.trim() || storeSettings.name;
+      storeSettings.returnPolicy = document.getElementById('setting-policy-return').value.trim();
+      storeSettings.shippingPolicy = document.getElementById('setting-policy-shipping').value.trim();
+      const newPin = document.getElementById('setting-new-pin').value.trim();
+      if (newPin) storeSettings.pin = newPin;
+      localStorage.setItem('mfs_settings_v21', JSON.stringify(storeSettings));
+      alert('✅ Settings saved successfully!');
+    }
+
+    async function handleQueuePhotoSelection(event) {
+      const files = Array.from(event.target.files);
+      for (let file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => { addPhotosQueue.push(e.target.result); renderQueuePhotos(); };
+        reader.readAsDataURL(file);
+      }
+      event.target.value = '';
+    }
+
+    function renderQueuePhotos() {
+      const container = document.getElementById('add-photo-queue');
+      if (!container) return;
+      container.innerHTML = addPhotosQueue.map((url, idx) => `
+        <div class="relative w-14 h-14 rounded border bg-white p-0.5">
+          <img src="${url}" class="w-full h-full object-contain">
+          <button type="button" onclick="addPhotosQueue.splice(${idx},1);renderQueuePhotos()" class="absolute top-0 right-0 bg-red-600 text-white w-4 h-4 rounded-full text-[9px]">✕</button>
+        </div>
+      `).join('');
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       if (products.length > 0) {
