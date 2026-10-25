@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  <!-- ================= SEO & GOOGLE VERIFICATION ================= -->
   <title id="site-title">My Fashion Store | Official Store</title>
   <meta name="google-site-verification" content="XOr8Ci9rVVt-M_oRAZTV0J9OhI0ctAc7ba4O9GUYwLA" />
   <meta name="description" content="Shop premium festive wear, ethnic kurtas, graphic tees, and streetwear at My Fashion Store. Fast delivery across India.">
@@ -67,7 +68,7 @@
         <button type="button" onclick="navigate('policies')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Policies</button>
       </nav>
 
-      <!-- Cart Button & Mobile My Orders -->
+      <!-- Cart Button & Mobile Menu Toggle -->
       <div class="flex items-center space-x-3">
         <button type="button" onclick="navigate('myorders')" class="md:hidden text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-lg font-bold">
           My Orders
@@ -76,7 +77,21 @@
           <i class="fa-solid fa-cart-shopping text-lg"></i>
           <span id="cart-count" class="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
+        <button type="button" onclick="toggleMobileMenu()" class="md:hidden p-1.5 text-gray-800 focus:outline-none">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
       </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-4 space-y-2 text-xs font-bold shadow-lg">
+      <button type="button" onclick="navigate('home'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">🏠 Home</button>
+      <button type="button" onclick="navigate('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">🛍️ All Collection</button>
+      <button type="button" onclick="filterCategory('Men'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">👔 Men's Wear</button>
+      <button type="button" onclick="filterCategory('Women'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">👗 Women's Wear</button>
+      <button type="button" onclick="filterCategory('Kids'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">🧸 Kids' Wear</button>
+      <button type="button" onclick="navigate('myorders'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded text-blue-600 hover:bg-blue-50">📦 My Orders</button>
+      <button type="button" onclick="navigate('policies'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">📋 Policies</button>
     </div>
   </header>
 
@@ -596,6 +611,15 @@
     let currentSlideIndex = 0;
     const totalSlides = 6;
 
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function toggleCart(show) {
+      document.getElementById('cart-modal').classList.toggle('hidden', !show);
+    }
+
     function updateSlidePosition() {
       const track = document.getElementById('slider-track');
       if (track) track.style.transform = `translateX(-${currentSlideIndex * (100 / totalSlides)}%)`;
@@ -959,8 +983,6 @@
       alert("🗑️ Product deleted permanently!");
     }
 
-    function toggleCart(show) { document.getElementById('cart-modal').classList.toggle('hidden', !show); }
-
     function updateCartDisplay() {
       document.getElementById('cart-count').innerText = cart.length;
       const list = document.getElementById('cart-items');
@@ -1010,6 +1032,27 @@
       updateCartDisplay();
       toggleCart(false);
       alert('Order placed successfully!');
+    }
+
+    async function fetchCustomerCloudOrders() {
+      const phone = document.getElementById('cust-search-phone').value.trim();
+      const container = document.getElementById('customer-orders-container');
+      if (phone.length !== 10) return alert('Enter valid 10-digit number');
+      
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
+        const data = await res.json();
+        const orders = data ? Object.values(data).filter(o => o.phone === phone) : [];
+        
+        container.innerHTML = orders.length === 0 ? '<p class="text-xs text-red-500">No orders found.</p>' : orders.map(o => `
+          <div class="border p-2.5 rounded-xl text-xs bg-gray-50 space-y-1">
+            <b>${o.orderId}</b> - ${o.items} (${o.status})<br>
+            <span class="text-gray-500">Total: ${o.total}</span>
+          </div>
+        `).join('');
+      } catch (e) {
+        container.innerHTML = '<p class="text-xs text-red-500">Error fetching orders.</p>';
+      }
     }
 
     async function fetchCloudOrders() {
@@ -1144,4 +1187,8 @@
       if (products.length > 0) {
         renderHomeProducts(products);
       }
-      fetchCloud
+      fetchCloudProducts();
+    });
+  </script>
+</body>
+</html>
