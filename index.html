@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- SEO & GOOGLE VERIFICATION -->
   <title id="site-title">My Fashion Store | Official Store</title>
   <meta name="google-site-verification" content="XOr8Ci9rVVt-M_oRAZTV0J9OhI0ctAc7ba4O9GUYwLA" />
   <meta name="description" content="Shop premium festive wear, ethnic kurtas, graphic tees, and streetwear at My Fashion Store. Fast delivery across India.">
@@ -421,7 +420,7 @@
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
-              <h3 class="text-sm font-bold text-gray-900">Publish New Apparel (Cloud Sync)</h3>
+              <h3 class="text-sm font-bold text-gray-900">Publish New Apparel</h3>
               <button type="button" onclick="manualSyncAllProductsToCloud()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-700">Sync All ☁️</button>
             </div>
             
@@ -667,7 +666,7 @@
       const grid = document.getElementById('home-product-grid');
       if (!grid) return;
       if (!items || items.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">Loading products...</p>';
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">No products added yet.</p>';
         return;
       }
       grid.innerHTML = items.map(p => getProductCardHTML(p)).join('');
@@ -844,12 +843,10 @@
     async function syncProductsToCloud() {
       try {
         localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
-        const prodObj = {};
-        products.forEach(p => { prodObj[p.id] = p; });
         await fetch(`${FIREBASE_DB_URL}/products.json`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(prodObj)
+          body: JSON.stringify(products)
         });
       } catch (err) { console.error("Sync error:", err); }
     }
@@ -859,6 +856,7 @@
       alert("✅ Synced successfully to Cloud!");
     }
 
+    // SIMPLE & ORIGINAL PRODUCT ADD METHOD
     async function handleProductAdd(e) {
       e.preventDefault();
       if (addPhotosQueue.length === 0) return alert('⚠️ Select at least 1 photo!');
@@ -876,13 +874,20 @@
       };
 
       products.unshift(newProd);
-      await syncProductsToCloud();
+      localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
       renderHomeProducts(products);
       renderAdminProductManagement();
+
       e.target.reset();
       addPhotosQueue = [];
       renderQueuePhotos();
-      alert('🎉 Product published & synced to cloud successfully!');
+      alert('🎉 Product added successfully!');
+
+      try {
+        await syncProductsToCloud();
+      } catch(err) {
+        console.log("Cloud sync skipped, saved locally");
+      }
     }
 
     function renderAdminProductManagement() {
@@ -959,26 +964,24 @@
       products[index].images = [...editPhotosQueue];
       products[index].image = editPhotosQueue[0];
 
-      await syncProductsToCloud();
+      localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
       renderHomeProducts(products);
       renderAdminProductManagement();
       closeEditModal();
-      alert('🎉 Product updated & synced successfully!');
+      alert('🎉 Product updated successfully!');
+      syncProductsToCloud();
     }
 
     async function deleteProductById(id) {
       if (!confirm("Delete product permanently?")) return;
       
       products = products.filter(p => Number(p.id) !== Number(id));
-      await syncProductsToCloud();
-      
-      try {
-        await fetch(`${FIREBASE_DB_URL}/products/${id}.json`, { method: 'DELETE' });
-      } catch(e) { console.error("Node delete error:", e); }
-
+      localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
       renderHomeProducts(products);
       renderAdminProductManagement();
-      alert("🗑️ Product deleted permanently!");
+      alert("🗑️ Product deleted successfully!");
+
+      syncProductsToCloud();
     }
 
     function updateCartDisplay() {
@@ -1020,11 +1023,15 @@
         supplierUrl: supplierUrl,
         date: new Date().toLocaleDateString()
       };
-      await fetch(`${FIREBASE_DB_URL}/orders.json`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData)
-      });
+      
+      try {
+        await fetch(`${FIREBASE_DB_URL}/orders.json`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+        });
+      } catch(e) { console.error("Order sync notice:", e); }
+
       cart = [];
       appliedDiscount = 0;
       updateCartDisplay();
