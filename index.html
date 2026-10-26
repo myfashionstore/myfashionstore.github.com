@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="site-title">My Fashion Store | Wear Your Style</title>
-  <meta name="robots" content="noindex, nofollow" />
+  
+  <!-- SEO & GOOGLE VERIFICATION -->
+  <title id="site-title">My Fashion Store | Official Store</title>
+  <meta name="google-site-verification" content="XOr8Ci9rVVt-M_oRAZTV0J9OhI0ctAc7ba4O9GUYwLA" />
+  <meta name="description" content="Shop premium festive wear, ethnic kurtas, graphic tees, and streetwear at My Fashion Store. Fast delivery across India.">
+  <meta name="robots" content="index, follow">
 
   <!-- Tailwind CSS & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,74 +17,86 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.98); }
-    #slider-track { display: flex; width: 600%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
-    .slide-card { width: calc(100% / 6); flex-shrink: 0; }
+    .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.96); }
+    
+    #slider-track {
+      display: flex;
+      width: 600%;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .slide-card {
+      width: calc(100% / 6);
+      flex-shrink: 0;
+    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen antialiased select-none">
 
-  <!-- TOP ANNOUNCEMENT BAR -->
-  <div class="bg-gradient-to-r from-red-600 via-pink-600 to-purple-700 text-white text-[11px] py-2 px-4 text-center font-bold tracking-wide shadow-inner">
-    🔥 Maha Fashion Sale Live! Upto 80% OFF | Free Express Delivery 🇮🇳
+  <!-- TOP ANNOUNCEMENT -->
+  <div id="announcement-bar" class="bg-gradient-to-r from-red-700 via-amber-600 to-indigo-700 text-white text-[11px] py-1.5 px-4 text-center font-bold tracking-wide shadow-sm">
+    🎸 Zubeen Garg Birthday Special & Festive Celebrations Live! Free Express Delivery
   </div>
 
-  <!-- STICKY HEADER & SEARCH BAR -->
-  <header class="sticky top-0 z-40 glass-nav border-b border-gray-200 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
       
-      <!-- BRAND LOGO -->
-      <div class="flex items-center space-x-2.5 cursor-pointer select-none py-1 flex-shrink-0" onclick="navigate('home')">
-        <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-amber-400 shadow-md border border-amber-400/40">
-          <i class="fa-solid fa-crown text-base"></i>
-        </div>
-        <div class="hidden sm:block">
-          <span class="font-black text-sm md:text-base tracking-wider uppercase bg-gradient-to-r from-gray-900 to-red-700 bg-clip-text text-transparent block leading-tight">My Fashion Store</span>
-          <span class="text-[9px] font-bold text-gray-500 tracking-widest uppercase block">Wear Your Style</span>
-        </div>
-      </div>
-
-      <!-- GLOBAL TOP SEARCH BAR -->
-      <div class="flex-grow max-w-md relative">
-        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-xs"></i>
-        <input type="text" id="global-search-input" onkeyup="handleGlobalSearch(this.value)" placeholder="Search for sarees, kurtas, tees, streetwear..." class="w-full pl-9 pr-4 py-2 text-xs rounded-full border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition">
+      <!-- Brand Logo SVG -->
+      <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="navigate('home')">
+        <svg width="120" height="34" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="10" width="60" height="60" rx="14" fill="#111111"/>
+          <path d="M35 22C35 20 37 18 39 18C41 18 43 20 43 22C43 25 39 27 35 29" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 48L35 32L50 48" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M27 48V39M43 48V39" stroke="#E5A823" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="75" y="44" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#111111" letter-spacing="1">MFS</text>
+          <text x="75" y="60" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="700" fill="#777777" letter-spacing="3">MYFASHIONSTORE</text>
+        </svg>
       </div>
       
-      <!-- Desktop Menu & Actions -->
-      <div class="flex items-center space-x-3 flex-shrink-0">
-        <nav class="hidden lg:flex items-center space-x-4 text-xs font-bold tracking-wide text-gray-700">
-          <button type="button" onclick="navigate('home')" class="hover:text-black py-1">Home</button>
-          <button type="button" onclick="navigate('all')" class="hover:text-black py-1">Collection</button>
-          <button type="button" onclick="navigate('myorders')" class="text-blue-600 py-1">Orders</button>
-          <button type="button" onclick="navigate('policies')" class="hover:text-black py-1">Policies</button>
-        </nav>
-
-        <button type="button" onclick="toggleCart(true)" class="relative p-2 text-gray-800 hover:text-black">
-          <i class="fa-solid fa-cart-shopping text-xl"></i>
-          <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+      <!-- Navigation Menu -->
+      <nav class="hidden md:flex items-center space-x-5 text-xs font-bold tracking-wide text-gray-700">
+        <button type="button" onclick="navigate('home')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Home</button>
+        <button type="button" onclick="navigate('all')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">All Collection</button>
+        <button type="button" onclick="filterCategory('Men')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Men</button>
+        <button type="button" onclick="filterCategory('Women')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Women</button>
+        <button type="button" onclick="filterCategory('Kids')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Kids</button>
+        <button type="button" onclick="navigate('myorders')" class="hover:text-blue-600 flex items-center font-bold text-blue-600 py-1 px-2 rounded hover:bg-blue-50">
+          <i class="fa-solid fa-bag-shopping mr-1"></i> My Orders
         </button>
-        <button type="button" onclick="toggleMobileMenu()" class="lg:hidden p-2 text-gray-800 focus:outline-none">
-          <i class="fa-solid fa-bars text-xl"></i>
+        <button type="button" onclick="navigate('policies')" class="hover:text-black py-1 px-2 rounded hover:bg-gray-100">Policies</button>
+      </nav>
+
+      <!-- Cart Button & Mobile Menu Toggle -->
+      <div class="flex items-center space-x-3">
+        <button type="button" onclick="navigate('myorders')" class="md:hidden text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-lg font-bold">
+          My Orders
+        </button>
+        <button type="button" onclick="toggleCart(true)" class="relative p-1.5 text-gray-800 hover:text-black">
+          <i class="fa-solid fa-cart-shopping text-lg"></i>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </button>
+        <button type="button" onclick="toggleMobileMenu()" class="md:hidden p-1.5 text-gray-800 focus:outline-none">
+          <i class="fa-solid fa-bars text-lg"></i>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Drawer -->
-    <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-4 space-y-2 text-xs font-bold shadow-lg">
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-4 space-y-2 text-xs font-bold shadow-lg">
       <button type="button" onclick="navigate('home'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">🏠 Home</button>
       <button type="button" onclick="navigate('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">🛍️ All Collection</button>
-      <button type="button" onclick="filterCategory('Men'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">Men's Wear</button>
-      <button type="button" onclick="filterCategory('Women'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">Women's Wear</button>
-      <button type="button" onclick="filterCategory('Kids'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">Kids' Wear</button>
+      <button type="button" onclick="filterCategory('Men'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">👔 Men's Wear</button>
+      <button type="button" onclick="filterCategory('Women'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">👗 Women's Wear</button>
+      <button type="button" onclick="filterCategory('Kids'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">🧸 Kids' Wear</button>
       <button type="button" onclick="navigate('myorders'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded text-blue-600 hover:bg-blue-50">📦 My Orders</button>
       <button type="button" onclick="navigate('policies'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-gray-100">📋 Policies</button>
     </div>
   </header>
 
-  <!-- FLOATING BACK BUTTON -->
-  <div id="floating-back-container" class="hidden max-w-7xl mx-auto px-4 w-full pt-3 z-30 sticky top-16 pointer-events-none">
+  <!-- FLOATING STICKY BACK BUTTON -->
+  <div id="floating-back-container" class="hidden max-w-7xl mx-auto px-4 w-full pt-3 z-30 sticky top-14 pointer-events-none">
     <button type="button" onclick="navigate('home')" class="pointer-events-auto bg-black text-white hover:bg-neutral-800 px-4 py-2 rounded-xl text-xs font-bold shadow-xl flex items-center gap-2 transition transform hover:scale-105">
       <i class="fa-solid fa-arrow-left"></i> Back to Store
     </button>
@@ -89,217 +105,343 @@
   <!-- MAIN VIEWS -->
   <main class="flex-grow">
     
-    <!-- HOME VIEW -->
-    <div id="page-home" class="page-view space-y-4">
-      <section class="bg-white border-b shadow-sm py-3 px-3 overflow-hidden">
-        <div class="max-w-7xl mx-auto flex overflow-x-auto space-x-3 no-scrollbar items-center justify-start md:justify-center px-2">
-          <button type="button" onclick="filterCategory('All')" class="px-4 py-2 rounded-full bg-black text-white text-xs font-black shadow-sm uppercase tracking-wide flex-shrink-0">🔥 All Items</button>
-          <button type="button" onclick="filterCategory('Men')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">👔 Men Wear</button>
-          <button type="button" onclick="filterCategory('Women')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">👗 Women (Saree & Kurtas)</button>
-          <button type="button" onclick="filterCategory('Kids')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-black hover:text-white text-xs font-black transition uppercase tracking-wide flex-shrink-0">🧸 Kids T-Shirts</button>
-        </div>
-      </section>
-
-      <!-- CAROUSEL SLIDER -->
-      <section class="relative bg-slate-950 text-white overflow-hidden py-4 shadow-lg">
-        <div class="max-w-5xl mx-auto overflow-hidden relative rounded-2xl px-2">
-          <button type="button" onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-9 h-9 rounded-full flex items-center justify-center z-20 transition shadow"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-          <button type="button" onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-9 h-9 rounded-full flex items-center justify-center z-20 transition shadow"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-
+    <!-- VIEW 1: HOME PAGE -->
+    <div id="page-home" class="page-view">
+      
+      <!-- 6-SLIDE CAROUSEL -->
+      <section class="relative bg-neutral-950 text-white overflow-hidden py-4 md:py-6 shadow-md">
+        <div class="max-w-5xl mx-auto overflow-hidden relative rounded-2xl">
           <div id="slider-track">
-            <div class="slide-card text-center px-8 py-8 bg-gradient-to-r from-red-950 via-neutral-900 to-indigo-950 flex flex-col items-center justify-center rounded-2xl">
-              <span class="bg-amber-400 text-black text-[10px] font-black px-3 py-0.5 rounded-full uppercase">Exclusive Drop</span>
-              <h1 class="text-xl md:text-3xl font-black uppercase text-amber-300 mt-2">Premium Streetwear & Ethnic</h1>
-              <button type="button" onclick="navigate('all')" class="mt-3 bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase shadow hover:bg-gray-100">Explore</button>
+            
+            <div class="slide-card text-center px-6 py-6 md:py-10 bg-gradient-to-r from-red-950 via-neutral-900 to-indigo-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-gradient-to-r from-amber-400 to-red-500 text-black text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest shadow">
+                🎸 Happy Birthday Zubeen Da Special 🎂
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-amber-300 mt-2 tracking-tight">Mayabini & Rock Legend Drops</h1>
+              <p class="text-gray-200 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                Celebrating Assam's pride! Flat ₹150 Off with code <strong class="text-amber-300 bg-black/50 px-1.5 py-0.5 rounded">ZUBEEN52</strong>.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="navigate('all')" class="bg-amber-400 text-neutral-950 font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-amber-300 shadow-lg">Shop Zubeen Special</button>
+              </div>
             </div>
-            <div class="slide-card text-center px-8 py-8 bg-gradient-to-r from-neutral-900 via-red-950 to-amber-950 flex flex-col items-center justify-center rounded-2xl">
-              <span class="bg-red-500 text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase">Festive Special</span>
-              <h1 class="text-xl md:text-3xl font-black uppercase text-red-200 mt-2">Royal Kurta & Zari Sets</h1>
-              <button type="button" onclick="navigate('all')" class="mt-3 bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase shadow hover:bg-gray-100">Shop Now</button>
+
+            <div class="slide-card text-center px-6 py-6 md:py-10 bg-gradient-to-r from-orange-950 via-amber-900 to-yellow-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-gradient-to-r from-amber-400 to-orange-400 text-neutral-950 text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest shadow">
+                🌅 Chhath Puja Mahaparv Edition 🌅
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-amber-200 mt-2 tracking-tight">Pavitra Parv Traditional Wear</h1>
+              <p class="text-amber-100 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                Pure cotton kurtas with discount code <strong class="text-amber-300 bg-black/50 px-1.5 py-0.5 rounded">CHHATH50</strong>.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="navigate('all')" class="bg-amber-400 text-neutral-950 font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-amber-300 shadow-lg">Shop Chhath Puja</button>
+              </div>
             </div>
-            <div class="slide-card text-center px-8 py-8 bg-gradient-to-r from-neutral-950 via-blue-950 to-black flex flex-col items-center justify-center rounded-2xl">
-              <span class="bg-blue-500 text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase">Winter Edition</span>
-              <h1 class="text-xl md:text-3xl font-black uppercase text-blue-200 mt-2">Heavy Fleece Hoodies</h1>
-              <button type="button" onclick="navigate('all')" class="mt-3 bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase shadow hover:bg-gray-100">Discover</button>
+
+            <div class="slide-card text-center px-6 py-6 md:py-10 bg-gradient-to-r from-red-950 via-neutral-900 to-amber-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-gradient-to-r from-yellow-400 to-amber-300 text-neutral-950 text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest shadow">
+                ✨ Diwali Festive Dhamaka ✨
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-amber-300 mt-2 tracking-tight">Royal Zari & Silk Kurta Sets</h1>
+              <p class="text-gray-200 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                Royal silk ethnic sets with Flat ₹100 Off coupon <strong class="text-amber-300 bg-black/50 px-1.5 py-0.5 rounded">FESTIVE100</strong>.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="navigate('all')" class="bg-amber-400 text-neutral-950 font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-amber-300 shadow-lg">Shop Diwali</button>
+              </div>
             </div>
-            <div class="slide-card text-center px-8 py-8 bg-gradient-to-r from-neutral-900 via-emerald-950 to-black flex flex-col items-center justify-center rounded-2xl">
-              <span class="bg-emerald-500 text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase">Trending</span>
-              <h1 class="text-xl md:text-3xl font-black uppercase text-emerald-200 mt-2">Bio-Washed Tees</h1>
-              <button type="button" onclick="navigate('all')" class="mt-3 bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase shadow hover:bg-gray-100">Buy Now</button>
+
+            <div class="slide-card text-center px-6 py-6 md:py-10 bg-gradient-to-r from-emerald-950 via-red-950 to-neutral-900 flex flex-col items-center justify-center">
+              <span class="inline-block bg-gradient-to-r from-red-500 to-emerald-400 text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest shadow">
+                🎄 Christmas & Winter Wonderland ❄️
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-red-200 mt-2 tracking-tight">Cozy Winter Wear & Hoodies</h1>
+              <p class="text-gray-200 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                380 GSM fleece hoodies with 25% off coupon <strong class="text-amber-300 bg-black/50 px-1.5 py-0.5 rounded">XMAS25</strong>.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="navigate('all')" class="bg-red-500 text-white font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-red-600 shadow-lg">Shop Christmas</button>
+              </div>
             </div>
-            <div class="slide-card text-center px-8 py-8 bg-gradient-to-r from-black via-purple-950 to-neutral-900 flex flex-col items-center justify-center rounded-2xl">
-              <span class="bg-purple-500 text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase">Limited Stock</span>
-              <h1 class="text-xl md:text-3xl font-black uppercase text-purple-200 mt-2">Tactical Cargos</h1>
-              <button type="button" onclick="navigate('all')" class="mt-3 bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase shadow hover:bg-gray-100">Shop Styles</button>
+
+            <div class="slide-card text-center px-6 py-6 md:py-10 bg-gradient-to-r from-black via-zinc-900 to-black flex flex-col items-center justify-center">
+              <span class="inline-block bg-white text-black text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest shadow">
+                ⚡ Black Friday Mega Drop ⚡
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-white mt-2 tracking-tight">Flat 40% Off Heavy Apparel</h1>
+              <p class="text-gray-300 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                All-black tactical utility cargos and statement streetwear outerwear.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="navigate('all')" class="bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-gray-200 shadow-lg">Claim Offer</button>
+              </div>
             </div>
-            <div class="slide-card text-center px-8 py-8 bg-gradient-to-r from-neutral-900 via-amber-950 to-neutral-950 flex flex-col items-center justify-center rounded-2xl">
-              <span class="bg-yellow-500 text-black text-[10px] font-black px-3 py-0.5 rounded-full uppercase">Mega Sale</span>
-              <h1 class="text-xl md:text-3xl font-black uppercase text-yellow-300 mt-2">Flat Discounts Live</h1>
-              <button type="button" onclick="navigate('all')" class="mt-3 bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase shadow hover:bg-gray-100">Claim Now</button>
+
+            <div class="slide-card text-center px-6 py-6 md:py-10 bg-gradient-to-r from-neutral-900 via-stone-900 to-neutral-950 flex flex-col items-center justify-center">
+              <span class="inline-block bg-white/20 text-white text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                Urban Streetwear Daily
+              </span>
+              <h1 class="text-2xl md:text-5xl font-black uppercase text-white mt-2">Heavyweight Cotton Essentials</h1>
+              <p class="text-gray-300 text-xs md:text-sm max-w-lg mx-auto mt-2 leading-relaxed">
+                240 GSM Bio-washed oversized tees and relaxed fit cargo pants.
+              </p>
+              <div class="pt-3">
+                <button type="button" onclick="navigate('all')" class="bg-white text-black font-black px-6 py-2 rounded-full text-xs uppercase tracking-wider hover:bg-gray-200 shadow-lg">Explore Drops</button>
+              </div>
             </div>
+
+          </div>
+
+          <!-- Controls -->
+          <button type="button" onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xs backdrop-blur shadow-md z-10">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button type="button" onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xs backdrop-blur shadow-md z-10">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+          <!-- Dots -->
+          <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10">
+            <button type="button" onclick="goToSlide(0)" class="slider-dot w-3 h-2 rounded-full bg-amber-400 transition"></button>
+            <button type="button" onclick="goToSlide(1)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
+            <button type="button" onclick="goToSlide(2)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
+            <button type="button" onclick="goToSlide(3)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
+            <button type="button" onclick="goToSlide(4)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
+            <button type="button" onclick="goToSlide(5)" class="slider-dot w-2 h-2 rounded-full bg-white/40 transition"></button>
           </div>
         </div>
       </section>
 
-      <!-- FEATURED PRODUCTS GRID -->
-      <section class="max-w-7xl mx-auto px-4 py-3 space-y-3">
-        <div class="border-b pb-2 flex justify-between items-center">
-          <h2 class="text-base md:text-xl font-black uppercase text-gray-900">Featured Apparel</h2>
-          <button type="button" onclick="navigate('all')" class="text-xs font-bold text-red-600 hover:underline">View All <i class="fa-solid fa-arrow-right ml-1"></i></button>
+      <!-- Trust Badges -->
+      <section class="max-w-7xl mx-auto px-4 py-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+        <div class="p-2.5 bg-white rounded-lg border border-gray-200 shadow-sm flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-rotate-left text-sm text-black"></i>
+          <span class="font-bold text-xs">7-Day Easy Returns</span>
         </div>
-        <div id="home-product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"></div>
+        <div class="p-2.5 bg-white rounded-lg border border-gray-200 shadow-sm flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-shield-halved text-sm text-black"></i>
+          <span class="font-bold text-xs">100% Genuine Apparel</span>
+        </div>
+        <div class="p-2.5 bg-white rounded-lg border border-gray-200 shadow-sm flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-ticket text-sm text-black"></i>
+          <span class="font-bold text-xs">Festive Coupons</span>
+        </div>
+        <div class="p-2.5 bg-white rounded-lg border border-gray-200 shadow-sm flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-qrcode text-sm text-black"></i>
+          <span class="font-bold text-xs">UPI & COD Supported</span>
+        </div>
       </section>
+
+      <!-- Featured Apparel Grid on Home -->
+      <section class="max-w-7xl mx-auto px-4 py-4 space-y-4">
+        <div class="border-b pb-2 flex justify-between items-center">
+          <div>
+            <h2 class="text-base md:text-xl font-black uppercase text-gray-900">Featured & Trending Store Apparel</h2>
+            <p class="text-xs text-gray-500">Explore complete collection directly</p>
+          </div>
+          <button type="button" onclick="navigate('all')" class="text-xs font-bold text-blue-600 hover:underline">
+            Open Filters & Search <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+        <div id="home-product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 pt-1"></div>
+      </section>
+
     </div>
 
-    <!-- ALL COLLECTION VIEW -->
+    <!-- VIEW 2: ALL COLLECTION -->
     <div id="page-all" class="page-view hidden max-w-7xl mx-auto px-4 py-6 space-y-4">
       <div class="border-b pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h1 class="text-xl md:text-2xl font-black uppercase text-gray-900">Catalog & Sorting</h1>
+        <div>
+          <h1 class="text-xl md:text-2xl font-black uppercase text-gray-900">All Collection Catalog</h1>
+          <p class="text-xs text-gray-500">Filter by category or search clothes across catalog</p>
+        </div>
       </div>
 
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white p-3 rounded-xl border shadow-sm">
+      <!-- Filters & Search -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="flex flex-wrap gap-2" id="category-tabs">
-          <button type="button" onclick="filterCategory('All')" id="btn-cat-all" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-black text-white">All</button>
-          <button type="button" onclick="filterCategory('Men')" id="btn-cat-men" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700">Men</button>
-          <button type="button" onclick="filterCategory('Women')" id="btn-cat-women" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700">Women</button>
-          <button type="button" onclick="filterCategory('Kids')" id="btn-cat-kids" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700">Kids</button>
+          <button type="button" onclick="filterCategory('All')" id="btn-cat-all" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-black text-white shadow-sm">All Items</button>
+          <button type="button" onclick="filterCategory('Men')" id="btn-cat-men" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Men</button>
+          <button type="button" onclick="filterCategory('Women')" id="btn-cat-women" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Women</button>
+          <button type="button" onclick="filterCategory('Kids')" id="btn-cat-kids" class="cat-btn px-4 py-1.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Kids</button>
         </div>
-        
-        <div class="flex items-center gap-2">
-          <select id="sort-select" onchange="handleCatalogSort()" class="border border-gray-300 p-1.5 rounded-lg text-xs font-bold bg-white">
-            <option value="default">Sort By: Featured</option>
-            <option value="low-high">Price: Low to High</option>
-            <option value="high-low">Price: High to Low</option>
-          </select>
+        <div class="w-full md:w-64 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+          <input type="text" id="all-search-input" onkeyup="handleAllSearch()" placeholder="Search in collection..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-full border border-gray-300 bg-white focus:outline-none focus:ring-1 focus:ring-black">
         </div>
+      </div>
+
+      <div class="flex justify-between items-center text-xs font-bold text-gray-500 pt-1">
+        <span id="all-catalog-title">Browsing All Apparel</span>
+        <span id="all-product-count" class="bg-gray-200 px-2.5 py-1 rounded-full text-[11px]"></span>
       </div>
 
       <div id="all-product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 pt-2"></div>
     </div>
 
-    <!-- PRODUCT DETAILS VIEW -->
-    <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6 space-y-4">
-      <div class="bg-white rounded-2xl border p-5 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 shadow-sm">
+    <!-- VIEW 3: PRODUCT DETAILS (WITH STICKY BUY BUTTON) -->
+    <div id="page-product-detail" class="page-view hidden max-w-5xl mx-auto px-4 py-6 pb-24">
+      <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="space-y-3">
-          <div class="rounded-xl overflow-hidden border bg-gray-50 h-80 md:h-96">
-            <img id="detail-main-img" src="" class="w-full h-full object-contain bg-white">
+          <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 h-80 md:h-96">
+            <img id="detail-main-img" src="" alt="Main Image" class="w-full h-full object-contain bg-white">
           </div>
-          <div id="detail-thumbnails" class="flex flex-wrap gap-2"></div>
+          <div id="detail-thumbnails" class="flex flex-wrap gap-2 pt-1"></div>
         </div>
+
         <div class="space-y-4">
           <div>
-            <span id="detail-category" class="text-[10px] text-gray-400 uppercase font-bold"></span>
+            <span id="detail-category" class="text-[10px] text-gray-400 uppercase font-bold tracking-wider"></span>
             <h1 id="detail-title" class="text-xl md:text-2xl font-black text-gray-900 mt-1"></h1>
             <p id="detail-price" class="text-2xl font-black text-black mt-2"></p>
           </div>
-          <p id="detail-desc" class="text-xs text-gray-600 leading-relaxed"></p>
-          <div class="space-y-2">
-            <span class="font-bold text-xs text-gray-800">Select Size:</span>
-            <div id="detail-sizes-container" class="flex flex-wrap gap-2"></div>
+
+          <div class="border-t border-b py-3 text-xs text-gray-600 space-y-1">
+            <p class="font-bold text-gray-800">Product Highlights & Fit:</p>
+            <p id="detail-desc" class="leading-relaxed"></p>
           </div>
-          <button type="button" id="detail-buy-btn" class="w-full bg-black text-white py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 shadow">Add to Cart & Checkout</button>
+
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-gray-800">Select Size:</span>
+              <button type="button" onclick="toggleSizeChartDetail()" class="text-blue-600 font-bold hover:underline flex items-center gap-1 text-[11px]">
+                <i class="fa-solid fa-ruler-horizontal"></i> Size Chart
+              </button>
+            </div>
+
+            <div id="detail-sizes-container" class="flex flex-wrap gap-2 pt-1"></div>
+
+            <div id="detail-size-chart-box" class="hidden bg-gray-50 p-3 rounded-xl border text-[11px] text-gray-600 space-y-1 mt-2">
+              <p class="font-bold text-gray-800">Standard Garment Measurements (Inches):</p>
+              <p>• S: Chest 36 | Length 27</p>
+              <p>• M: Chest 38 | Length 28</p>
+              <p>• L: Chest 40 | Length 29</p>
+              <p>• XL: Chest 42 | Length 30</p>
+            </div>
+          </div>
+
+          <!-- DESKTOP BUY BUTTON -->
+          <div class="hidden md:block pt-2">
+            <button type="button" id="detail-buy-btn" class="w-full bg-black text-white py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 shadow-md">
+              Add to Cart & Checkout
+            </button>
+          </div>
         </div>
       </div>
 
+      <!-- STICKY MOBILE/DESKTOP BOTTOM BUY BAR -->
+      <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 md:hidden z-30 shadow-lg flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] text-gray-500 block uppercase font-bold">Total Price</span>
+          <span id="sticky-bar-price" class="text-base font-black text-black">₹0</span>
+        </div>
+        <button type="button" id="sticky-buy-btn" class="flex-grow bg-black text-white py-3 rounded-xl text-xs font-bold uppercase tracking-wider shadow">
+          Add to Cart & Checkout
+        </button>
+      </div>
+
       <!-- CUSTOMER REVIEWS SECTION -->
-      <div class="bg-white rounded-2xl border p-5 md:p-8 shadow-sm space-y-4">
+      <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm space-y-4 mt-6">
         <div class="flex justify-between items-center border-b pb-3">
           <h3 class="text-sm font-black uppercase text-gray-900">Customer Reviews & Ratings</h3>
-          <button type="button" onclick="openReviewModal()" class="bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-lg uppercase">+ Write Review</button>
+          <button type="button" onclick="openReviewModal()" class="bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider hover:bg-neutral-800">
+            + Write Review
+          </button>
         </div>
         <div id="product-reviews-list" class="space-y-3"></div>
       </div>
 
       <!-- SIMILAR PRODUCTS SECTION -->
-      <div class="bg-white rounded-2xl border p-5 md:p-8 shadow-sm space-y-4">
-        <h3 class="text-sm font-black uppercase text-gray-900 border-b pb-3">Similar Products</h3>
+      <div class="bg-white rounded-2xl border border-gray-200 p-5 md:p-8 shadow-sm space-y-4 mt-6">
+        <h3 class="text-sm font-black uppercase text-gray-900 border-b pb-3">Similar Products You May Like</h3>
         <div id="similar-products-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
       </div>
     </div>
 
-    <!-- MY ORDERS VIEW -->
+    <!-- VIEW 4: MY ORDERS -->
     <div id="page-myorders" class="page-view hidden max-w-3xl mx-auto px-4 py-6 space-y-4">
-      <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-4">
-        <h2 class="text-lg font-black border-b pb-2">Track Orders</h2>
-        <div class="bg-gray-50 p-3 rounded-xl border space-y-1.5">
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+        <h2 class="text-lg font-black text-gray-900 border-b pb-2">Track Your Orders</h2>
+        <div class="bg-gray-50 p-3.5 rounded-xl border space-y-2">
           <label class="block text-[11px] font-bold text-gray-700">Enter 10-digit Mobile Number:</label>
           <div class="flex gap-2">
-            <input type="text" id="cust-search-phone" placeholder="Mobile number" class="w-full border p-1.5 text-xs rounded-lg font-semibold">
-            <button type="button" onclick="fetchCustomerCloudOrders()" class="bg-black text-white px-4 py-1.5 rounded-lg text-xs font-bold">Search</button>
+            <input type="text" id="cust-search-phone" placeholder="9876543210" class="w-full border border-gray-300 p-2 text-xs rounded-lg font-semibold bg-white">
+            <button type="button" onclick="fetchCustomerCloudOrders()" class="bg-black text-white px-5 py-2 rounded-lg text-xs font-bold hover:bg-neutral-800">Search</button>
           </div>
         </div>
         <div id="customer-orders-container" class="space-y-3 pt-2"></div>
       </div>
     </div>
 
-    <!-- POLICIES VIEW -->
-    <div id="page-policies" class="page-view hidden max-w-4xl mx-auto px-4 py-8 space-y-4">
-      <h1 class="text-xl font-extrabold border-b pb-2">Store Policies</h1>
-      <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-2">
-        <h3 class="text-sm font-bold">Return Policy</h3>
-        <p id="policy-return-display" class="text-xs text-gray-600 whitespace-pre-line"></p>
+    <!-- VIEW 5: POLICIES -->
+    <div id="page-policies" class="page-view hidden max-w-4xl mx-auto px-4 py-8 space-y-6">
+      <h1 class="text-xl font-extrabold text-gray-900 border-b pb-2">Store Policies</h1>
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-2">
+        <h3 class="text-sm font-bold text-gray-900">Return Policy</h3>
+        <p id="policy-return-display" class="text-xs text-gray-600 whitespace-pre-line leading-relaxed"></p>
       </div>
-      <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-2">
-        <h3 class="text-sm font-bold">Shipping Policy</h3>
-        <p id="policy-shipping-display" class="text-xs text-gray-600 whitespace-pre-line"></p>
+      <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-2">
+        <h3 class="text-sm font-bold text-gray-900">Shipping Policy</h3>
+        <p id="policy-shipping-display" class="text-xs text-gray-600 whitespace-pre-line leading-relaxed"></p>
       </div>
     </div>
 
-    <!-- FULL DESKTOP ADMIN PORTAL -->
+    <!-- VIEW 6: ADMIN PORTAL -->
     <div id="page-sec-portal-9921" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
-      <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border shadow-md text-center space-y-3">
-        <h3 class="text-lg font-extrabold">Secure Admin Login</h3>
-        <input type="password" id="admin-pin-input" placeholder="Enter Security PIN" class="w-full border p-2 rounded text-center font-bold text-xs">
-        <button type="button" onclick="checkAdminAuth()" class="w-full bg-black text-white py-2 rounded text-xs font-bold uppercase">Unlock Dashboard</button>
+      <div id="admin-login-box" class="max-w-sm mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-md text-center space-y-3">
+        <h3 class="text-lg font-extrabold text-gray-900">Secure Admin Login</h3>
+        <input type="password" id="admin-pin-input" placeholder="Enter Security PIN" class="w-full border border-gray-300 p-2 rounded text-center font-bold text-xs">
+        <button type="button" onclick="checkAdminAuth()" class="w-full bg-black text-white py-2.5 rounded text-xs font-bold uppercase hover:bg-neutral-800">Unlock Dashboard</button>
       </div>
 
       <div id="admin-panel" class="hidden space-y-4">
         <div class="flex justify-between items-center border-b pb-3">
-          <h2 class="text-xl font-black">Management Dashboard</h2>
-          <button type="button" onclick="adminLogout()" class="text-xs bg-red-50 text-red-700 px-3 py-1 rounded font-bold">Logout</button>
+          <h2 class="text-xl font-black text-gray-900">Pro Management Dashboard</h2>
+          <button type="button" onclick="adminLogout()" class="text-xs bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded font-bold">Logout</button>
         </div>
 
-        <div class="flex border-b space-x-6 overflow-x-auto text-xs font-bold">
-          <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black">1. Live Orders & Supplier Links</button>
-          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Add / Edit / Delete Products</button>
-          <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">3. Coupon Codes</button>
-          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Store Settings & PIN</button>
+        <div class="flex border-b space-x-6 overflow-x-auto text-xs font-bold no-scrollbar">
+          <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black whitespace-nowrap">1. Live Orders</button>
+          <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500 whitespace-nowrap">2. Products</button>
+          <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500 whitespace-nowrap">3. Coupons</button>
+          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500 whitespace-nowrap">4. Settings</button>
         </div>
 
-        <!-- TAB 1: ORDERS -->
+        <!-- Admin Tab 1: Orders -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
-          <div class="flex justify-between items-center bg-white p-3 rounded-xl border">
-            <h3 class="font-bold text-xs">Real-time Cloud Orders</h3>
-            <button type="button" onclick="fetchCloudOrders()" class="text-xs bg-gray-100 px-3 py-1 rounded font-bold">Refresh 🔄</button>
+          <div class="flex justify-between items-center bg-white p-3.5 rounded-xl border">
+            <h3 class="font-bold text-xs text-gray-800">Real-time Cloud Orders</h3>
+            <button type="button" onclick="fetchCloudOrders()" class="text-xs bg-gray-100 px-3 py-1 rounded font-bold hover:bg-gray-200">Refresh 🔄</button>
           </div>
           <div id="admin-orders-list" class="space-y-3"></div>
         </div>
 
-        <!-- TAB 2: PRODUCTS -->
+        <!-- Admin Tab 2: Products -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
-              <h3 class="text-sm font-bold">Publish New Apparel</h3>
-              <button type="button" onclick="manualSyncAllProductsToCloud()" class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">Sync All ☁️</button>
+              <h3 class="text-sm font-bold text-gray-900">Publish New Apparel (Cloud Sync)</h3>
+              <button type="button" onclick="manualSyncAllProductsToCloud()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-700">Sync All ☁️</button>
             </div>
             
             <form onsubmit="handleProductAdd(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><input type="text" id="prod-title" required placeholder="Product Title" class="w-full border p-1.5 rounded"></div>
+              <div><input type="text" id="prod-title" required placeholder="Product Title" class="w-full border p-2 rounded"></div>
               <div>
-                <select id="prod-category" class="w-full border p-1.5 rounded bg-white">
+                <select id="prod-category" class="w-full border p-2 rounded bg-white">
                   <option value="Men">Men</option>
                   <option value="Women">Women</option>
                   <option value="Kids">Kids</option>
                 </select>
               </div>
-              <div><input type="number" id="prod-price" required placeholder="Price (₹)" class="w-full border p-1.5 rounded"></div>
-              <div><input type="text" id="prod-sizes" value="S, M, L, XL" class="w-full border p-1.5 rounded"></div>
+              <div><input type="number" id="prod-price" required placeholder="Price (₹)" class="w-full border p-2 rounded"></div>
+              <div><input type="text" id="prod-sizes" value="S, M, L, XL" class="w-full border p-2 rounded"></div>
               
               <div class="md:col-span-2">
                 <input type="url" id="prod-supplier-url" placeholder="Supplier Product Link (Meesho/Wholesale link)" class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs">
               </div>
 
-              <div class="md:col-span-2"><textarea id="prod-desc" placeholder="Description" class="w-full border p-1.5 rounded"></textarea></div>
+              <div class="md:col-span-2"><textarea id="prod-desc" placeholder="Description" class="w-full border p-2 rounded"></textarea></div>
               
               <div class="md:col-span-2 bg-gray-50 p-3 rounded border space-y-2">
                 <label class="block font-bold">Upload HD Photos (Max 5)</label>
@@ -308,38 +450,38 @@
               </div>
 
               <div class="md:col-span-2">
-                <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2 rounded text-xs font-bold uppercase">Publish Product</button>
+                <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2.5 rounded text-xs font-bold uppercase hover:bg-neutral-800">Publish Product</button>
               </div>
             </form>
           </div>
           
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-            <h3 class="text-sm font-bold border-b pb-2">Manage, Edit & Delete Products</h3>
+            <h3 class="text-sm font-bold border-b pb-2 text-gray-900">Manage, Edit & Delete Products</h3>
             <div id="admin-product-management-list" class="space-y-2"></div>
           </div>
         </div>
 
-        <!-- TAB 3: COUPONS -->
+        <!-- Admin Tab 3: Coupons -->
         <div id="admin-section-coupons" class="admin-content-section hidden bg-white p-5 rounded-2xl border space-y-4 text-xs">
-          <h3 class="font-bold border-b pb-2">Create Coupon Code</h3>
+          <h3 class="font-bold border-b pb-2 text-gray-900">Create Coupon Code</h3>
           <form onsubmit="handleCreateCoupon(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <input type="text" id="cpn-code" required placeholder="CODE100" class="border p-2 rounded uppercase font-bold">
             <input type="number" id="cpn-val" required placeholder="Discount Value (₹)" class="border p-2 rounded font-bold">
-            <button type="submit" class="bg-black text-white py-2 rounded font-bold uppercase">Add Coupon</button>
+            <button type="submit" class="bg-black text-white py-2 rounded font-bold uppercase hover:bg-neutral-800">Add Coupon</button>
           </form>
           <div id="admin-coupons-table" class="space-y-2 pt-2"></div>
         </div>
 
-        <!-- TAB 4: SETTINGS -->
+        <!-- Admin Tab 4: Settings -->
         <div id="admin-section-settings" class="admin-content-section hidden bg-white p-5 rounded-2xl border space-y-3 text-xs">
-          <h3 class="font-bold border-b pb-2">Store Settings & Admin PIN</h3>
+          <h3 class="font-bold border-b pb-2 text-gray-900">Store Settings & PIN</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div><label class="block font-bold mb-1">Store Name</label><input type="text" id="setting-store-name" class="w-full border p-1.5 rounded"></div>
             <div><label class="block font-bold mb-1">New Admin PIN</label><input type="password" id="setting-new-pin" class="w-full border p-1.5 rounded" placeholder="Leave blank to keep old"></div>
             <div class="md:col-span-2"><label class="block font-bold mb-1">Return Policy</label><textarea id="setting-policy-return" rows="2" class="w-full border p-1.5 rounded"></textarea></div>
             <div class="md:col-span-2"><label class="block font-bold mb-1">Shipping Policy</label><textarea id="setting-policy-shipping" rows="2" class="w-full border p-1.5 rounded"></textarea></div>
           </div>
-          <button type="button" onclick="saveAdminSettings()" class="bg-black text-white px-5 py-2 rounded font-bold uppercase">Save Settings</button>
+          <button type="button" onclick="saveAdminSettings()" class="bg-black text-white px-5 py-2 rounded font-bold uppercase hover:bg-neutral-800">Save Settings</button>
         </div>
 
       </div>
@@ -350,7 +492,7 @@
   <div id="edit-product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-xs">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-sm">Edit Product</h3>
+        <h3 class="font-bold text-sm text-gray-900">Edit Product</h3>
         <button type="button" onclick="closeEditModal()" class="text-xl font-bold">&times;</button>
       </div>
       <form onsubmit="handleProductEditSave(event)" class="space-y-3">
@@ -378,7 +520,7 @@
         </div>
 
         <div class="flex gap-2 pt-2">
-          <button type="submit" class="flex-1 bg-black text-white py-2.5 rounded font-bold uppercase">Save Changes</button>
+          <button type="submit" class="flex-1 bg-black text-white py-2.5 rounded font-bold uppercase hover:bg-neutral-800">Save Changes</button>
           <button type="button" onclick="closeEditModal()" class="px-4 py-2.5 border rounded font-bold">Cancel</button>
         </div>
       </form>
@@ -389,13 +531,13 @@
   <div id="review-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-5 space-y-3 text-xs">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-sm">Write a Review</h3>
+        <h3 class="font-bold text-sm text-gray-900">Write a Review</h3>
         <button type="button" onclick="closeReviewModal()" class="text-lg font-bold">&times;</button>
       </div>
       <div><label class="block font-bold mb-1">Your Name</label><input type="text" id="rev-name" placeholder="Rahul" class="w-full border p-2 rounded"></div>
       <div><label class="block font-bold mb-1">Rating</label><select id="rev-rating" class="w-full border p-2 rounded bg-white"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option></select></div>
       <div><label class="block font-bold mb-1">Review Comment</label><textarea id="rev-comment" rows="2" placeholder="Great quality..." class="w-full border p-2 rounded"></textarea></div>
-      <button type="button" onclick="submitReview()" class="w-full bg-black text-white py-2 rounded font-bold uppercase">Submit Review</button>
+      <button type="button" onclick="submitReview()" class="w-full bg-black text-white py-2.5 rounded font-bold uppercase hover:bg-neutral-800">Submit Review</button>
     </div>
   </div>
 
@@ -403,16 +545,26 @@
   <div id="cart-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end">
     <div class="bg-white w-full max-w-md h-full flex flex-col p-5 shadow-2xl overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="text-sm font-bold uppercase">Shopping Bag</h3>
+        <h3 class="text-sm font-bold uppercase text-gray-900">Shopping Bag</h3>
         <button type="button" onclick="toggleCart(false)" class="text-2xl font-bold">&times;</button>
       </div>
       <div id="cart-items" class="py-3 space-y-2 flex-grow overflow-y-auto border-b"></div>
+      
+      <!-- COUPON INPUT -->
+      <div class="py-2 border-b space-y-1.5">
+        <div class="flex gap-2">
+          <input type="text" id="cart-coupon-input" placeholder="Enter coupon code" class="w-full border p-1.5 rounded text-xs uppercase font-bold">
+          <button type="button" onclick="applyCoupon()" class="bg-black text-white px-3 py-1.5 rounded text-xs font-bold">Apply</button>
+        </div>
+        <p id="coupon-feedback" class="text-[10px] text-green-600 font-bold"></p>
+      </div>
+
       <div class="pt-3 space-y-2 text-xs">
         <div class="flex justify-between font-extrabold text-sm text-black">
           <span>Total:</span>
           <span id="cart-total">₹0</span>
         </div>
-        <button type="button" onclick="processOrderDirect()" class="w-full bg-black text-white py-2.5 text-xs font-bold rounded uppercase">Complete Order</button>
+        <button type="button" onclick="processOrderDirect()" class="w-full bg-black text-white py-3 text-xs font-bold rounded-xl uppercase tracking-wider hover:bg-neutral-800 shadow">Complete Order</button>
       </div>
     </div>
   </div>
@@ -440,16 +592,17 @@
     const defaultSettings = {
       name: "My Fashion Store",
       phone: "919876543210",
-      returnPolicy: "• 7-Day Doorstep Returns & Exchanges.",
-      shippingPolicy: "• Dispatched within 24-48 hours.",
+      returnPolicy: "• 7-Day Doorstep Returns & Exchanges.\n• Product must be unused with original tags.",
+      shippingPolicy: "• Dispatched within 24-48 hours.\n• Free express delivery across India.",
       pin: "adeet2009"
     };
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
     let products = JSON.parse(localStorage.getItem('mfs_instant_cache_v21')) || [];
-    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || [{ code: 'FESTIVE100', value: 100 }];
+    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || [{ code: 'ZUBEEN52', value: 150 }, { code: 'CHHATH50', value: 50 }, { code: 'FESTIVE100', value: 100 }, { code: 'XMAS25', value: 250 }];
     let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v21')) || {};
     let cart = [];
+    let appliedDiscount = 0;
     let addPhotosQueue = [];
     let editPhotosQueue = [];
     let currentCategory = 'All';
@@ -463,13 +616,21 @@
       if (menu) menu.classList.toggle('hidden');
     }
 
+    function toggleCart(show) {
+      document.getElementById('cart-modal').classList.toggle('hidden', !show);
+    }
+
     function updateSlidePosition() {
       const track = document.getElementById('slider-track');
       if (track) track.style.transform = `translateX(-${currentSlideIndex * (100 / totalSlides)}%)`;
+      document.querySelectorAll('.slider-dot').forEach((dot, idx) => {
+        dot.className = idx === currentSlideIndex ? 'slider-dot w-3 h-2 rounded-full bg-amber-400 transition' : 'slider-dot w-2 h-2 rounded-full bg-white/40 transition';
+      });
     }
 
     function nextSlide() { currentSlideIndex = (currentSlideIndex + 1) % totalSlides; updateSlidePosition(); }
     function prevSlide() { currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides; updateSlidePosition(); }
+    function goToSlide(idx) { currentSlideIndex = idx; updateSlidePosition(); }
     setInterval(() => { nextSlide(); }, 4000);
 
     window.navigate = function(view) {
@@ -480,7 +641,7 @@
 
       const floatingBack = document.getElementById('floating-back-container');
       if (floatingBack) {
-        if (view === 'home' || view === 'sec-portal-9921') floatingBack.classList.add('hidden');
+        if (view === 'home') floatingBack.classList.add('hidden');
         else floatingBack.classList.remove('hidden');
       }
 
@@ -506,7 +667,7 @@
       const grid = document.getElementById('home-product-grid');
       if (!grid) return;
       if (!items || items.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">No products available right now.</p>';
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">Loading products...</p>';
         return;
       }
       grid.innerHTML = items.map(p => getProductCardHTML(p)).join('');
@@ -515,6 +676,7 @@
     function renderAllProducts(items) {
       const grid = document.getElementById('all-product-grid');
       if (!grid) return;
+      document.getElementById('all-product-count').innerText = `${items.length} items`;
       if (!items || items.length === 0) {
         grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-xs">No matching apparel found.</p>';
         return;
@@ -525,15 +687,15 @@
     function getProductCardHTML(p) {
       const mainImg = (p.images && p.images.length > 0) ? p.images[0] : (p.image || '');
       return `
-        <div class="bg-white rounded-2xl border p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md transition">
+        <div class="bg-white rounded-xl border border-gray-200 p-3 flex flex-col justify-between shadow-xs hover:shadow-md transition">
           <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer">
-            <img src="${mainImg}" class="w-full h-48 object-contain bg-white rounded-xl mb-3">
+            <img src="${mainImg}" alt="${p.title}" class="w-full h-44 object-contain bg-white rounded-lg mb-2">
             <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider">${p.category}</span>
-            <h3 class="font-bold text-xs line-clamp-1 mt-0.5">${p.title}</h3>
+            <h3 class="font-bold text-xs line-clamp-1 text-gray-900 mt-0.5">${p.title}</h3>
           </div>
-          <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 mt-2">
+          <div class="flex items-center justify-between pt-2 border-t border-gray-100 mt-2">
             <span class="font-black text-xs text-black">₹${p.price}</span>
-            <button type="button" onclick="openProductDetailPage(${p.id})" class="bg-black text-white text-[10px] px-3.5 py-1.5 rounded-xl font-bold uppercase tracking-wider hover:bg-neutral-800 transition">View</button>
+            <button type="button" onclick="openProductDetailPage(${p.id})" class="bg-black text-white text-[10px] px-3.5 py-1 rounded-full font-bold uppercase tracking-wider hover:bg-neutral-800">View</button>
           </div>
         </div>
       `;
@@ -543,30 +705,14 @@
       navigate('all');
       currentCategory = cat;
       const filtered = cat === 'All' ? products : products.filter(p => p.category.toLowerCase() === cat.toLowerCase());
+      document.getElementById('all-catalog-title').innerText = `Browsing ${cat} Collection`;
       renderAllProducts(filtered);
     };
 
-    function handleGlobalSearch(query) {
-      const q = query.toLowerCase().trim();
-      if (q.length > 0) {
-        navigate('all');
-        const filtered = products.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
-        renderAllProducts(filtered);
-      } else {
-        renderAllProducts(products);
-      }
-    }
-
-    function handleCatalogSort() {
-      const sortBy = document.getElementById('sort-select').value;
-      let items = currentCategory === 'All' ? [...products] : products.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
-      
-      if (sortBy === 'low-high') {
-        items.sort((a, b) => a.price - b.price);
-      } else if (sortBy === 'high-low') {
-        items.sort((a, b) => b.price - a.price);
-      }
-      renderAllProducts(items);
+    function handleAllSearch() {
+      const q = document.getElementById('all-search-input').value.toLowerCase().trim();
+      const filtered = products.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
+      renderAllProducts(filtered);
     }
 
     function openProductDetailPage(id) {
@@ -579,48 +725,69 @@
       document.getElementById('detail-category').innerText = prod.category;
       document.getElementById('detail-title').innerText = prod.title;
       document.getElementById('detail-price').innerText = '₹' + prod.price;
-      document.getElementById('detail-desc').innerText = prod.description || "Premium fabric quality.";
+      document.getElementById('sticky-bar-price').innerText = '₹' + prod.price;
+      document.getElementById('detail-desc').innerText = prod.description || "Premium fabric quality, stylish fit, and comfortable wear.";
+
+      const thumbContainer = document.getElementById('detail-thumbnails');
+      thumbContainer.innerHTML = allPhotos.map((imgUrl) => `
+        <button type="button" onclick="document.getElementById('detail-main-img').src='${imgUrl}'" class="w-14 h-14 rounded-lg border border-gray-200 overflow-hidden bg-white p-0.5 hover:border-black">
+          <img src="${imgUrl}" class="w-full h-full object-contain">
+        </button>
+      `).join('');
 
       const sizeBox = document.getElementById('detail-sizes-container');
       sizeBox.innerHTML = '';
       const rawSizes = (prod.sizes && prod.sizes.length > 0) ? prod.sizes : ["Free Size"];
       currentSelectedSize = rawSizes.length === 1 ? rawSizes[0] : null;
 
-      rawSizes.forEach(sz => {
+      rawSizes.forEach((sz, idx) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.innerText = sz.trim();
-        btn.className = 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg';
+        btn.className = (idx === 0 && rawSizes.length === 1) ? 'border-2 border-black bg-black text-white font-black text-xs px-3.5 py-1 rounded-lg' : 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg text-gray-800';
+        if(idx === 0 && rawSizes.length === 1) currentSelectedSize = sz.trim();
+        
         btn.onclick = () => {
           currentSelectedSize = sz.trim();
-          sizeBox.querySelectorAll('button').forEach(b => b.className = 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg');
+          sizeBox.querySelectorAll('button').forEach(b => b.className = 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg text-gray-800');
           btn.className = 'border-2 border-black bg-black text-white font-black text-xs px-3.5 py-1 rounded-lg';
         };
         sizeBox.appendChild(btn);
       });
 
-      document.getElementById('detail-buy-btn').onclick = () => {
-        if (!currentSelectedSize) return alert('⚠️ Select size first!');
+      const handleBuyAction = () => {
+        if (!currentSelectedSize) return alert('⚠️ Please select a size first!');
         cart = [{ ...prod, title: `${prod.title} (Size: ${currentSelectedSize})` }];
         updateCartDisplay();
         toggleCart(true);
       };
+
+      document.getElementById('detail-buy-btn').onclick = handleBuyAction;
+      document.getElementById('sticky-buy-btn').onclick = handleBuyAction;
 
       renderProductReviews(prod.id);
       renderSimilarProducts(prod);
       navigate('product-detail');
     }
 
+    function toggleSizeChartDetail() {
+      const box = document.getElementById('detail-size-chart-box');
+      if (box) box.classList.toggle('hidden');
+    }
+
     function renderProductReviews(prodId) {
       const container = document.getElementById('product-reviews-list');
       const reviews = productReviews[prodId] || [];
       if (reviews.length === 0) {
-        container.innerHTML = '<p class="text-xs text-gray-400 py-2">No reviews yet.</p>';
+        container.innerHTML = '<p class="text-xs text-gray-400 py-2">No reviews yet. Be the first to review!</p>';
         return;
       }
       container.innerHTML = reviews.map(r => `
         <div class="border-b pb-2 text-xs space-y-1">
-          <div class="flex justify-between font-bold"><span>${r.name}</span><span class="text-amber-500">${'⭐'.repeat(r.rating)}</span></div>
+          <div class="flex justify-between font-bold">
+            <span class="text-gray-900">${r.name}</span>
+            <span class="text-amber-500">${'⭐'.repeat(r.rating)}</span>
+          </div>
           <p class="text-gray-600">${r.comment}</p>
         </div>
       `).join('');
@@ -634,24 +801,28 @@
       const name = document.getElementById('rev-name').value.trim();
       const rating = Number(document.getElementById('rev-rating').value);
       const comment = document.getElementById('rev-comment').value.trim();
-      if (!name || !comment) return alert('Please fill fields.');
+      if (!name || !comment) return alert('Please fill all review fields.');
 
       if (!productReviews[currentSelectedProduct.id]) productReviews[currentSelectedProduct.id] = [];
       productReviews[currentSelectedProduct.id].unshift({ name, rating, comment });
       localStorage.setItem('mfs_reviews_v21', JSON.stringify(productReviews));
       closeReviewModal();
       renderProductReviews(currentSelectedProduct.id);
-      alert('✅ Review added!');
+      alert('✅ Review added successfully!');
     }
 
     function renderSimilarProducts(prod) {
       const grid = document.getElementById('similar-products-grid');
       const similar = products.filter(p => p.category.toLowerCase() === prod.category.toLowerCase() && p.id !== prod.id).slice(0, 4);
+      if (similar.length === 0) {
+        grid.innerHTML = '<p class="col-span-full text-xs text-gray-400">No similar products found.</p>';
+        return;
+      }
       grid.innerHTML = similar.map(p => `
         <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer bg-gray-50 border p-2 rounded-xl">
           <img src="${(p.images && p.images[0]) || p.image}" class="w-full h-32 object-contain bg-white rounded-lg mb-1">
-          <h4 class="font-bold text-xs truncate">${p.title}</h4>
-          <span class="text-xs font-extrabold">₹${p.price}</span>
+          <h4 class="font-bold text-xs truncate text-gray-900">${p.title}</h4>
+          <span class="text-xs font-extrabold text-black">₹${p.price}</span>
         </div>
       `).join('');
     }
@@ -800,13 +971,9 @@
     async function deleteProductById(id) {
       if (!confirm("Delete product permanently?")) return;
       
-      // Remove from local array
       products = products.filter(p => Number(p.id) !== Number(id));
-      
-      // Update local storage and cloud database simultaneously
       await syncProductsToCloud();
       
-      // Force direct node wipe in cloud
       try {
         await fetch(`${FIREBASE_DB_URL}/products/${id}.json`, { method: 'DELETE' });
       } catch(e) { console.error("Node delete error:", e); }
@@ -816,8 +983,6 @@
       alert("🗑️ Product deleted permanently!");
     }
 
-    function toggleCart(show) { document.getElementById('cart-modal').classList.toggle('hidden', !show); }
-
     function updateCartDisplay() {
       document.getElementById('cart-count').innerText = cart.length;
       const list = document.getElementById('cart-items');
@@ -826,7 +991,21 @@
         subtotal += item.price;
         return `<div class="flex justify-between text-xs py-1 border-b"><span>${item.title}</span><b>₹${item.price}</b></div>`;
       }).join('');
-      document.getElementById('cart-total').innerText = '₹' + subtotal;
+      
+      let finalTotal = Math.max(0, subtotal - appliedDiscount);
+      document.getElementById('cart-total').innerText = '₹' + finalTotal;
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('cart-coupon-input').value.trim().toUpperCase();
+      const found = coupons.find(c => c.code === code);
+      if (found) {
+        appliedDiscount = found.value;
+        document.getElementById('coupon-feedback').innerText = `✅ Coupon applied! Flat ₹${found.value} OFF`;
+        updateCartDisplay();
+      } else {
+        alert('Invalid coupon code!');
+      }
     }
 
     async function processOrderDirect() {
@@ -849,9 +1028,31 @@
         body: JSON.stringify(orderData)
       });
       cart = [];
+      appliedDiscount = 0;
       updateCartDisplay();
       toggleCart(false);
       alert('Order placed successfully!');
+    }
+
+    async function fetchCustomerCloudOrders() {
+      const phone = document.getElementById('cust-search-phone').value.trim();
+      const container = document.getElementById('customer-orders-container');
+      if (phone.length !== 10) return alert('Enter valid 10-digit number');
+      
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
+        const data = await res.json();
+        const orders = data ? Object.values(data).filter(o => o.phone === phone) : [];
+        
+        container.innerHTML = orders.length === 0 ? '<p class="text-xs text-red-500">No orders found.</p>' : orders.map(o => `
+          <div class="border p-2.5 rounded-xl text-xs bg-gray-50 space-y-1">
+            <b>${o.orderId}</b> - ${o.items} (${o.status})<br>
+            <span class="text-gray-500">Total: ${o.total}</span>
+          </div>
+        `).join('');
+      } catch (e) {
+        container.innerHTML = '<p class="text-xs text-red-500">Error fetching orders.</p>';
+      }
     }
 
     async function fetchCloudOrders() {
