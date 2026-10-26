@@ -833,11 +833,9 @@
         const data = await res.json();
         if (data) {
           products = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
-        } else {
-          products = [];
+          localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
+          renderHomeProducts(products);
         }
-        localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
-        renderHomeProducts(products);
       } catch (err) { 
         console.error("Fetch error:", err); 
       }
@@ -884,7 +882,7 @@
       e.target.reset();
       addPhotosQueue = [];
       renderQueuePhotos();
-      alert('🎉 Product published & form cleared!');
+      alert('🎉 Product published & synced to cloud successfully!');
     }
 
     function renderAdminProductManagement() {
@@ -965,7 +963,7 @@
       renderHomeProducts(products);
       renderAdminProductManagement();
       closeEditModal();
-      alert('🎉 Product updated successfully!');
+      alert('🎉 Product updated & synced successfully!');
     }
 
     async function deleteProductById(id) {
