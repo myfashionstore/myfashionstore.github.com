@@ -263,13 +263,13 @@
           <button type="button" onclick="switchAdminTab('orders')" id="tab-btn-orders" class="admin-tab-btn pb-2 border-b-2 border-black text-black">1. Live Orders & Supplier Links</button>
           <button type="button" onclick="switchAdminTab('products')" id="tab-btn-products" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">2. Add / Edit / Delete Products</button>
           <button type="button" onclick="switchAdminTab('coupons')" id="tab-btn-coupons" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">3. Coupon Codes</button>
-          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Store Settings & PIN</button>
+          <button type="button" onclick="switchAdminTab('settings')" id="tab-btn-settings" class="admin-tab-btn pb-2 border-b-2 border-transparent text-gray-500">4. Store Settings</button>
         </div>
 
         <!-- TAB 1: ORDERS -->
         <div id="admin-section-orders" class="admin-content-section space-y-3">
           <div class="flex justify-between items-center bg-white p-3 rounded-xl border">
-            <h3 class="font-bold text-xs">Real-time Cloud Orders</h3>
+            <h3 class="font-bold text-xs">Customer Orders & Shipping Info</h3>
             <button type="button" onclick="fetchCloudOrders()" class="text-xs bg-gray-100 px-3 py-1 rounded font-bold">Refresh 🔄</button>
           </div>
           <div id="admin-orders-list" class="space-y-3"></div>
@@ -278,43 +278,30 @@
         <!-- TAB 2: PRODUCTS -->
         <div id="admin-section-products" class="admin-content-section hidden space-y-4">
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-            <div class="flex justify-between items-center border-b pb-2">
-              <h3 class="text-sm font-bold">Publish New Apparel</h3>
-              <button type="button" onclick="manualSyncAllProductsToCloud()" class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold">Sync All ☁️</button>
-            </div>
-            
+            <h3 class="text-sm font-bold border-b pb-2">Publish New Apparel</h3>
             <form onsubmit="handleProductAdd(event)" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><input type="text" id="prod-title" required placeholder="Product Title" class="w-full border p-1.5 rounded"></div>
+              <div><input type="text" id="prod-title" required placeholder="Product Title" class="w-full border p-2 rounded"></div>
               <div>
-                <select id="prod-category" class="w-full border p-1.5 rounded bg-white">
+                <select id="prod-category" class="w-full border p-2 rounded bg-white">
                   <option value="Men">Men</option>
                   <option value="Women">Women</option>
                   <option value="Kids">Kids</option>
                 </select>
               </div>
-              <div><input type="number" id="prod-price" required placeholder="Price (₹)" class="w-full border p-1.5 rounded"></div>
-              <div><input type="text" id="prod-sizes" value="S, M, L, XL" class="w-full border p-1.5 rounded"></div>
-              
-              <div class="md:col-span-2">
-                <input type="url" id="prod-supplier-url" placeholder="Supplier Product Link (Meesho/Wholesale link)" class="w-full border border-blue-300 p-2 rounded bg-blue-50/40 text-xs">
-              </div>
-
-              <div class="md:col-span-2"><textarea id="prod-desc" placeholder="Description" class="w-full border p-1.5 rounded"></textarea></div>
-              
-              <div class="md:col-span-2 bg-gray-50 p-3 rounded border space-y-2">
-                <label class="block font-bold">Upload HD Photos (Max 5)</label>
+              <div><input type="number" id="prod-price" required placeholder="Price (₹)" class="w-full border p-2 rounded"></div>
+              <div><input type="text" id="prod-sizes" value="S, M, L, XL" class="w-full border p-2 rounded"></div>
+              <div class="md:col-span-2"><input type="url" id="prod-supplier-url" placeholder="Supplier Link (Meesho/Wholesale)" class="w-full border p-2 rounded bg-blue-50/40"></div>
+              <div class="md:col-span-2"><textarea id="prod-desc" placeholder="Description" class="w-full border p-2 rounded"></textarea></div>
+              <div class="md:col-span-2 bg-gray-50 p-3 rounded border space-y-1">
+                <label class="block font-bold">Upload Photos (Max 5)</label>
                 <input type="file" id="prod-files-input" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'add')" class="w-full border p-1 rounded bg-white">
                 <div id="add-photo-queue" class="flex flex-wrap gap-2 pt-1"></div>
               </div>
-
-              <div class="md:col-span-2">
-                <button type="submit" id="prod-submit-btn" class="bg-black text-white px-5 py-2 rounded text-xs font-bold uppercase">Publish Product</button>
-              </div>
+              <div class="md:col-span-2"><button type="submit" class="bg-black text-white px-5 py-2.5 rounded font-bold uppercase">Publish Product</button></div>
             </form>
           </div>
-          
           <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-            <h3 class="text-sm font-bold border-b pb-2">Manage, Edit & Delete Products</h3>
+            <h3 class="text-sm font-bold border-b pb-2">Manage Products</h3>
             <div id="admin-product-management-list" class="space-y-2"></div>
           </div>
         </div>
@@ -332,7 +319,7 @@
 
         <!-- TAB 4: SETTINGS -->
         <div id="admin-section-settings" class="admin-content-section hidden bg-white p-5 rounded-2xl border space-y-3 text-xs">
-          <h3 class="font-bold border-b pb-2">Store Settings & Admin PIN</h3>
+          <h3 class="font-bold border-b pb-2">Store Settings & PIN</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div><label class="block font-bold mb-1">Store Name</label><input type="text" id="setting-store-name" class="w-full border p-1.5 rounded"></div>
             <div><label class="block font-bold mb-1">New Admin PIN</label><input type="password" id="setting-new-pin" class="w-full border p-1.5 rounded" placeholder="Leave blank to keep old"></div>
@@ -346,6 +333,62 @@
     </div>
   </main>
 
+  <!-- CART MODAL WITH SHIPPING DETAILS -->
+  <div id="cart-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end">
+    <div class="bg-white w-full max-w-md h-full flex flex-col p-5 shadow-2xl overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-sm font-bold uppercase text-gray-900">Shopping Bag & Checkout</h3>
+        <button type="button" onclick="toggleCart(false)" class="text-2xl font-bold">&times;</button>
+      </div>
+
+      <div id="cart-items" class="py-3 space-y-2 flex-grow overflow-y-auto border-b"></div>
+
+      <!-- SHIPPING DETAILS FORM -->
+      <div class="py-3 border-b space-y-2 text-xs">
+        <p class="font-bold text-gray-900 uppercase">Shipping Address & Contact Details:</p>
+        <div>
+          <label class="block font-semibold mb-0.5 text-gray-700">Full Name *</label>
+          <input type="text" id="checkout-name" placeholder="Rahul Sharma" class="w-full border p-2 rounded" required>
+        </div>
+        <div>
+          <label class="block font-semibold mb-0.5 text-gray-700">10-Digit Mobile Number *</label>
+          <input type="tel" id="checkout-phone" placeholder="9876543210" maxlength="10" class="w-full border p-2 rounded" required>
+        </div>
+        <div>
+          <label class="block font-semibold mb-0.5 text-gray-700">Complete Address (House No, Street, Landmark) *</label>
+          <textarea id="checkout-address" rows="2" placeholder="Flat 202, Green Park Avenue..." class="w-full border p-2 rounded" required></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold mb-0.5 text-gray-700">City *</label>
+            <input type="text" id="checkout-city" placeholder="Delhi" class="w-full border p-2 rounded" required>
+          </div>
+          <div>
+            <label class="block font-semibold mb-0.5 text-gray-700">Pincode *</label>
+            <input type="text" id="checkout-pincode" placeholder="110001" maxlength="6" class="w-full border p-2 rounded" required>
+          </div>
+        </div>
+      </div>
+      
+      <!-- COUPON INPUT -->
+      <div class="py-2 border-b space-y-1.5">
+        <div class="flex gap-2">
+          <input type="text" id="cart-coupon-input" placeholder="Coupon code" class="w-full border p-1.5 rounded text-xs uppercase font-bold">
+          <button type="button" onclick="applyCoupon()" class="bg-black text-white px-3 py-1.5 rounded text-xs font-bold">Apply</button>
+        </div>
+        <p id="coupon-feedback" class="text-[10px] text-green-600 font-bold"></p>
+      </div>
+
+      <div class="pt-3 space-y-2 text-xs">
+        <div class="flex justify-between font-extrabold text-sm text-black">
+          <span>Total Amount:</span>
+          <span id="cart-total">₹0</span>
+        </div>
+        <button type="button" onclick="processOrderDirect()" class="w-full bg-black text-white py-3 text-xs font-bold rounded-xl uppercase tracking-wider hover:bg-neutral-800 shadow">Complete Order & Place</button>
+      </div>
+    </div>
+  </div>
+
   <!-- EDIT PRODUCT MODAL -->
   <div id="edit-product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto text-xs">
@@ -357,26 +400,17 @@
         <input type="hidden" id="edit-prod-id">
         <div><label class="block font-bold mb-1">Title</label><input type="text" id="edit-prod-title" required class="w-full border p-2 rounded"></div>
         <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block font-bold mb-1">Category</label>
-            <select id="edit-prod-category" class="w-full border p-2 rounded bg-white">
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
-              <option value="Kids">Kids</option>
-            </select>
-          </div>
+          <div><label class="block font-bold mb-1">Category</label><select id="edit-prod-category" class="w-full border p-2 rounded bg-white"><option value="Men">Men</option><option value="Women">Women</option><option value="Kids">Kids</option></select></div>
           <div><label class="block font-bold mb-1">Price (₹)</label><input type="number" id="edit-prod-price" required class="w-full border p-2 rounded"></div>
         </div>
         <div><label class="block font-bold mb-1">Sizes</label><input type="text" id="edit-prod-sizes" class="w-full border p-2 rounded"></div>
         <div><label class="block font-bold mb-1">Supplier Link</label><input type="url" id="edit-prod-supplier-url" class="w-full border p-2 rounded"></div>
         <div><label class="block font-bold mb-1">Description</label><textarea id="edit-prod-desc" rows="2" class="w-full border p-2 rounded"></textarea></div>
-        
-        <div class="bg-gray-50 p-3 rounded border space-y-2">
+        <div class="bg-gray-50 p-3 rounded border space-y-1">
           <label class="block font-bold">Update Photos (Max 5)</label>
-          <input type="file" id="edit-prod-files" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border p-1 rounded bg-white text-xs">
+          <input type="file" id="edit-prod-files" accept="image/*" multiple onchange="handleQueuePhotoSelection(event, 'edit')" class="w-full border p-1 rounded bg-white">
           <div id="edit-photo-queue" class="flex flex-wrap gap-2 pt-1"></div>
         </div>
-
         <div class="flex gap-2 pt-2">
           <button type="submit" class="flex-1 bg-black text-white py-2.5 rounded font-bold uppercase">Save Changes</button>
           <button type="button" onclick="closeEditModal()" class="px-4 py-2.5 border rounded font-bold">Cancel</button>
@@ -394,30 +428,12 @@
       </div>
       <div><label class="block font-bold mb-1">Your Name</label><input type="text" id="rev-name" placeholder="Rahul" class="w-full border p-2 rounded"></div>
       <div><label class="block font-bold mb-1">Rating</label><select id="rev-rating" class="w-full border p-2 rounded bg-white"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option></select></div>
-      <div><label class="block font-bold mb-1">Review Comment</label><textarea id="rev-comment" rows="2" placeholder="Great quality..." class="w-full border p-2 rounded"></textarea></div>
-      <button type="button" onclick="submitReview()" class="w-full bg-black text-white py-2 rounded font-bold uppercase">Submit Review</button>
+      <div><label class="block font-bold mb-1">Comment</label><textarea id="rev-comment" rows="2" placeholder="Good quality..." class="w-full border p-2 rounded"></textarea></div>
+      <button type="button" onclick="submitReview()" class="w-full bg-black text-white py-2.5 rounded font-bold uppercase">Submit Review</button>
     </div>
   </div>
 
-  <!-- CART MODAL -->
-  <div id="cart-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end">
-    <div class="bg-white w-full max-w-md h-full flex flex-col p-5 shadow-2xl overflow-y-auto">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="text-sm font-bold uppercase">Shopping Bag</h3>
-        <button type="button" onclick="toggleCart(false)" class="text-2xl font-bold">&times;</button>
-      </div>
-      <div id="cart-items" class="py-3 space-y-2 flex-grow overflow-y-auto border-b"></div>
-      <div class="pt-3 space-y-2 text-xs">
-        <div class="flex justify-between font-extrabold text-sm text-black">
-          <span>Total:</span>
-          <span id="cart-total">₹0</span>
-        </div>
-        <button type="button" onclick="processOrderDirect()" class="w-full bg-black text-white py-2.5 text-xs font-bold rounded uppercase">Complete Order</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CLEAN FOOTER -->
+  <!-- FOOTER -->
   <footer class="bg-white border-t mt-8 py-6 text-center space-y-3">
     <div class="flex justify-center space-x-4 text-xs font-bold text-gray-600">
       <button type="button" onclick="navigate('home')">Home</button>
@@ -425,11 +441,7 @@
       <button type="button" onclick="navigate('myorders')">My Orders</button>
       <button type="button" onclick="navigate('policies')">Policies</button>
     </div>
-    
-    <div>
-      <button type="button" onclick="navigate('sec-portal-9921')" class="text-[9px] text-gray-300 hover:text-gray-500 font-mono tracking-widest px-2 py-1">⚙️ Admin Portal</button>
-    </div>
-
+    <div><button type="button" onclick="navigate('sec-portal-9921')" class="text-[9px] text-gray-300 font-mono">⚙️ Admin Portal</button></div>
     <p class="text-[11px] text-gray-500 font-medium">© 2026 My Fashion Store. All Rights Reserved.</p>
   </footer>
 
@@ -440,16 +452,17 @@
     const defaultSettings = {
       name: "My Fashion Store",
       phone: "919876543210",
-      returnPolicy: "• 7-Day Doorstep Returns & Exchanges.",
-      shippingPolicy: "• Dispatched within 24-48 hours.",
+      returnPolicy: "• 7-Day Doorstep Returns & Exchanges.\n• Product must be unused with original tags.",
+      shippingPolicy: "• Dispatched within 24-48 hours.\n• Free express delivery across India.",
       pin: "adeet2009"
     };
 
     let storeSettings = JSON.parse(localStorage.getItem('mfs_settings_v21')) || defaultSettings;
-    let products = JSON.parse(localStorage.getItem('mfs_instant_cache_v21')) || [];
-    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || [{ code: 'FESTIVE100', value: 100 }];
+    let products = JSON.parse(localStorage.getItem('mfs_safe_store_data')) || [];
+    let coupons = JSON.parse(localStorage.getItem('mfs_coupons_v21')) || [{ code: 'ZUBEEN52', value: 150 }, { code: 'FESTIVE100', value: 100 }];
     let productReviews = JSON.parse(localStorage.getItem('mfs_reviews_v21')) || {};
     let cart = [];
+    let appliedDiscount = 0;
     let addPhotosQueue = [];
     let editPhotosQueue = [];
     let currentCategory = 'All';
@@ -458,16 +471,13 @@
     let currentSlideIndex = 0;
     const totalSlides = 6;
 
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobile-menu');
-      if (menu) menu.classList.toggle('hidden');
-    }
+    function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+    function toggleCart(show) { document.getElementById('cart-modal').classList.toggle('hidden', !show); }
 
     function updateSlidePosition() {
       const track = document.getElementById('slider-track');
       if (track) track.style.transform = `translateX(-${currentSlideIndex * (100 / totalSlides)}%)`;
     }
-
     function nextSlide() { currentSlideIndex = (currentSlideIndex + 1) % totalSlides; updateSlidePosition(); }
     function prevSlide() { currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides; updateSlidePosition(); }
     setInterval(() => { nextSlide(); }, 4000);
@@ -480,16 +490,13 @@
 
       const floatingBack = document.getElementById('floating-back-container');
       if (floatingBack) {
-        if (view === 'home' || view === 'sec-portal-9921') floatingBack.classList.add('hidden');
+        if (view === 'home') floatingBack.classList.add('hidden');
         else floatingBack.classList.remove('hidden');
       }
 
-      if (view === 'home') {
-        renderHomeProducts(products);
-      } else if (view === 'all') { 
-        currentCategory = 'All'; 
-        renderAllProducts(products); 
-      } else if (view === 'policies') {
+      if (view === 'home') renderProducts(products);
+      else if (view === 'all') { currentCategory = 'All'; renderAllProducts(products); }
+      else if (view === 'policies') {
         document.getElementById('policy-return-display').innerText = storeSettings.returnPolicy;
         document.getElementById('policy-shipping-display').innerText = storeSettings.shippingPolicy;
       } else if (view === 'sec-portal-9921') {
@@ -502,11 +509,11 @@
       window.scrollTo(0, 0);
     };
 
-    function renderHomeProducts(items) {
+    function renderProducts(items) {
       const grid = document.getElementById('home-product-grid');
       if (!grid) return;
       if (!items || items.length === 0) {
-        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">No products available right now.</p>';
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-6 text-xs">No products found. Add from Admin Portal.</p>';
         return;
       }
       grid.innerHTML = items.map(p => getProductCardHTML(p)).join('');
@@ -525,15 +532,15 @@
     function getProductCardHTML(p) {
       const mainImg = (p.images && p.images.length > 0) ? p.images[0] : (p.image || '');
       return `
-        <div class="bg-white rounded-2xl border p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md transition">
+        <div class="bg-white rounded-xl border border-gray-200 p-3 flex flex-col justify-between shadow-xs hover:shadow-md transition">
           <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer">
-            <img src="${mainImg}" class="w-full h-48 object-contain bg-white rounded-xl mb-3">
+            <img src="${mainImg}" alt="${p.title}" class="w-full h-44 object-contain bg-white rounded-lg mb-2">
             <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider">${p.category}</span>
-            <h3 class="font-bold text-xs line-clamp-1 mt-0.5">${p.title}</h3>
+            <h3 class="font-bold text-xs line-clamp-1 text-gray-900 mt-0.5">${p.title}</h3>
           </div>
-          <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 mt-2">
+          <div class="flex items-center justify-between pt-2 border-t border-gray-100 mt-2">
             <span class="font-black text-xs text-black">₹${p.price}</span>
-            <button type="button" onclick="openProductDetailPage(${p.id})" class="bg-black text-white text-[10px] px-3.5 py-1.5 rounded-xl font-bold uppercase tracking-wider hover:bg-neutral-800 transition">View</button>
+            <button type="button" onclick="openProductDetailPage(${p.id})" class="bg-black text-white text-[10px] px-3.5 py-1 rounded-full font-bold uppercase tracking-wider hover:bg-neutral-800">View</button>
           </div>
         </div>
       `;
@@ -546,27 +553,19 @@
       renderAllProducts(filtered);
     };
 
-    function handleGlobalSearch(query) {
-      const q = query.toLowerCase().trim();
-      if (q.length > 0) {
-        navigate('all');
-        const filtered = products.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
-        renderAllProducts(filtered);
-      } else {
-        renderAllProducts(products);
-      }
+    function handleGlobalSearch(q) {
+      const query = q.toLowerCase().trim();
+      const filtered = products.filter(p => p.title.toLowerCase().includes(query) || (p.description && p.description.toLowerCase().includes(query)));
+      if (document.getElementById('page-all').classList.contains('hidden')) navigate('all');
+      renderAllProducts(filtered);
     }
 
     function handleCatalogSort() {
       const sortBy = document.getElementById('sort-select').value;
-      let items = currentCategory === 'All' ? [...products] : products.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
-      
-      if (sortBy === 'low-high') {
-        items.sort((a, b) => a.price - b.price);
-      } else if (sortBy === 'high-low') {
-        items.sort((a, b) => b.price - a.price);
-      }
-      renderAllProducts(items);
+      let sorted = [...products];
+      if (sortBy === 'low-high') sorted.sort((a,b) => a.price - b.price);
+      else if (sortBy === 'high-low') sorted.sort((a,b) => b.price - a.price);
+      renderAllProducts(sorted);
     }
 
     function openProductDetailPage(id) {
@@ -579,33 +578,43 @@
       document.getElementById('detail-category').innerText = prod.category;
       document.getElementById('detail-title').innerText = prod.title;
       document.getElementById('detail-price').innerText = '₹' + prod.price;
-      document.getElementById('detail-desc').innerText = prod.description || "Premium fabric quality.";
+      document.getElementById('detail-desc').innerText = prod.description || "Premium fabric quality, stylish fit, and comfortable wear.";
+
+      const thumbContainer = document.getElementById('detail-thumbnails');
+      thumbContainer.innerHTML = allPhotos.map((imgUrl) => `
+        <button type="button" onclick="document.getElementById('detail-main-img').src='${imgUrl}'" class="w-14 h-14 rounded-lg border border-gray-200 overflow-hidden bg-white p-0.5 hover:border-black">
+          <img src="${imgUrl}" class="w-full h-full object-contain">
+        </button>
+      `).join('');
 
       const sizeBox = document.getElementById('detail-sizes-container');
       sizeBox.innerHTML = '';
       const rawSizes = (prod.sizes && prod.sizes.length > 0) ? prod.sizes : ["Free Size"];
       currentSelectedSize = rawSizes.length === 1 ? rawSizes[0] : null;
 
-      rawSizes.forEach(sz => {
+      rawSizes.forEach((sz, idx) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.innerText = sz.trim();
-        btn.className = 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg';
+        btn.className = (idx === 0 && rawSizes.length === 1) ? 'border-2 border-black bg-black text-white font-black text-xs px-3.5 py-1 rounded-lg' : 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg text-gray-800';
+        if(idx === 0 && rawSizes.length === 1) currentSelectedSize = sz.trim();
+        
         btn.onclick = () => {
           currentSelectedSize = sz.trim();
-          sizeBox.querySelectorAll('button').forEach(b => b.className = 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg');
+          sizeBox.querySelectorAll('button').forEach(b => b.className = 'border-2 border-gray-300 font-bold text-xs px-3.5 py-1 rounded-lg text-gray-800');
           btn.className = 'border-2 border-black bg-black text-white font-black text-xs px-3.5 py-1 rounded-lg';
         };
         sizeBox.appendChild(btn);
       });
 
-      document.getElementById('detail-buy-btn').onclick = () => {
-        if (!currentSelectedSize) return alert('⚠️ Select size first!');
+      const handleBuyAction = () => {
+        if (!currentSelectedSize) return alert('⚠️ Please select a size first!');
         cart = [{ ...prod, title: `${prod.title} (Size: ${currentSelectedSize})` }];
         updateCartDisplay();
         toggleCart(true);
       };
 
+      document.getElementById('detail-buy-btn').onclick = handleBuyAction;
       renderProductReviews(prod.id);
       renderSimilarProducts(prod);
       navigate('product-detail');
@@ -620,7 +629,10 @@
       }
       container.innerHTML = reviews.map(r => `
         <div class="border-b pb-2 text-xs space-y-1">
-          <div class="flex justify-between font-bold"><span>${r.name}</span><span class="text-amber-500">${'⭐'.repeat(r.rating)}</span></div>
+          <div class="flex justify-between font-bold">
+            <span class="text-gray-900">${r.name}</span>
+            <span class="text-amber-500">${'⭐'.repeat(r.rating)}</span>
+          </div>
           <p class="text-gray-600">${r.comment}</p>
         </div>
       `).join('');
@@ -634,7 +646,7 @@
       const name = document.getElementById('rev-name').value.trim();
       const rating = Number(document.getElementById('rev-rating').value);
       const comment = document.getElementById('rev-comment').value.trim();
-      if (!name || !comment) return alert('Please fill fields.');
+      if (!name || !comment) return alert('Fill all fields.');
 
       if (!productReviews[currentSelectedProduct.id]) productReviews[currentSelectedProduct.id] = [];
       productReviews[currentSelectedProduct.id].unshift({ name, rating, comment });
@@ -647,34 +659,21 @@
     function renderSimilarProducts(prod) {
       const grid = document.getElementById('similar-products-grid');
       const similar = products.filter(p => p.category.toLowerCase() === prod.category.toLowerCase() && p.id !== prod.id).slice(0, 4);
+      if (similar.length === 0) {
+        grid.innerHTML = '<p class="col-span-full text-xs text-gray-400">No similar products.</p>';
+        return;
+      }
       grid.innerHTML = similar.map(p => `
         <div onclick="openProductDetailPage(${p.id})" class="cursor-pointer bg-gray-50 border p-2 rounded-xl">
           <img src="${(p.images && p.images[0]) || p.image}" class="w-full h-32 object-contain bg-white rounded-lg mb-1">
-          <h4 class="font-bold text-xs truncate">${p.title}</h4>
-          <span class="text-xs font-extrabold">₹${p.price}</span>
+          <h4 class="font-bold text-xs truncate text-gray-900">${p.title}</h4>
+          <span class="text-xs font-extrabold text-black">₹${p.price}</span>
         </div>
       `).join('');
     }
 
-    async function fetchCloudProducts() {
-      try {
-        const res = await fetch(`${FIREBASE_DB_URL}/products.json`);
-        const data = await res.json();
-        if (data) {
-          products = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
-        } else {
-          products = [];
-        }
-        localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
-        renderHomeProducts(products);
-      } catch (err) { 
-        console.error("Fetch error:", err); 
-      }
-    }
-
     async function syncProductsToCloud() {
       try {
-        localStorage.setItem('mfs_instant_cache_v21', JSON.stringify(products));
         const prodObj = {};
         products.forEach(p => { prodObj[p.id] = p; });
         await fetch(`${FIREBASE_DB_URL}/products.json`, {
@@ -682,12 +681,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(prodObj)
         });
-      } catch (err) { console.error("Sync error:", err); }
-    }
-
-    async function manualSyncAllProductsToCloud() {
-      await syncProductsToCloud();
-      alert("✅ Synced successfully to Cloud!");
+      } catch (err) { console.error("Cloud sync notice:", err); }
     }
 
     async function handleProductAdd(e) {
@@ -707,13 +701,15 @@
       };
 
       products.unshift(newProd);
-      await syncProductsToCloud();
-      renderHomeProducts(products);
+      localStorage.setItem('mfs_safe_store_data', JSON.stringify(products));
+      renderProducts(products);
       renderAdminProductManagement();
+
       e.target.reset();
       addPhotosQueue = [];
       renderQueuePhotos();
-      alert('🎉 Product published & form cleared!');
+      alert('🎉 Product published successfully!');
+      syncProductsToCloud();
     }
 
     function renderAdminProductManagement() {
@@ -790,33 +786,23 @@
       products[index].images = [...editPhotosQueue];
       products[index].image = editPhotosQueue[0];
 
-      await syncProductsToCloud();
-      renderHomeProducts(products);
+      localStorage.setItem('mfs_safe_store_data', JSON.stringify(products));
+      renderProducts(products);
       renderAdminProductManagement();
       closeEditModal();
       alert('🎉 Product updated successfully!');
+      syncProductsToCloud();
     }
 
     async function deleteProductById(id) {
       if (!confirm("Delete product permanently?")) return;
-      
-      // Remove from local array
       products = products.filter(p => Number(p.id) !== Number(id));
-      
-      // Update local storage and cloud database simultaneously
-      await syncProductsToCloud();
-      
-      // Force direct node wipe in cloud
-      try {
-        await fetch(`${FIREBASE_DB_URL}/products/${id}.json`, { method: 'DELETE' });
-      } catch(e) { console.error("Node delete error:", e); }
-
-      renderHomeProducts(products);
+      localStorage.setItem('mfs_safe_store_data', JSON.stringify(products));
+      renderProducts(products);
       renderAdminProductManagement();
-      alert("🗑️ Product deleted permanently!");
+      alert("🗑️ Product deleted successfully!");
+      syncProductsToCloud();
     }
-
-    function toggleCart(show) { document.getElementById('cart-modal').classList.toggle('hidden', !show); }
 
     function updateCartDisplay() {
       document.getElementById('cart-count').innerText = cart.length;
@@ -826,11 +812,39 @@
         subtotal += item.price;
         return `<div class="flex justify-between text-xs py-1 border-b"><span>${item.title}</span><b>₹${item.price}</b></div>`;
       }).join('');
-      document.getElementById('cart-total').innerText = '₹' + subtotal;
+      
+      let finalTotal = Math.max(0, subtotal - appliedDiscount);
+      document.getElementById('cart-total').innerText = '₹' + finalTotal;
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('cart-coupon-input').value.trim().toUpperCase();
+      const found = coupons.find(c => c.code === code);
+      if (found) {
+        appliedDiscount = found.value;
+        document.getElementById('coupon-feedback').innerText = `✅ Coupon applied! Flat ₹${found.value} OFF`;
+        updateCartDisplay();
+      } else {
+        alert('Invalid coupon code!');
+      }
     }
 
     async function processOrderDirect() {
       if (cart.length === 0) return alert('Cart is empty!');
+      
+      const name = document.getElementById('checkout-name').value.trim();
+      const phone = document.getElementById('checkout-phone').value.trim();
+      const address = document.getElementById('checkout-address').value.trim();
+      const city = document.getElementById('checkout-city').value.trim();
+      const pincode = document.getElementById('checkout-pincode').value.trim();
+
+      if (!name || !phone || !address || !city || !pincode) {
+        return alert('⚠️ Please fill out all shipping address and contact details!');
+      }
+      if (phone.length !== 10) {
+        return alert('⚠️ Please enter a valid 10-digit mobile number!');
+      }
+
       const matchedProd = products.find(p => cart[0] && cart[0].title.includes(p.title));
       const supplierUrl = matchedProd ? (matchedProd.supplierUrl || '') : '';
 
@@ -839,19 +853,55 @@
         items: cart.map(i => i.title).join(', '),
         total: document.getElementById('cart-total').innerText,
         status: "Order Confirmed",
-        phone: "9876543210",
+        customerName: name,
+        phone: phone,
+        address: `${address}, City: ${city}, Pincode: ${pincode}`,
         supplierUrl: supplierUrl,
         date: new Date().toLocaleDateString()
       };
-      await fetch(`${FIREBASE_DB_URL}/orders.json`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData)
-      });
+      
+      try {
+        await fetch(`${FIREBASE_DB_URL}/orders.json`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+        });
+      } catch(e) { console.error("Order sync notice:", e); }
+
       cart = [];
+      appliedDiscount = 0;
       updateCartDisplay();
       toggleCart(false);
-      alert('Order placed successfully!');
+      alert('🎉 Order placed successfully! You can track it in "My Orders".');
+      navigate('myorders');
+      document.getElementById('cust-search-phone').value = phone;
+      fetchCustomerCloudOrders();
+    }
+
+    async function fetchCustomerCloudOrders() {
+      const phone = document.getElementById('cust-search-phone').value.trim();
+      const container = document.getElementById('customer-orders-container');
+      if (phone.length !== 10) return alert('Enter valid 10-digit number');
+      
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/orders.json`);
+        const data = await res.json();
+        const orders = data ? Object.values(data).filter(o => o.phone === phone) : [];
+        
+        container.innerHTML = orders.length === 0 ? '<p class="text-xs text-red-500">No orders found.</p>' : orders.map(o => `
+          <div class="border p-3 rounded-xl text-xs bg-gray-50 space-y-1">
+            <div class="flex justify-between font-bold text-black">
+              <span>Order ID: ${o.orderId}</span>
+              <span class="text-blue-600">${o.status}</span>
+            </div>
+            <p><b>Items:</b> ${o.items}</p>
+            <p><b>Deliver To:</b> ${o.customerName}, ${o.address} (Ph: ${o.phone})</p>
+            <p><b>Total Amount:</b> ${o.total}</p>
+          </div>
+        `).join('');
+      } catch (e) {
+        container.innerHTML = '<p class="text-xs text-red-500">Error fetching orders.</p>';
+      }
     }
 
     async function fetchCloudOrders() {
@@ -868,7 +918,7 @@
           return `
             <div class="border p-3.5 rounded-xl text-xs bg-white space-y-2 shadow-sm">
               <div class="flex justify-between items-center font-bold">
-                <span class="text-blue-700">${o.orderId}</span>
+                <span class="text-blue-700">${o.orderId} (${o.customerName})</span>
                 <select onchange="updateOrderStatus('${key}', this.value)" class="bg-amber-100 text-amber-900 px-2 py-1 rounded text-[11px] font-bold border border-amber-300">
                   <option value="Order Confirmed" ${o.status === 'Order Confirmed' ? 'selected' : ''}>Order Confirmed</option>
                   <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
@@ -878,9 +928,9 @@
                 </select>
               </div>
               <p><b>Items:</b> ${o.items}</p>
-              <p><b>Total:</b> ${o.total}</p>
+              <p><b>Address:</b> ${o.address}</p>
+              <p><b>Phone:</b> ${o.phone} | <b>Total:</b> ${o.total}</p>
               <div class="pt-1 border-t flex justify-between items-center">
-                <span><b>Phone:</b> ${o.phone}</span>
                 ${o.supplierUrl ? `<a href="${o.supplierUrl}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded font-bold text-[11px] flex items-center gap-1"><i class="fa-solid fa-link"></i> Supplier Link</a>` : '<span class="text-gray-400 italic">No supplier link</span>'}
               </div>
             </div>
@@ -983,10 +1033,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      if (products.length > 0) {
-        renderHomeProducts(products);
-      }
-      fetchCloudProducts();
+      renderProducts(products);
     });
   </script>
 </body>
