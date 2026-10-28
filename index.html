@@ -477,7 +477,7 @@
   <script>
     const FIREBASE_DB_URL = "https://myfashionstore-a7200-default-rtdb.firebaseio.com";
     
-    // Cloudinary Credentials Configured Safely
+    // Cloudinary Credentials
     const CLOUDINARY_CLOUD_NAME = "klarpmtn";
     const CLOUDINARY_PRESET = "ml_default";
 
@@ -1057,7 +1057,7 @@
       alert('✅ Settings saved successfully!');
     }
 
-    // Direct Cloudinary Upload Handler
+    // Direct Cloudinary Upload Handler (Fixed)
     async function handleQueuePhotoSelection(event, context) {
       const files = Array.from(event.target.files);
       if (files.length === 0) return;
@@ -1084,10 +1084,12 @@
               editPhotosQueue.push(data.secure_url);
               renderEditQueuePhotos();
             }
+          } else {
+            alert("Upload failed: " + (data.error?.message || "Unknown error"));
           }
         } catch (err) {
           console.error("Upload error:", err);
-          alert("Image upload failed!");
+          alert("Image upload failed! Check internet connection.");
         }
       }
       statusText.innerText = "Direct Cloud Upload Active";
